@@ -23,13 +23,11 @@ public static class StaticData
         matrix = new string[newLines.Count, 18];
         int rows = newLines.Count;
 
-
         //populates matrix
         for (int i = 0; i < rows; i++)
         {
             populateArray(newLines[i], i);
         }
-
 
         // print matrix
         Debug.WriteLine("\n\nPRINTING...");
@@ -37,10 +35,7 @@ public static class StaticData
         {
             Debug.WriteLine(matrix[i, 0]);
         }
-
-
     }
-
 
     private static void readLines()
     {
@@ -80,10 +75,7 @@ public static class StaticData
                 newLines[newIndex] = temp;
             }
         }
-
     }
-
-
 
     private static void populateArray(string str, int row)
     {
@@ -92,23 +84,16 @@ public static class StaticData
         char curr = '`', prev = '`', next = '`';
         bool quot = false;
 
-
         for (int i = 0; i < str.Length; i++)
         {
-
             curr = str[i];
             if (i >= 1) { prev = str[i - 1]; } // sets prev char
             if (i < str.Length - 1) { next = str[i + 1]; } // sets next char
-
-            if (temp == " crisp")
-            {
-            }
 
             else if (curr == '"' && prev == ',') // start of quote
             {
                 quot = true;
             }
-
             else if ((quot && curr == '"' && next == ',') ||
                 (quot && curr == ',' && prev == '"')) // end of quote
             {
@@ -117,10 +102,6 @@ public static class StaticData
                 col++;
                 temp = "";
             }
-
-
-
-
             else if (quot && curr == '"' && next == '"' && prev == ' ')
             {
                 //do nothing
@@ -137,12 +118,10 @@ public static class StaticData
             {
                 //do nothing
             }
-
             else if (quot && curr != '"')
             {
                 temp = temp + curr;
             }
-
             else if (!quot && curr != '"' && curr != ',') // always last
             {
                 string s1 = prev.ToString();
@@ -151,24 +130,20 @@ public static class StaticData
                 string s4 = s1 + s2 + s3;
                 temp = temp + curr;
             }
-
             else if (curr == ',' && prev == '"' && next == '"')
             {
                 quot = true;
             }
-
             else if (curr == ',' && prev == '"' && next != '"')
             {
                 quot = false;
             }
-
             else if (!quot && curr == ',') // end of non-quote
             {
                 matrix[row, col] = temp;
                 col++;
                 temp = "";
             }
-
             else
             {
                 Debug.WriteLine("SOMETHING WENT WRONT WHILE PARSING FILE: " + prev + curr + next + quot);
@@ -181,7 +156,6 @@ public static class StaticData
                 temp = "";
             }
         }
-
     }
 
     public static int getRowCount()
@@ -218,5 +192,4 @@ public static class StaticData
     {
         return matrix[row, col];
     }
-
 }
