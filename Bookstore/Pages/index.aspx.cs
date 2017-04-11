@@ -44,7 +44,6 @@ public partial class Pages_index : System.Web.UI.Page
         {
             // display prompt
             CoursesError.Visible = true;
-
         }
         else if (getSearchString() == "Empty")
         {
@@ -56,7 +55,6 @@ public partial class Pages_index : System.Web.UI.Page
             // ex: pageName.aspx?PARAMETER=value&PARAMETER2=value
             Response.Redirect("Search.aspx" + getSearchString());
         }
-
     }
 
     // 
@@ -72,8 +70,8 @@ public partial class Pages_index : System.Web.UI.Page
         {
             str = "Select Course";
         }
-        else if (String.IsNullOrEmpty(SearchBox.Text) ||
-            String.IsNullOrWhiteSpace(SearchBox.Text))
+        else if (DDList1.SelectedValue == "Keyword" && (String.IsNullOrEmpty(SearchBox.Text) ||
+            String.IsNullOrWhiteSpace(SearchBox.Text)))
         {
             str = "Empty";
         }
@@ -90,7 +88,6 @@ public partial class Pages_index : System.Web.UI.Page
             str = "?Type=" + "Course" + "&Value=" + DDList2.SelectedValue;
 
         }
-
         return str;
     }
 

@@ -88,9 +88,9 @@ public static class StaticData
         {
             curr = str[i];
             if (i >= 1) { prev = str[i - 1]; } // sets prev char
-            if (i < str.Length - 1) { next = str[i + 1]; } // sets next char
+            if (i < str.Length - 1) { next = str[i + 1]; } // sets next char   
 
-            else if (curr == '"' && prev == ',') // start of quote
+            if (curr == '"' && prev == ',') // start of quote
             {
                 quot = true;
             }
@@ -158,11 +158,6 @@ public static class StaticData
         }
     }
 
-    public static int getRowCount()
-    {
-        return newLines.Count;
-    }
-
     public static string[,] getMatrix()
     {
         return matrix;
@@ -191,5 +186,10 @@ public static class StaticData
     public static string getMatrixValue(int row, int col)
     {
         return matrix[row, col];
+    }
+
+    public static int getRowCount()
+    {
+        return newLines.Count;
     }
 }
