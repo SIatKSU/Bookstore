@@ -184,6 +184,11 @@ public static class StaticData
 
     }
 
+    public static int getRowCount()
+    {
+        return newLines.Count;
+    }
+
     public static string[,] getMatrix()
     {
         return matrix;
@@ -192,7 +197,7 @@ public static class StaticData
     public static string[] getMatrixRow(int row)
     {
         string[] rowArray = new string[newLines.Count];
-        for(int i = 0; i < newLines.Count; i++)
+        for (int i = 0; i < newLines.Count; i++)
         {
             rowArray[i] = matrix[row, i];
         }

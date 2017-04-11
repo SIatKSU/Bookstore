@@ -13,18 +13,26 @@ public partial class Pages_index : System.Web.UI.Page
         // Populates first DropDownList
         if (!IsPostBack)
         {
-            ListItem searchByItem = new ListItem("Search By", "0");
             ListItem keywordItem = new ListItem("Keyword", "Keyword");
             ListItem professorItem = new ListItem("Professor", "Professor");
             ListItem courseItem = new ListItem("Course", "Course");
 
-            DDList1.Items.Add(searchByItem);
             DDList1.Items.Add(keywordItem);
             DDList1.Items.Add(professorItem);
             DDList1.Items.Add(courseItem);
         }
     }
 
+    //
+    //
+    //
+    //
+    // TODO: empty input display error message
+    //
+    //
+    //
+    //
+    //
     protected void searchClicked(object sender, EventArgs e)
     {
         if (getSearchString() == "Select Professor")
@@ -38,8 +46,14 @@ public partial class Pages_index : System.Web.UI.Page
             CoursesError.Visible = true;
 
         }
+        else if (getSearchString() == "Empty")
+        {
+            SearchBoxError.Visible = true;
+        }
         else
         {
+            //this redirects to a URL with parameters
+            // ex: pageName.aspx?PARAMETER=value&PARAMETER2=value
             Response.Redirect("Search.aspx" + getSearchString());
         }
 
@@ -50,7 +64,20 @@ public partial class Pages_index : System.Web.UI.Page
     {
         string str = "";
 
-        if (DDList1.SelectedValue == "Keyword")
+        if (DDList2.SelectedValue == "Select Professor")
+        {
+            str = "Select Professor";
+        }
+        else if (DDList2.SelectedValue == "Select Course")
+        {
+            str = "Select Course";
+        }
+        else if (String.IsNullOrEmpty(SearchBox.Text) ||
+            String.IsNullOrWhiteSpace(SearchBox.Text))
+        {
+            str = "Empty";
+        }
+        else if (DDList1.SelectedValue == "Keyword")
         {
             str = str = "?Type=" + "Keyword" + "&Value=" + SearchBox.Text;
         }
@@ -75,15 +102,10 @@ public partial class Pages_index : System.Web.UI.Page
         CoursesError.Visible = false;
         ProfsError.Visible = false;
 
-        if (value == "Search By")
-        {
-            SearchBox.Visible = false;
-            DDList2.Visible = false;
-            SearchButton.Visible = false;
-        }
         if (value == "Keyword")
         {
             SearchBox.Visible = true;
+            SearchButton.Visible = true;
             DDList2.Visible = false;
             SearchButton.Visible = true;
         }
@@ -91,7 +113,6 @@ public partial class Pages_index : System.Web.UI.Page
         {
             DDList2.Visible = true;
             SearchBox.Visible = false;
-            SearchButton.Visible = true;
             DDList2.Items.Clear();
             DDList2.Items.AddRange(getProfessorListItems());   //load professor names
         }
@@ -99,7 +120,6 @@ public partial class Pages_index : System.Web.UI.Page
         {
             DDList2.Visible = true;
             SearchBox.Visible = false;
-            SearchButton.Visible = true;
             DDList2.Items.Clear();
             DDList2.Items.AddRange(getCourseListItems());   //load course names
         }

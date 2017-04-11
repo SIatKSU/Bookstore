@@ -16,16 +16,19 @@
                     <asp:DropDownList ID="DDList2" runat="server" AutoPostBack="true" Visible="false" OnSelectedIndexChanged="DDList2SelectedIndexChanged">
                     </asp:DropDownList>
 
-                    <asp:TextBox ID="SearchBox" runat="server" Visible="false"></asp:TextBox>
+                    <asp:TextBox ID="SearchBox" runat="server" Visible="True"></asp:TextBox>
 
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:Button ID="SearchButton" runat="server" Text="Search" Visible="False" OnClick="searchClicked"/>
+                    <asp:Button ID="SearchButton" runat="server" Text="Search" Visible="True" OnClick="searchClicked"/>
 
                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:Label ID="ProfsError" runat="server"  Text="Please select a professor" Visible="False" Font-Bold="True" Font-Size="Medium" Font-Underline="False" ForeColor="Red"></asp:Label>
  
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     <asp:Label ID="CoursesError" runat="server"  Text="Please select a course" Visible="False" Font-Bold="True" Font-Size="Medium" Font-Underline="False" ForeColor="Red"></asp:Label>
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <asp:Label ID="SearchBoxError" runat="server"  Text="Please enter a search value" Visible="False" Font-Bold="True" Font-Size="Medium" Font-Underline="False" ForeColor="Red"></asp:Label>
 
                 </td>
             </tr>
