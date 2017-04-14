@@ -11,34 +11,37 @@ namespace Bookstore.Pages
 {
     public partial class Search : System.Web.UI.Page
     {
+        private string type, value;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            string type = Request.QueryString["Type"];
-            string value = Request.QueryString["Value"];
+            type = Request.QueryString["Type"].ToLower();
+            value = Request.QueryString["Value"].ToLower();
 
-            setGridTable(searchData(type, value));
+
+            GridView1.PageIndex = 0; //sets default GridView1 page to the first page
+            setGridTable(searchData());
 
 
             TextBox1.Text = type;
             TextBox2.Text = value;
         }
-
-        // 
-        //
-        // TODO: add multiple word (string) search
-        // TODO: make everything lowercase
         //
         //
-        private int[] searchData(string type, string value)
+        //
+        // Todo: Projessor "Tsai-Tien Tseng" doesn't show up..
+        //
+        //
+        // returns array with row indicies that contained the search value
+        private int[] searchData()
         {
             var indicesOfMatches = new List<int>();
 
-            if (type == "Keyword")
+            if (type == "keyword")
             {
                 indicesOfMatches = getKeywordMatcheIndices(value);
             }
-            else if (type == "Professor")
+            else if (type == "professor")
             {
                 string[] profsArray = StaticData.getMatrixColumn(6);
 
@@ -47,13 +50,13 @@ namespace Bookstore.Pages
                 // adds the row number(index) to the indexOfMatches array if there is a match
                 for (int i = 0; i < profsArray.Length; i++)
                 {
-                    if (profsArray[i] == value)
+                    if (profsArray[i].ToLower().Contains(value))
                     {
                         indicesOfMatches.Add(i);
                     }
                 }
             }
-            else if (type == "Course")
+            else if (type == "course")
             {
                 string[] coursesArray = StaticData.getMatrixColumn(4);
 
@@ -61,13 +64,12 @@ namespace Bookstore.Pages
                 // adds the row number(index) to the indexOfMatches array if there is a match
                 for (int i = 0; i < coursesArray.Length; i++)
                 {
-                    if (coursesArray[i] == value)
+                    if (coursesArray[i].ToLower().Contains(value))
                     {
                         indicesOfMatches.Add(i);
                     }
                 }
             }
-
             return indicesOfMatches.ToArray();
         }
 
@@ -80,60 +82,52 @@ namespace Bookstore.Pages
             for (int i = 0; i < StaticData.getRowCount(); i++)
             {
                 string ISBN = StaticData.getMatrixValue(i, 0);
-                string title = StaticData.getMatrixValue(i, 1);
-                string authors = StaticData.getMatrixValue(i, 2);
-                string description = StaticData.getMatrixValue(i, 17);
-
-                string[] delimiters = new string[] { " " };
-                string[] descriptionWords = description.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-                string[] titleWords = description.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-                string[] authorWords = description.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+                string CRN = StaticData.getMatrixValue(i, 7);
+                string title = StaticData.getMatrixValue(i, 1).ToLower();
+                string author = StaticData.getMatrixValue(i, 2).ToLower();
+                string description = StaticData.getMatrixValue(i, 17).ToLower();
 
 
                 if (!indicesOfMatches.Contains(i))
                 {
                     // description search
-                    for (int j = 0; j < descriptionWords.Length; j++)
+
+                    if (description.Contains(value))
                     {
-                        if (descriptionWords[j] == value)
-                        {
-                            indicesOfMatches.Add(i);
-                            break;
-                        }
+                        indicesOfMatches.Add(i);
                     }
 
                     // title search
                     if (!indicesOfMatches.Contains(i))
                     {
-                        for (int j = 0; j < titleWords.Length; j++)
+                        if (title.Contains(value))
                         {
-                            if (titleWords[j] == value)
-                            {
-                                indicesOfMatches.Add(i);
-                                break;
-
-                            }
+                            indicesOfMatches.Add(i);
                         }
                     }
 
                     // author search
                     if (!indicesOfMatches.Contains(i))
                     {
-                        for (int j = 0; j < authorWords.Length; j++)
+                        if (author.Contains(value))
                         {
-                            if (authorWords[j] == value)
-                            {
-                                indicesOfMatches.Add(i);
-                                break;
-
-                            }
+                            indicesOfMatches.Add(i);
                         }
                     }
 
                     // ISBN search
                     if (!indicesOfMatches.Contains(i))
                     {
-                        if (ISBN == value)
+                        if (ISBN.Contains(value))
+                        {
+                            indicesOfMatches.Add(i);
+                        }
+                    }
+
+                    // CRN search
+                    if (!indicesOfMatches.Contains(i))
+                    {
+                        if (CRN.Contains(value))
                         {
                             indicesOfMatches.Add(i);
                         }
@@ -206,20 +200,38 @@ namespace Bookstore.Pages
 
                 dt.Rows.Add(dr);
 
-                Debug.WriteLine("..." + dr["ISBN"].ToString());
+               // Debug.WriteLine("..." + dr["ISBN"].ToString());
             }
 
             ViewState["CurrentTable"] = dt;
 
-
+            setHeaderText(rows.Length);
 
             GridView1.DataSource = dt;
             GridView1.DataBind();
         }
 
-        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+        private void setHeaderText(int rows)
         {
+            if (rows <= 10)
+            {
+                SearchHeaderLabel.Text = "Showing 1-" + rows + " of " + rows + " results for \"" + Request.QueryString["Value"] + "\"";
+            }
+            else
+            {
+                SearchHeaderLabel.Text = "Showing 1-10 of " + rows + " results for \"" + Request.QueryString["Value"] + "\"";
+            }
+        }
 
+        protected void GridView1_DataBound(object sender, EventArgs e)
+        {
+            // this.GridView1.PageIndex = (this.GridView1.PageCount - 3);
+        }
+
+        protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridView1.PageIndex = e.NewPageIndex;
+            setGridTable(searchData());
         }
     }
 }

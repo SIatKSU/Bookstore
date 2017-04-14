@@ -23,15 +23,7 @@ public partial class Pages_index : System.Web.UI.Page
         }
     }
 
-    //
-    //
-    //
-    //
-    // TODO: empty input display error message
-    //
-    //
-    //
-    //
+
     //
     protected void searchClicked(object sender, EventArgs e)
     {
@@ -62,11 +54,11 @@ public partial class Pages_index : System.Web.UI.Page
     {
         string str = "";
 
-        if (DDList2.SelectedValue == "Select Professor")
+        if (DDList1.SelectedValue == "Professor" && DDList2.SelectedValue == "Select Professor")
         {
             str = "Select Professor";
         }
-        else if (DDList2.SelectedValue == "Select Course")
+        else if (DDList1.SelectedValue == "Course" && DDList2.SelectedValue == "Select Course")
         {
             str = "Select Course";
         }
@@ -91,13 +83,14 @@ public partial class Pages_index : System.Web.UI.Page
         return str;
     }
 
-    // select index chaned for DDList1
+    // select index changed for DDList1
     protected void DDList1SelectedIndexChanged(object sender, EventArgs e)
     {
         string value = DDList1.SelectedValue;
 
         CoursesError.Visible = false;
         ProfsError.Visible = false;
+        SearchBoxError.Visible = false;
 
         if (value == "Keyword")
         {
@@ -122,6 +115,7 @@ public partial class Pages_index : System.Web.UI.Page
         }
     }
 
+    // select index changed for DDList2
     protected void DDList2SelectedIndexChanged(object sender, EventArgs e)
     {
         SearchButton.Visible = true;

@@ -29,12 +29,12 @@ public static class StaticData
             populateArray(newLines[i], i);
         }
 
-        // print matrix
+        /* PRINT MATRIX
         Debug.WriteLine("\n\nPRINTING...");
         for (int i = 0; i < rows; i++)
         {
             Debug.WriteLine(matrix[i, 0]);
-        }
+        } */
     }
 
     private static void readLines()

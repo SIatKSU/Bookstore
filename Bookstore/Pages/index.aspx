@@ -27,7 +27,6 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                     <asp:Label ID="CoursesError" runat="server"  Text="Please select a course" Visible="False" Font-Bold="True" Font-Size="Medium" Font-Underline="False" ForeColor="Red"></asp:Label>
 
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:Label ID="SearchBoxError" runat="server"  Text="Please enter a search value" Visible="False" Font-Bold="True" Font-Size="Medium" Font-Underline="False" ForeColor="Red"></asp:Label>
 
                 </td>

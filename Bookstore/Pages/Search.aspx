@@ -3,8 +3,12 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-
-    <asp:GridView ID="GridView1" runat="server" CellPadding="3" BorderColor="Black" BorderWidth="2px" GridLines="Horizontal" AutoGenerateColumns="false" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
+    <asp:Label ID="SearchHeaderLabel" runat="server" Text="Search Results" style="text-align:center" Width="1100px" Font-Bold="True" Font-Size="Large" BorderWidth="2px"></asp:Label>
+    <br> <br>
+     
+    <asp:GridView ID="GridView1" runat="server" CellPadding="3" BorderColor="Black" BorderWidth="2px" GridLines="Horizontal" AutoGenerateColumns="false" 
+        PageIndex="10" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" OnDataBound="GridView1_DataBound">
+        
         <Columns>
             <asp:TemplateField HeaderText="Coverpage:" ItemStyle-Width="80px">
                 <ItemTemplate>
@@ -21,8 +25,8 @@
             </asp:TemplateField>
 
             <asp:BoundField DataField="Author" ItemStyle-Width ="100px" HeaderText="Author:"></asp:BoundField>
-            <asp:BoundField DataField="ISBN" ItemStyle-Width="120px" HeaderText="ISBN:"></asp:BoundField>
-            <asp:BoundField DataField="Description" ItemStyle-Width="310px" HeaderText="Description:" />
+            <asp:BoundField DataField="ISBN" ItemStyle-Width="125px" HeaderText="ISBN:"></asp:BoundField>
+            <asp:BoundField DataField="Description" ItemStyle-Width="305px" HeaderText="Description:" />
             <asp:BoundField DataField="Format" HtmlEncode="false" ItemStyle-Width ="70px" HeaderText="Format:"></asp:BoundField>
             <asp:BoundField DataField="New" HtmlEncode="false" ItemStyle-Width ="60px" HeaderText="New:"></asp:BoundField>
             <asp:BoundField DataField="Used" HtmlEncode="false" ItemStyle-Width ="60px" HeaderText="Used:"></asp:BoundField>
@@ -30,13 +34,17 @@
             <asp:BoundField DataField="eBook" HtmlEncode="false" ItemStyle-Width ="60px" HeaderText="eBook:"></asp:BoundField>
 
         </Columns>
-        <HeaderStyle Width="500px" />
+        
 
     </asp:GridView>
 
 
     <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
     <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+
+
+
+    
 
 
 
