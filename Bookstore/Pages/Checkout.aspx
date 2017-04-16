@@ -26,7 +26,7 @@
                     <asp:Panel ID="Panel5" runat="server" Width="100%" Height="25px" BorderStyle="None">
                         <asp:Label ID="Label1" runat="server" Text="Billing Address" Style="text-align: center" Font-Bold="True" Width="100%"></asp:Label>
                     </asp:Panel>
-                    <asp:Panel ID="Panel7" runat="server" Width="100%" Height="100%" BorderStyle="None">
+                    <asp:Panel ID="Panel7" runat="server" Width="100%" Height="100%" BorderStyle="None" style="padding-bottom:10px">
                         &nbsp;<asp:Label ID="BillingStreetLabel" CssClass="addressFieldLabel" runat="server" Text="Street:"></asp:Label>
                         <asp:TextBox ID="BillingStreetTextBox" runat="server" Width="80%"></asp:TextBox>
                         <br />
@@ -46,7 +46,7 @@
                     <asp:Panel ID="Panel6" runat="server" Width="100%" Height="25px" BorderStyle="None">
                         <asp:Label ID="Label2" runat="server" Text="Billing Address" Style="text-align: center" Font-Bold="True" Width="100%"></asp:Label>
                     </asp:Panel>
-                    <asp:Panel ID="Panel8" runat="server" Width="100%" Height="100%" BorderStyle="None">
+                    <asp:Panel ID="Panel8" runat="server" Width="100%" Height="100%" BorderStyle="None" style="padding-bottom:10px">
                         &nbsp;<asp:Label ID="Label5" CssClass="addressFieldLabel" runat="server" Text="Street:"></asp:Label>
                         <asp:TextBox ID="TextBox2" runat="server" Width="80%"></asp:TextBox>
                         <br />
@@ -63,14 +63,14 @@
                     </asp:Panel>
                 </asp:Panel>
             </asp:Panel>
-            <asp:Panel ID="NameEmailPhonePanel" runat="server" Height="45%" BackColor="#FF9966">
-                <asp:Label ID="FullNameLabel" runat="server" CssClass="nameFieldLabel" Text="Full Name:"></asp:Label>
+            <asp:Panel ID="NameEmailPhonePanel" runat="server" Height="45%" BackColor="#FF9966" style="padding-top:10px;padding-bottom:10px">
+                 &nbsp;<asp:Label ID="FullNameLabel" runat="server" CssClass="nameFieldLabel" Text="Full Name:"></asp:Label>
                 <asp:TextBox ID="BillingStreetTextBox0" runat="server" Width="80%"></asp:TextBox>
                 <br />
-                <asp:Label ID="BillingCityLabel0" runat="server" CssClass="nameFieldLabel" Text="Email:"></asp:Label>
+                 &nbsp;<asp:Label ID="BillingCityLabel0" runat="server" CssClass="nameFieldLabel" Text="Email:"></asp:Label>
                 <asp:TextBox ID="BillingCityTextBox0" runat="server" Width="80%"></asp:TextBox>
                 <br />
-                <asp:Label ID="Label9" runat="server" CssClass="nameFieldLabel" Text="Phone Number:" Width="110px"></asp:Label>
+                 &nbsp;<asp:Label ID="Label9" runat="server" CssClass="nameFieldLabel" Text="Phone Number:" Width="110px"></asp:Label>
                 <asp:TextBox ID="TextBox5" runat="server" Width="20%"></asp:TextBox>
             </asp:Panel>
         </asp:Panel>
