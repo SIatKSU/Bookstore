@@ -170,17 +170,17 @@ namespace Bookstore.Pages
                 //changes eBook availability string to "Yes"
                 if (Int32.Parse(ebookAvailability) >= 99999)
                 {
-                    ebookAvailability = "Yes";
+                    ebookAvailability = "In-Stock";
                 }
                 else
                 {
-                    ebookAvailability = "No";
+                    ebookAvailability = "Not In-Stock";
                 }
 
-                //cuts description to < 160 chars
-                if (description.Length > 150)
+                //cuts description to < 260 chars
+                if (description.Length > 260)
                 {
-                    description = description.Substring(0, 160);
+                    description = description.Substring(0, 260);
                     int endIndex = description.LastIndexOf(' ');
                     description = description.Substring(0, endIndex) + "...";
                 }
@@ -188,19 +188,19 @@ namespace Bookstore.Pages
                 //fills row data
                 dr = dt.NewRow();
                 dr["image"] = "/Images/cart.png";
-                dr["Title"] = StaticData.getMatrixValue(rows[i], 1);
+                dr["Title"] = StaticData.getMatrixValue(rows[i], 1) + "<br>";
                 dr["Author"] = StaticData.getMatrixValue(rows[i], 2);
                 dr["ISBN"] = StaticData.getMatrixValue(rows[i], 0);
                 dr["Description"] = description;
                 dr["Format"] = "  Price:" + "<br>" + "<br>" + "  Quantity:";
-                dr["New"] = "$" + StaticData.getMatrixValue(rows[i], 13) + "<br>" + "<br>" + StaticData.getMatrixValue(rows[i], 9);
-                dr["Used"] = "$" + StaticData.getMatrixValue(rows[i], 14) + "<br>" + "<br>" + StaticData.getMatrixValue(rows[i], 10);
-                dr["Rental"] = "$" + StaticData.getMatrixValue(rows[i], 15) + "<br>" + "<br>" + StaticData.getMatrixValue(rows[i], 11);
-                dr["eBook"] = "$" + StaticData.getMatrixValue(rows[i], 16) + "<br>" + "<br>" + ebookAvailability; // StaticData.getMatrixValue(rows[i], 12);
+                dr["New"] = "$" + StaticData.getMatrixValue(rows[i], 13) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 9) + ")";
+                dr["Used"] = "$" + StaticData.getMatrixValue(rows[i], 14) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 10) + ")";
+                dr["Rental"] = "$" + StaticData.getMatrixValue(rows[i], 15) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 11) + ")";
+                dr["eBook"] = "$" + StaticData.getMatrixValue(rows[i], 16) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + ebookAvailability + ")"; // StaticData.getMatrixValue(rows[i], 12);
 
                 dt.Rows.Add(dr);
 
-               // Debug.WriteLine("..." + dr["ISBN"].ToString());
+                Debug.WriteLine("..." + dr["ISBN"].ToString());
             }
 
             ViewState["CurrentTable"] = dt;

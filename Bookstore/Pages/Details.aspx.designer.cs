@@ -31,6 +31,42 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Panel Panel2;
         
         /// <summary>
+        /// BookInfoPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel BookInfoPanel;
+        
+        /// <summary>
+        /// BookImage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel BookImage;
+        
+        /// <summary>
+        /// CoverImage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image CoverImage;
+        
+        /// <summary>
+        /// Panel3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel3;
+        
+        /// <summary>
         /// TitlePanel control.
         /// </summary>
         /// <remarks>
@@ -49,13 +85,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label TitleText;
         
         /// <summary>
-        /// TitleInfoPanel control.
+        /// Panel4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel TitleInfoPanel;
+        protected global::System.Web.UI.WebControls.Panel Panel4;
         
         /// <summary>
         /// FixedText control.
@@ -112,6 +148,15 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label AuthorText;
         
         /// <summary>
+        /// Panel5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel5;
+        
+        /// <summary>
         /// CartPanel control.
         /// </summary>
         /// <remarks>
@@ -121,13 +166,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Panel CartPanel;
         
         /// <summary>
-        /// Panel3 control.
+        /// Panel6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel3;
+        protected global::System.Web.UI.WebControls.Panel Panel6;
         
         /// <summary>
         /// DDList1 control.
@@ -155,6 +200,15 @@ namespace Bookstore.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel BookDetailsPanel;
+        
+        /// <summary>
+        /// Panel7 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel7;
         
         /// <summary>
         /// FixedText2 control.
@@ -191,24 +245,6 @@ namespace Bookstore.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label DescriptionText;
-        
-        /// <summary>
-        /// BookImage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel BookImage;
-        
-        /// <summary>
-        /// CoverImage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image CoverImage;
         
         /// <summary>
         /// CoursesPanel control.
