@@ -139,13 +139,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label Label3;
         
         /// <summary>
-        /// DDList1 control.
+        /// BillingStateDropDown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DDList1;
+        protected global::System.Web.UI.WebControls.DropDownList BillingStateDropDown;
         
         /// <summary>
         /// Label4 control.
@@ -247,13 +247,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label Label7;
         
         /// <summary>
-        /// DropDownList1 control.
+        /// ShippingStateDropDown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList1;
+        protected global::System.Web.UI.WebControls.DropDownList ShippingStateDropDown;
         
         /// <summary>
         /// Label8 control.
@@ -382,13 +382,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label Label10;
         
         /// <summary>
-        /// DropDownList2 control.
+        /// PaymentMethodDropDown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList2;
+        protected global::System.Web.UI.WebControls.DropDownList PaymentMethodDropDown;
         
         /// <summary>
         /// Label11 control.
@@ -418,22 +418,22 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label Label12;
         
         /// <summary>
-        /// DropDownList3 control.
+        /// ExpMonthDropDown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList3;
+        protected global::System.Web.UI.WebControls.DropDownList ExpMonthDropDown;
         
         /// <summary>
-        /// DropDownList4 control.
+        /// ExpYearDropDown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList4;
+        protected global::System.Web.UI.WebControls.DropDownList ExpYearDropDown;
         
         /// <summary>
         /// Label13 control.
