@@ -79,7 +79,7 @@ namespace Bookstore.Pages
 
             for (int i = 0; i < CRN.Length; i++)
             {
-                if (CRN[i].Contains(originalCRN))  //
+                if (CRN[i].Contains(originalCRN)) 
                 {
                     list.Add(i);
                 }
