@@ -1,15 +1,18 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/MasterPage.master" AutoEventWireup="true" CodeBehind="Checkout.aspx.cs" Inherits="Bookstore.Pages.Checkout" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style type="text/css">
         .addressPanel {
-            display: inline-block;   
+            display: inline-block;
             border-style: none;
         }
+
         .addressFieldLabel {
             display: inline-block;
             width: 60px;
             margin-bottom: 5px;
         }
+
         .nameFieldLabel {
             display: inline-block;
             width: 80px;
@@ -20,21 +23,20 @@
             display: inline-block;
             margin-bottom: 5px;
         }
-
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:Panel ID="Panel0" runat="server" style="table-layout:fixed;box-sizing:border-box;Border-Style:solid;border-spacing:2px" Height="100%">
+    <asp:Panel ID="Panel0" runat="server" Style="table-layout: fixed; box-sizing: border-box; border-style: solid; border-spacing: 2px" Height="100%">
         <asp:Panel ID="Panel1" runat="server" Height="60%">
             <asp:Panel ID="Panel3" runat="server" Width="100%" Height="25px">
-                <asp:Label ID="CheckoutHeaderLabel" runat="server" Text="Checkout" style="text-align:center;Border-Style:solid;Border-Width:0px 0px 2px 0px" Font-Bold="True" Font-Size="Large" Width="100%"></asp:Label>
+                <asp:Label ID="CheckoutHeaderLabel" runat="server" Text="Checkout" Style="text-align: center; border-style: solid; border-width: 0px 0px 2px 0px" Font-Bold="True" Font-Size="Large" Width="100%"></asp:Label>
             </asp:Panel>
             <asp:Panel ID="Panel4" runat="server" Width="100%" Height="55%">
-                <asp:Panel ID="BillingAddressPanel" style="table-layout:fixed;box-sizing:border-box;border-spacing:0px;Border-Style:solid;Border-Width:0px 2px 0px 0px" runat="server" Width="50%" Height="100%" CssClass="addressPanel">
+                <asp:Panel ID="BillingAddressPanel" Style="table-layout: fixed; box-sizing: border-box; border-spacing: 0px; border-style: solid; border-width: 0px 2px 0px 0px" runat="server" Width="50%" Height="100%" CssClass="addressPanel">
                     <asp:Panel ID="Panel5" runat="server" Width="100%" Height="25px" BorderStyle="None">
                         <asp:Label ID="Label1" runat="server" Text="Billing Address" Style="text-align: center" Font-Bold="True" Width="100%"></asp:Label>
                     </asp:Panel>
-                    <asp:Panel ID="Panel7" runat="server" Width="100%" Height="100%" style="padding-bottom:10px;Border-Style:none">
+                    <asp:Panel ID="Panel7" runat="server" Width="100%" Height="100%" Style="padding-bottom: 10px; border-style: none">
                         &nbsp;<asp:Label ID="BillingStreetLabel" CssClass="addressFieldLabel" runat="server" Text="Street:"></asp:Label>
                         <asp:TextBox ID="BillingStreetTextBox" runat="server" Width="80%"></asp:TextBox>
                         <br />
@@ -107,11 +109,11 @@
                         <br />
                     </asp:Panel>
                 </asp:Panel>
-                <asp:Panel ID="ShippingAddressPanel" style="table-layout:fixed;box-sizing:border-box;border-spacing:0px" runat="server" Width="49%" Height="100%" CssClass="addressPanel">
+                <asp:Panel ID="ShippingAddressPanel" Style="table-layout: fixed; box-sizing: border-box; border-spacing: 0px" runat="server" Width="49%" Height="100%" CssClass="addressPanel">
                     <asp:Panel ID="Panel6" runat="server" Width="100%" Height="25px" BorderStyle="None">
                         <asp:Label ID="Label2" runat="server" Text="Billing Address" Style="text-align: center" Font-Bold="True" Width="100%"></asp:Label>
                     </asp:Panel>
-                    <asp:Panel ID="Panel8" runat="server" Width="100%" Height="100%" BorderStyle="None" style="padding-bottom:10px">
+                    <asp:Panel ID="Panel8" runat="server" Width="100%" Height="100%" BorderStyle="None" Style="padding-bottom: 10px">
                         &nbsp;<asp:Label ID="Label5" CssClass="addressFieldLabel" runat="server" Text="Street:"></asp:Label>
                         <asp:TextBox ID="TextBox2" runat="server" Width="80%"></asp:TextBox>
                         <br />
@@ -185,45 +187,43 @@
                     </asp:Panel>
                 </asp:Panel>
             </asp:Panel>
-            <asp:Panel ID="NameEmailPhonePanel" runat="server" Height="45%" style="padding-top:10px;padding-bottom:10px;Border-Style:solid;Border-Width:2px 0px 0px 0px">
-                 &nbsp;<asp:Label ID="FullNameLabel" runat="server" CssClass="nameFieldLabel" Text="Full Name:"></asp:Label>
+            <asp:Panel ID="NameEmailPhonePanel" runat="server" Height="45%" Style="padding-top: 10px; padding-bottom: 10px; border-style: solid; border-width: 2px 0px 0px 0px">
+                &nbsp;<asp:Label ID="FullNameLabel" runat="server" CssClass="nameFieldLabel" Text="Full Name:"></asp:Label>
                 <asp:TextBox ID="BillingStreetTextBox0" runat="server" Width="80%"></asp:TextBox>
                 <br />
-                 &nbsp;<asp:Label ID="BillingCityLabel0" runat="server" CssClass="nameFieldLabel" Text="Email:"></asp:Label>
+                &nbsp;<asp:Label ID="BillingCityLabel0" runat="server" CssClass="nameFieldLabel" Text="Email:"></asp:Label>
                 <asp:TextBox ID="BillingCityTextBox0" runat="server" Width="80%"></asp:TextBox>
                 <br />
-                 &nbsp;<asp:Label ID="Label9" runat="server" CssClass="nameFieldLabel" Text="Phone Number:" Width="110px"></asp:Label>
+                &nbsp;<asp:Label ID="Label9" runat="server" CssClass="nameFieldLabel" Text="Phone Number:" Width="110px"></asp:Label>
                 <asp:TextBox ID="TextBox5" runat="server" Width="20%"></asp:TextBox>
             </asp:Panel>
         </asp:Panel>
-    <asp:Panel ID="Panel2" runat="server" Height="217px">
-        <asp:Panel ID="Panel9" runat="server" Height="25px" Width="100%" style="Border-Style:solid;Border-Width:2px 0px 2px 0px">
-            <asp:Label ID="PaymentHeaderLabel" runat="server" Font-Bold="True" style="text-align:center" Text="Payment" Width="100%"></asp:Label>
+        <asp:Panel ID="Panel2" runat="server" Height="217px">
+            <asp:Panel ID="Panel9" runat="server" Height="25px" Width="100%" Style="border-style: solid; border-width: 2px 0px 2px 0px">
+                <asp:Label ID="PaymentHeaderLabel" runat="server" Font-Bold="True" Style="text-align: center" Text="Payment" Width="100%"></asp:Label>
+            </asp:Panel>
+            <asp:Panel ID="Panel10" runat="server" Height="50%" Style="padding-top: 15px; padding-bottom: 10px">
+                &nbsp;<asp:Label ID="Label10" CssClass="paymentFieldLabel" Style="width: 180px" runat="server" Text="Select Payment Method:"></asp:Label>
+                <asp:DropDownList ID="PaymentMethodDropDown" runat="server" AutoPostBack="true" OnSelectedIndexChanged="PaymentMethodDropDown_SelectedIndexChanged">
+                </asp:DropDownList>
+                <br />
+                &nbsp;<asp:Label ID="paymentLabel1" CssClass="paymentFieldLabel" Style="width: 120px" runat="server" Text="Card Number:"></asp:Label>
+                <asp:TextBox ID="CardNumberTextBox" runat="server" Width="30%"></asp:TextBox>
+                <br />
+                &nbsp;<asp:Label ID="paymentLabel2" CssClass="paymentFieldLabel" Style="width: 120px" runat="server" Text="Expiration Date:"></asp:Label>
+                <asp:DropDownList ID="ExpMonthDropDown" runat="server" AutoPostBack="false">
+                </asp:DropDownList>
+                <asp:DropDownList ID="ExpYearDropDown" runat="server" AutoPostBack="false">
+                </asp:DropDownList>
+                <asp:TextBox ID="PasswordTextBox" runat="server" Visible="False" Width="20%"></asp:TextBox>
+                <br />
+                &nbsp;<asp:Label ID="paymentLabel3" CssClass="paymentFieldLabel" Style="width: 120px" runat="server" Text="Security Code:"></asp:Label>
+                <asp:TextBox ID="SecurityCodeTextBox" runat="server" Width="35"></asp:TextBox>
+                <br />
+            </asp:Panel>
+            <asp:Panel ID="Panel11" runat="server" Height="40%" Style="overflow: hidden; border-style: solid; border-width: 2px 0px 0px 0px">
+                <asp:Button ID="Button1" runat="server" Text="Place Order" Style="font-size: x-large; float: right; margin: 12px 50px" />
+            </asp:Panel>
         </asp:Panel>
-        <asp:Panel ID="Panel10" runat="server" Height="50%" style="padding-top:15px;padding-bottom:10px">
-             &nbsp;<asp:Label ID="Label10" CssClass="paymentFieldLabel" style="width:180px" runat="server" Text="Select Payment Method:"></asp:Label>
-            <asp:DropDownList ID="PaymentMethodDropDown" runat="server">
-                <asp:ListItem Value="creditcard">MasterCard/Visa</asp:ListItem>
-                <asp:ListItem Value="paypal">PayPal</asp:ListItem>
-                <asp:ListItem Value="financialaid">Financial Aid</asp:ListItem>
-            </asp:DropDownList>
-            <br />
-            &nbsp;<asp:Label ID="Label11" CssClass="paymentFieldLabel" style="width:120px" runat="server" Text="Card Number:"></asp:Label>
-            <asp:TextBox ID="CardNumberTextBox" runat="server" Width="30%"></asp:TextBox>
-            <br />
-            &nbsp;<asp:Label ID="Label12" CssClass="paymentFieldLabel" style="width:120px" runat="server" Text="Expiration Date:"></asp:Label>
-            <asp:DropDownList ID="ExpMonthDropDown" runat="server" AutoPostBack="false">
-            </asp:DropDownList>
-            <asp:DropDownList ID="ExpYearDropDown" runat="server" AutoPostBack="false">
-            </asp:DropDownList>
-            <br />
-            &nbsp;<asp:Label ID="Label13" CssClass="paymentFieldLabel" style="width:120px" runat="server" Text="Security Code:"></asp:Label>
-            <asp:TextBox ID="SecurityCodeTextBox" runat="server" Width="35"></asp:TextBox>
-            <br />
-        </asp:Panel>
-        <asp:Panel ID="Panel11" runat="server" Height="40%" style="overflow:hidden;Border-Style:solid;Border-Width:2px 0px 0px 0px">
-            <asp:Button ID="Button1" runat="server" Text="Place Order" style="Font-Size:x-large;float:right;margin:14px 50px"/>
-        </asp:Panel>
-    </asp:Panel>
     </asp:Panel>
 </asp:Content>

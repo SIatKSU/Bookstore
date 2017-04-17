@@ -391,13 +391,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.DropDownList PaymentMethodDropDown;
         
         /// <summary>
-        /// Label11 control.
+        /// paymentLabel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label11;
+        protected global::System.Web.UI.WebControls.Label paymentLabel1;
         
         /// <summary>
         /// CardNumberTextBox control.
@@ -409,13 +409,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.TextBox CardNumberTextBox;
         
         /// <summary>
-        /// Label12 control.
+        /// paymentLabel2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label12;
+        protected global::System.Web.UI.WebControls.Label paymentLabel2;
         
         /// <summary>
         /// ExpMonthDropDown control.
@@ -436,13 +436,22 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.DropDownList ExpYearDropDown;
         
         /// <summary>
-        /// Label13 control.
+        /// PasswordTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label13;
+        protected global::System.Web.UI.WebControls.TextBox PasswordTextBox;
+        
+        /// <summary>
+        /// paymentLabel3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label paymentLabel3;
         
         /// <summary>
         /// SecurityCodeTextBox control.

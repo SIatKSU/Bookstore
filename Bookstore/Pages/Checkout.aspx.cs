@@ -14,9 +14,22 @@ namespace Bookstore.Pages
             // Populates first DropDownList
             if (!IsPostBack)
             {
+                //note: States dropdowns are populated in the .aspx file.
+                PopulatePaymentMethodDropDown();
                 PopulateMonthsDropDown();
                 PopulateYearsDropDown();
             }
+        }
+
+
+        public void PopulatePaymentMethodDropDown() {
+            ListItem creditcard = new ListItem("MasterCard/Visa", "creditcard");
+            ListItem paypal = new ListItem("PayPal", "paypal");
+            ListItem financialaid = new ListItem("Financial Aid", "financialaid");
+
+            PaymentMethodDropDown.Items.Add(creditcard);
+            PaymentMethodDropDown.Items.Add(paypal);
+            PaymentMethodDropDown.Items.Add(financialaid);
         }
 
         public void PopulateMonthsDropDown()
@@ -61,6 +74,39 @@ namespace Bookstore.Pages
             }
 
             yearList.ForEach(c => ExpYearDropDown.Items.Add(c));
+        }
+
+        protected void PaymentMethodDropDown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string method = PaymentMethodDropDown.SelectedValue;
+
+            if (method == "creditcard")
+            {
+                paymentLabel3.Visible = true;
+                ExpMonthDropDown.Visible = true;
+                ExpYearDropDown.Visible = true;
+                SecurityCodeTextBox.Visible = true;
+                PasswordTextBox.Visible = false;
+                paymentLabel1.Text = "Card Number:";
+                paymentLabel2.Text = "Expiration Date:";
+            }
+            else
+            {
+                paymentLabel3.Visible = false;
+                ExpMonthDropDown.Visible = false;
+                ExpYearDropDown.Visible = false;
+                SecurityCodeTextBox.Visible = false;
+                PasswordTextBox.Visible = true;
+                paymentLabel2.Text = "Password:";            
+                if (method == "paypal")
+                {
+                    paymentLabel1.Text = "PayPal Email:";
+                }
+                else
+                {
+                    paymentLabel1.Text = "KSU Email:";
+                }
+            }
         }
     }
 
