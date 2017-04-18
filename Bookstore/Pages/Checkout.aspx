@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/MasterPage.master" AutoEventWireup="true" CodeBehind="Checkout.aspx.cs" Inherits="Bookstore.Pages.Checkout" %>
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <!--<script src="../JavaScript.js"></script>-->
+
     <style type="text/css">
         .addressPanel {
             display: inline-block;
@@ -45,6 +46,7 @@
                         <br />
                         &nbsp;<asp:Label ID="Label3" CssClass="addressFieldLabel" runat="server" Text="State:"></asp:Label>
                         <asp:DropDownList ID="BillingStateDropDown" runat="server" AutoPostBack="false">
+                            <asp:ListItem Value="NONE">Select State or Territory</asp:ListItem>
                             <asp:ListItem Value="AK">Alaska</asp:ListItem>
                             <asp:ListItem Value="AL">Alabama</asp:ListItem>
                             <asp:ListItem Value="AR">Arkansas</asp:ListItem>
@@ -105,7 +107,7 @@
                         </asp:DropDownList>
                         <br />
                         &nbsp;<asp:Label ID="Label4" CssClass="addressFieldLabel" runat="server" Text="Zip:"></asp:Label>
-                        <asp:TextBox ID="TextBox1" runat="server" Width="20%"></asp:TextBox>
+                        <asp:TextBox ID="BillingZipTextBox" runat="server" Width="20%"></asp:TextBox>
                         <br />
                     </asp:Panel>
                 </asp:Panel>
@@ -115,13 +117,14 @@
                     </asp:Panel>
                     <asp:Panel ID="Panel8" runat="server" Width="100%" Height="100%" BorderStyle="None" Style="padding-bottom: 10px">
                         &nbsp;<asp:Label ID="Label5" CssClass="addressFieldLabel" runat="server" Text="Street:"></asp:Label>
-                        <asp:TextBox ID="TextBox2" runat="server" Width="80%"></asp:TextBox>
+                        <asp:TextBox ID="ShippingStreetTextBox" runat="server" Width="80%"></asp:TextBox>
                         <br />
                         &nbsp;<asp:Label ID="Label6" CssClass="addressFieldLabel" runat="server" Text="City:"></asp:Label>
-                        <asp:TextBox ID="TextBox3" runat="server" Width="80%"></asp:TextBox>
+                        <asp:TextBox ID="ShippingCityTextBox" runat="server" Width="80%"></asp:TextBox>
                         <br />
                         &nbsp;<asp:Label ID="Label7" CssClass="addressFieldLabel" runat="server" Text="State:"></asp:Label>
                         <asp:DropDownList ID="ShippingStateDropDown" runat="server" AutoPostBack="false">
+                            <asp:ListItem Value="NONE">Select State or Territory</asp:ListItem>
                             <asp:ListItem Value="AK">Alaska</asp:ListItem>
                             <asp:ListItem Value="AL">Alabama</asp:ListItem>
                             <asp:ListItem Value="AR">Arkansas</asp:ListItem>
@@ -182,20 +185,20 @@
                         </asp:DropDownList>
                         <br />
                         &nbsp;<asp:Label ID="Label8" CssClass="addressFieldLabel" runat="server" Text="Zip:"></asp:Label>
-                        <asp:TextBox ID="TextBox4" runat="server" Width="20%"></asp:TextBox>
+                        <asp:TextBox ID="ShippingZipTextBox" runat="server" Width="20%"></asp:TextBox>
                         <br />
                     </asp:Panel>
                 </asp:Panel>
             </asp:Panel>
             <asp:Panel ID="NameEmailPhonePanel" runat="server" Height="45%" Style="padding-top: 10px; padding-bottom: 10px; border-style: solid; border-width: 2px 0px 0px 0px">
                 &nbsp;<asp:Label ID="FullNameLabel" runat="server" CssClass="nameFieldLabel" Text="Full Name:"></asp:Label>
-                <asp:TextBox ID="BillingStreetTextBox0" runat="server" Width="80%"></asp:TextBox>
+                <asp:TextBox ID="FullNameTextBox" runat="server" Width="80%"></asp:TextBox>
                 <br />
                 &nbsp;<asp:Label ID="BillingCityLabel0" runat="server" CssClass="nameFieldLabel" Text="Email:"></asp:Label>
-                <asp:TextBox ID="BillingCityTextBox0" runat="server" Width="80%"></asp:TextBox>
+                <asp:TextBox ID="EmailTextBox" runat="server" Width="80%"></asp:TextBox>
                 <br />
                 &nbsp;<asp:Label ID="Label9" runat="server" CssClass="nameFieldLabel" Text="Phone Number:" Width="110px"></asp:Label>
-                <asp:TextBox ID="TextBox5" runat="server" Width="20%"></asp:TextBox>
+                <asp:TextBox ID="PhoneTextBox" runat="server" Width="20%"></asp:TextBox>
             </asp:Panel>
         </asp:Panel>
         <asp:Panel ID="Panel2" runat="server" Height="217px">
@@ -208,7 +211,8 @@
                 </asp:DropDownList>
                 <br />
                 &nbsp;<asp:Label ID="paymentLabel1" CssClass="paymentFieldLabel" Style="width: 120px" runat="server" Text="Card Number:"></asp:Label>
-                <asp:TextBox ID="CardNumberTextBox" runat="server" Width="30%"></asp:TextBox>
+                <asp:TextBox ID="CardNumberTextBox" runat="server" onkeydown = "return (!((event.keyCode>=65 && event.keyCode <= 95) || event.keyCode >= 106) && event.keyCode!=32);" MaxLength="16" Columns="18"></asp:TextBox>
+                <asp:TextBox ID="PaymentEmailTextBox" runat="server" Visible="False" Width="30%"></asp:TextBox>
                 <br />
                 &nbsp;<asp:Label ID="paymentLabel2" CssClass="paymentFieldLabel" Style="width: 120px" runat="server" Text="Expiration Date:"></asp:Label>
                 <asp:DropDownList ID="ExpMonthDropDown" runat="server" AutoPostBack="false">
@@ -218,11 +222,12 @@
                 <asp:TextBox ID="PasswordTextBox" runat="server" Visible="False" Width="20%"></asp:TextBox>
                 <br />
                 &nbsp;<asp:Label ID="paymentLabel3" CssClass="paymentFieldLabel" Style="width: 120px" runat="server" Text="Security Code:"></asp:Label>
-                <asp:TextBox ID="SecurityCodeTextBox" runat="server" Width="35"></asp:TextBox>
+                <asp:TextBox ID="SecurityCodeTextBox" runat="server" onkeydown = "return (!((event.keyCode>=65 && event.keyCode <= 95) || event.keyCode >= 106) && event.keyCode!=32);" Columns="4" MaxLength="3" ></asp:TextBox>
                 <br />
             </asp:Panel>
             <asp:Panel ID="Panel11" runat="server" Height="40%" Style="overflow: hidden; border-style: solid; border-width: 2px 0px 0px 0px">
-                <asp:Button ID="Button1" runat="server" Text="Place Order" Style="font-size: x-large; float: right; margin: 12px 50px" />
+                <asp:Label ID="ErrorLabel" runat="server" visible="false" Font-Bold="True" Style="float: left; font-size:large; margin-left:30px; margin-top:13px" ForeColor="Red" Text="ErrorMessageGoesHere"></asp:Label>
+                <asp:Button ID="PlaceOrderButton" runat="server" Text="Place Order" Style="font-size: x-large; float: right; margin-right: 50px; margin-top:13px" OnClick="PlaceOrderButton_Click" />
             </asp:Panel>
         </asp:Panel>
     </asp:Panel>

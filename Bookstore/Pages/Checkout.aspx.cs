@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Text.RegularExpressions;
 
 namespace Bookstore.Pages
 {
@@ -82,6 +83,8 @@ namespace Bookstore.Pages
 
             if (method == "creditcard")
             {
+                CardNumberTextBox.Visible = true;
+                PaymentEmailTextBox.Visible = false;
                 paymentLabel3.Visible = true;
                 ExpMonthDropDown.Visible = true;
                 ExpYearDropDown.Visible = true;
@@ -92,6 +95,8 @@ namespace Bookstore.Pages
             }
             else
             {
+                CardNumberTextBox.Visible = false;
+                PaymentEmailTextBox.Visible = true;
                 paymentLabel3.Visible = false;
                 ExpMonthDropDown.Visible = false;
                 ExpYearDropDown.Visible = false;
@@ -108,6 +113,102 @@ namespace Bookstore.Pages
                 }
             }
         }
+
+        protected void PlaceOrderButton_Click(object sender, EventArgs e)
+        {
+            //validate data entry fields
+            if (ValidateDataEntry())
+            {
+            }
+            else
+            {
+              }
+        }
+
+
+        //check whether the user filled in all fields properly.
+        //returns false, and shows an error message, if there was a problem.
+        //returns true, and hides the error message, if it was filled in properly.
+        public bool ValidateDataEntry()
+        {
+            Boolean isError = false;
+            Regex zipCodeRgx = new Regex("\\d{5}(-\\d{4})?$");
+            Regex emailRgx = new Regex(@"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*");
+
+            //Billing Address
+            if (String.IsNullOrWhiteSpace(BillingStreetTextBox.Text))
+            {
+                ErrorLabel.Text = "Please fill in the Street Address under Billing Address.";
+                isError = true;
+            }
+            else if (String.IsNullOrWhiteSpace(BillingCityTextBox.Text))
+            {
+                ErrorLabel.Text = "Please fill in the City Address under Billing Address.";
+                isError = true;
+            }
+            else if (BillingStateDropDown.SelectedValue=="NONE")
+            {
+                ErrorLabel.Text = "Please select a state under Billing Address.";
+                isError = true;
+            }
+            else if (String.IsNullOrWhiteSpace(BillingZipTextBox.Text))
+            {
+                ErrorLabel.Text = "Please fill in the Zip Code under Billing Address.";
+                isError = true;
+            }
+            else if (!zipCodeRgx.IsMatch(BillingZipTextBox.Text))
+            {
+                ErrorLabel.Text = "Billing Zipcode must be in the format ##### or #####-####.";
+                isError = true;
+            }
+            //Shipping Address
+            else if (String.IsNullOrWhiteSpace(ShippingStreetTextBox.Text))
+            {
+                ErrorLabel.Text = "Please fill in the Street Address under Shipping Address.";
+                isError = true;
+            }
+            else if (String.IsNullOrWhiteSpace(ShippingCityTextBox.Text))
+            {
+                ErrorLabel.Text = "Please fill in the City Address under Shipping Address.";
+                isError = true;
+            }
+            else if (ShippingStateDropDown.SelectedValue == "NONE")
+            {
+                ErrorLabel.Text = "Please select a state under Shipping Address.";
+                isError = true;
+            }
+            else if (String.IsNullOrWhiteSpace(ShippingZipTextBox.Text))
+            {
+                ErrorLabel.Text = "Please fill in the Zip Code under Shipping Address.";
+                isError = true;
+            }
+            else if (!zipCodeRgx.IsMatch(ShippingZipTextBox.Text))
+            {
+                ErrorLabel.Text = "Shipping Zipcode must be in the format ##### or #####-####.";
+                isError = true;
+            }
+            //Name, Email, Phone number
+            else if (String.IsNullOrWhiteSpace(FullNameTextBox.Text))
+            {
+                ErrorLabel.Text = "Please enter your Full Name.";
+                isError = true;
+            }
+            else if (!emailRgx.IsMatch(EmailTextBox.Text))
+            {
+                ErrorLabel.Text = "Please enter a valid email address.";
+                isError = true;
+            }
+            else if (String.IsNullOrWhiteSpace(PhoneTextBox.Text))
+            {
+                ErrorLabel.Text = "Please enter your Phone number.";
+                isError = true;
+            }
+
+
+            ErrorLabel.Visible = isError;
+            return !isError;
+        }
+
     }
 
 
