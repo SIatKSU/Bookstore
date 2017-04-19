@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/MasterPage.master" AutoEventWireup="true" CodeBehind="Checkout.aspx.cs" Inherits="Bookstore.Pages.Checkout" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <!--<script src="../JavaScript.js"></script>-->
-
+    <link href="../MyStyles.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         .addressPanel {
             display: inline-block;
@@ -24,6 +24,7 @@
             display: inline-block;
             margin-bottom: 5px;
         }
+
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -227,7 +228,7 @@
             </asp:Panel>
             <asp:Panel ID="Panel11" runat="server" Height="40%" Style="overflow: hidden; border-style: solid; border-width: 2px 0px 0px 0px">
                 <asp:Label ID="ErrorLabel" runat="server" visible="false" Font-Bold="True" Style="float: left; font-size:large; margin-left:30px; margin-top:13px" ForeColor="Red" Text="ErrorMessageGoesHere"></asp:Label>
-                <asp:Button ID="PlaceOrderButton" runat="server" Text="Place Order" Style="font-size: x-large; float: right; margin-right: 50px; margin-top:13px" OnClick="PlaceOrderButton_Click" />
+                <asp:Button ID="PlaceOrderButton" runat="server" Text="Place Order" Style="font-size: large; float: right; margin-right: 50px; margin-top:10px" CssClass="btn" OnClick="PlaceOrderButton_Click" />
             </asp:Panel>
         </asp:Panel>
     </asp:Panel>

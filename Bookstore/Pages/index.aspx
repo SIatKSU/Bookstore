@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/MasterPage.master" AutoEventWireup="true" Inherits="Pages_index" Codebehind="index.aspx.cs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <link href="../MyStyles.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <asp:Label ID="IntroMessageLabel" runat="server" Text="Welcome to the Kennesaw State Bookstore. Start seaching by selecting the options below." Font-Bold="True" Font-Size="Larger">
@@ -19,7 +20,7 @@
                     <asp:TextBox ID="SearchBox" runat="server" Visible="True"></asp:TextBox>
 
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:Button ID="SearchButton" runat="server" Text="Search" Visible="True" OnClick="searchClicked"/>
+                    <asp:Button ID="SearchButton" runat="server" CssClass="btn" Style="font-size: small" Text="Search" Visible="True" OnClick="searchClicked"/>
 
                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:Label ID="ProfsError" runat="server"  Text="Please select a professor" Visible="False" Font-Bold="True" Font-Size="Medium" Font-Underline="False" ForeColor="Red"></asp:Label>

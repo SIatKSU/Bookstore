@@ -34,9 +34,9 @@ namespace Bookstore.Pages
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            //*******BEGIN DUMMY VALUES WHICH WILL LATER BE READ FROM SESSION STATE*****
+            //*******DUMMY VALUES WHICH WILL LATER BE READ FROM SESSION STATE***********
             cart = new List<LineItem>();
-            cart.Add(new LineItem(3, 0, 1));
+            cart.Add(new LineItem(3, LineItem.RENTAL, 1));
             //**************************************************************************
 
             // Populates first DropDownList
