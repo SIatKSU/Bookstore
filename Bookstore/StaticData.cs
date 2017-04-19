@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
+using System.Web;
 
 /// <summary>
 /// Summary description for StaticData
@@ -9,7 +10,9 @@ using System.Diagnostics;
 public static class StaticData
 {
     private static List<string> newLines;
-    private static string fileName = Constants.booksFile;
+    //private static string fileName = Constants.booksFile;
+    private static string appPath =HttpRuntime.AppDomainAppPath ;
+    private static string fileName = appPath + "/books.csv";
 
     // matrix directory (column # - column name)
     // 0-ISBN  1-Title  2-Author 3-Semester 4-Course 5-#ofSections 6-Professor 7-CRN 8-Required/Not
