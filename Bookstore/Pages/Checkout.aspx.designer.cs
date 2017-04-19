@@ -157,13 +157,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label Label4;
         
         /// <summary>
-        /// TextBox1 control.
+        /// BillingZipTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox BillingZipTextBox;
         
         /// <summary>
         /// ShippingAddressPanel control.
@@ -211,13 +211,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label Label5;
         
         /// <summary>
-        /// TextBox2 control.
+        /// ShippingStreetTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox2;
+        protected global::System.Web.UI.WebControls.TextBox ShippingStreetTextBox;
         
         /// <summary>
         /// Label6 control.
@@ -229,13 +229,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label Label6;
         
         /// <summary>
-        /// TextBox3 control.
+        /// ShippingCityTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox3;
+        protected global::System.Web.UI.WebControls.TextBox ShippingCityTextBox;
         
         /// <summary>
         /// Label7 control.
@@ -265,13 +265,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label Label8;
         
         /// <summary>
-        /// TextBox4 control.
+        /// ShippingZipTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox4;
+        protected global::System.Web.UI.WebControls.TextBox ShippingZipTextBox;
         
         /// <summary>
         /// NameEmailPhonePanel control.
@@ -292,13 +292,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label FullNameLabel;
         
         /// <summary>
-        /// BillingStreetTextBox0 control.
+        /// FullNameTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox BillingStreetTextBox0;
+        protected global::System.Web.UI.WebControls.TextBox FullNameTextBox;
         
         /// <summary>
         /// BillingCityLabel0 control.
@@ -310,13 +310,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label BillingCityLabel0;
         
         /// <summary>
-        /// BillingCityTextBox0 control.
+        /// EmailTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox BillingCityTextBox0;
+        protected global::System.Web.UI.WebControls.TextBox EmailTextBox;
         
         /// <summary>
         /// Label9 control.
@@ -328,13 +328,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label Label9;
         
         /// <summary>
-        /// TextBox5 control.
+        /// PhoneTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox5;
+        protected global::System.Web.UI.WebControls.TextBox PhoneTextBox;
         
         /// <summary>
         /// Panel2 control.
@@ -391,13 +391,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.DropDownList PaymentMethodDropDown;
         
         /// <summary>
-        /// Label11 control.
+        /// paymentLabel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label11;
+        protected global::System.Web.UI.WebControls.Label paymentLabel1;
         
         /// <summary>
         /// CardNumberTextBox control.
@@ -409,13 +409,31 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.TextBox CardNumberTextBox;
         
         /// <summary>
-        /// Label12 control.
+        /// PayPalEmailTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label12;
+        protected global::System.Web.UI.WebControls.TextBox PayPalEmailTextBox;
+        
+        /// <summary>
+        /// KSULoginTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox KSULoginTextBox;
+        
+        /// <summary>
+        /// paymentLabel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label paymentLabel2;
         
         /// <summary>
         /// ExpMonthDropDown control.
@@ -436,13 +454,31 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.DropDownList ExpYearDropDown;
         
         /// <summary>
-        /// Label13 control.
+        /// PayPalPasswordTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label13;
+        protected global::System.Web.UI.WebControls.TextBox PayPalPasswordTextBox;
+        
+        /// <summary>
+        /// KSUPasswordTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox KSUPasswordTextBox;
+        
+        /// <summary>
+        /// paymentLabel3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label paymentLabel3;
         
         /// <summary>
         /// SecurityCodeTextBox control.
@@ -463,12 +499,21 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Panel Panel11;
         
         /// <summary>
-        /// Button1 control.
+        /// ErrorLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.Label ErrorLabel;
+        
+        /// <summary>
+        /// PlaceOrderButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button PlaceOrderButton;
     }
 }
