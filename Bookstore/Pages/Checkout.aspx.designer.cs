@@ -409,13 +409,22 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.TextBox CardNumberTextBox;
         
         /// <summary>
-        /// PaymentEmailTextBox control.
+        /// PayPalEmailTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PaymentEmailTextBox;
+        protected global::System.Web.UI.WebControls.TextBox PayPalEmailTextBox;
+        
+        /// <summary>
+        /// KSULoginTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox KSULoginTextBox;
         
         /// <summary>
         /// paymentLabel2 control.
@@ -445,13 +454,22 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.DropDownList ExpYearDropDown;
         
         /// <summary>
-        /// PasswordTextBox control.
+        /// PayPalPasswordTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox PasswordTextBox;
+        protected global::System.Web.UI.WebControls.TextBox PayPalPasswordTextBox;
+        
+        /// <summary>
+        /// KSUPasswordTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox KSUPasswordTextBox;
         
         /// <summary>
         /// paymentLabel3 control.

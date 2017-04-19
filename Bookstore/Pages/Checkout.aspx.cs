@@ -116,32 +116,40 @@ namespace Bookstore.Pages
             if (method == "creditcard")
             {
                 CardNumberTextBox.Visible = true;
-                PaymentEmailTextBox.Visible = false;
+                PayPalEmailTextBox.Visible = false;
+                KSULoginTextBox.Visible = false;
                 paymentLabel3.Visible = true;
                 ExpMonthDropDown.Visible = true;
                 ExpYearDropDown.Visible = true;
                 SecurityCodeTextBox.Visible = true;
-                PasswordTextBox.Visible = false;
+                PayPalPasswordTextBox.Visible = false;
+                KSUPasswordTextBox.Visible = false;
                 paymentLabel1.Text = "Card Number:";
                 paymentLabel2.Text = "Expiration Date:";
             }
             else
             {
-                CardNumberTextBox.Visible = false;
-                PaymentEmailTextBox.Visible = true;
+                CardNumberTextBox.Visible = false;                
                 paymentLabel3.Visible = false;
                 ExpMonthDropDown.Visible = false;
                 ExpYearDropDown.Visible = false;
-                SecurityCodeTextBox.Visible = false;
-                PasswordTextBox.Visible = true;
+                SecurityCodeTextBox.Visible = false;                
                 paymentLabel2.Text = "Password:";            
                 if (method == "paypal")
                 {
                     paymentLabel1.Text = "PayPal Email:";
+                    PayPalEmailTextBox.Visible = true;
+                    KSULoginTextBox.Visible = false;
+                    PayPalPasswordTextBox.Visible = true;
+                    KSUPasswordTextBox.Visible = false;
                 }
                 else
                 {
                     paymentLabel1.Text = "KSU Username:";
+                    PayPalEmailTextBox.Visible = false;
+                    KSULoginTextBox.Visible = true;
+                    PayPalPasswordTextBox.Visible = false;
+                    KSUPasswordTextBox.Visible = true;
                 }
             }
         }
@@ -212,7 +220,7 @@ namespace Bookstore.Pages
         public bool ChargePayPal()
         {
             int password;
-            bool result = int.TryParse(PasswordTextBox.Text, out password);
+            bool result = int.TryParse(PayPalPasswordTextBox.Text, out password);
             if (result && password == 12345678)
             {
                 return true;
@@ -233,8 +241,8 @@ namespace Bookstore.Pages
         public bool ChargeFinancialAid()
         {
             bool result = false;
-            string username = PaymentEmailTextBox.Text.Trim();
-            string password = PasswordTextBox.Text;
+            string username = KSULoginTextBox.Text.Trim();
+            string password = KSUPasswordTextBox.Text;
 
             int finAidBalance;
 
@@ -404,12 +412,12 @@ namespace Bookstore.Pages
                 }
                 else if (paymentMethod=="paypal")
                 {
-                    if (!emailRgx.IsMatch(PaymentEmailTextBox.Text))
+                    if (!emailRgx.IsMatch(PayPalEmailTextBox.Text))
                     {
                         ErrorLabel.Text = "Please enter a valid PayPal email address.";
                         isError = true;
                     }
-                    else if (String.IsNullOrWhiteSpace(PasswordTextBox.Text))
+                    else if (String.IsNullOrWhiteSpace(PayPalPasswordTextBox.Text))
                     {
                         ErrorLabel.Text = "Please enter your PayPal password.";
                         isError = true;
@@ -417,12 +425,12 @@ namespace Bookstore.Pages
                 }
                 else //if (paymentMethod == "financialaid")
                 {
-                    if (String.IsNullOrWhiteSpace(PaymentEmailTextBox.Text))
+                    if (String.IsNullOrWhiteSpace(KSULoginTextBox.Text))
                     {
                         ErrorLabel.Text = "Please enter your KSU username.";
                         isError = true;
                     }
-                    else if (String.IsNullOrWhiteSpace(PasswordTextBox.Text))
+                    else if (String.IsNullOrWhiteSpace(KSUPasswordTextBox.Text))
                     {
                         ErrorLabel.Text = "Please enter your KSU password.";
                         isError = true;
@@ -431,8 +439,5 @@ namespace Bookstore.Pages
             }
             return !isError;
         }
-
     }
-
-
 }
