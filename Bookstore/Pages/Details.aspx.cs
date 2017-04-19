@@ -5,6 +5,7 @@ using System.Web;
 using System.Data;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Diagnostics;
 
 namespace Bookstore.Pages
 {
@@ -42,15 +43,20 @@ namespace Bookstore.Pages
 
         private void setCartPanel()
         {
-            ListItem newItem = new ListItem("New ($" + StaticData.getMatrixValue(bookRowIndex, 13) + ")");
-            ListItem usedItem = new ListItem("Used ($" + StaticData.getMatrixValue(bookRowIndex, 14) + ")");
-            ListItem rentItem = new ListItem("Rental ($" + StaticData.getMatrixValue(bookRowIndex, 15) + ")");
-            ListItem eBookItem = new ListItem("eBook ($" + StaticData.getMatrixValue(bookRowIndex, 16) + ")");
+            ListItem newItem = new ListItem("New $" + StaticData.getMatrixValue(bookRowIndex, 13));
+            ListItem usedItem = new ListItem("Used $" + StaticData.getMatrixValue(bookRowIndex, 14));
+            ListItem rentItem = new ListItem("Rental $" + StaticData.getMatrixValue(bookRowIndex, 15));
+            ListItem eBookItem = new ListItem("eBook $" + StaticData.getMatrixValue(bookRowIndex, 16));
+            newItem.Value = "0";
+            usedItem.Value = "1";
+            rentItem.Value = "2";
+            eBookItem.Value = "3";
 
-            DDList1.Items.Add(newItem);
-            DDList1.Items.Add(usedItem);
-            DDList1.Items.Add(rentItem);
-            DDList1.Items.Add(eBookItem);
+            RBList1.Items.Add(newItem);
+            RBList1.Items.Add(usedItem);
+            RBList1.Items.Add(rentItem);
+            RBList1.Items.Add(eBookItem);
+
         }
 
         //
@@ -79,7 +85,7 @@ namespace Bookstore.Pages
 
             for (int i = 0; i < CRN.Length; i++)
             {
-                if (CRN[i].Contains(originalCRN)) 
+                if (CRN[i].Contains(originalCRN))
                 {
                     list.Add(i);
                 }
@@ -116,6 +122,67 @@ namespace Bookstore.Pages
 
             GridView1.DataSource = dt;
             GridView1.DataBind();
+        }
+
+        private int getRBList1SelectedFormat()
+        {
+            switch (RBList1.SelectedValue)
+            {
+                case "0": return 0;
+                case "1": return 1;
+                case "2": return 2;
+                case "3": return 3;
+                default: return -1;
+            }
+        }
+
+        protected void AddToCartButton_Click(object sender, EventArgs e)
+        {
+            int selectedFormat = getRBList1SelectedFormat();
+
+            if (selectedFormat == -1)
+            {
+                //display error
+            }
+            else
+            {
+                if (Session["cart"] == null)
+                {
+                    List<LineItem> cartList = new List<LineItem>();
+                    cartList.Add(new LineItem(bookRowIndex, selectedFormat, 1));
+                    Session["cart"] = cartList;
+                }
+                else
+                {
+                    Debug.WriteLine("cart not null");
+                    List<LineItem> cartList = (List<LineItem>)Session["cart"];
+                    List<LineItem> newCartList = new List<LineItem>();
+                    for (int i = 0; i < cartList.Count; i++)
+                    {
+                        //if current LineItem matches one already in the Cart
+                        if ((cartList[i].rowNumber == bookRowIndex) &&
+                            (cartList[i].format == selectedFormat))
+                        {
+                            Debug.WriteLine(" ASDFJKASL;KJFLKASJFL;KSALDFJKSADFASDF ");
+                            LineItem newTemp = new LineItem(bookRowIndex, selectedFormat, cartList[i].quantity++);
+                            newCartList.Add(newTemp);
+                        }
+                        else
+                        {
+                            newCartList.Add(cartList[i]);
+                        }
+                    }
+                    if (cartList.Count == newCartList.Count)
+                    {
+                        Debug.WriteLine("adding new LineItem");
+                        newCartList.Add(new LineItem(bookRowIndex, selectedFormat, 1));
+                    }
+                    // set new cart to session["cart"]
+                    Session["cart"] = newCartList;
+                }
+            }
+            // redirect to cart page
+            Response.Redirect("Cart.aspx");
         }
     }
 }

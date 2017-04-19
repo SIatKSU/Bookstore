@@ -34,16 +34,28 @@
                             </asp:Panel>
                         </asp:Panel>
                         
-                         <asp:Panel ID="Panel5" runat="server" Width="100%" >
-                            <asp:Panel ID="CartPanel" runat="server" Height ="100px" Width="400px" style="padding:10px">
-                                <asp:Panel ID="Panel6" runat="server" Height ="100%" Width="100%" >
-                                    <asp:DropDownList ID="DDList1" runat="server" AutoPostBack="true" style="padding:12px" Width="180px" Font-Size="Large"/>
-                                    <asp:Button ID="CartButton" runat="server" Text="Add to Cart" style="float:right;padding:12px" Width="170px" Font-Size="Large"/>
+                         <asp:Panel ID="Panel5" runat="server" Width="700px" Height="100px">
+                            <asp:Panel ID="RadioButtonListPanel" runat="server" Height ="100px" Width="300px" style="float:left">
+                                <asp:RadioButtonList ID="RBList1" runat="server">
+                                    
+                                </asp:RadioButtonList>
+
+                                
+                            </asp:Panel>
+
+                            <asp:Panel ID="AddToCartButtonPanel" runat="server"  Width="170px" Height="100px" style="float:left" HorizontalAlign="Center">
+                                <asp:Panel ID="alignPanel" runat="server" Width="100%" style="padding-top:20px;padding-bottom:20px">
+                                    <asp:Button ID="AddToCartButton" runat="server" Text="Add to Cart" style="float:right;padding:12px" Width="170px" Font-Size="Large" OnClick="AddToCartButton_Click" />
                                 </asp:Panel>
                             </asp:Panel>
+                           
+
+
                         </asp:Panel>
                     </asp:Panel>
                 </asp:Panel>
+
+
 
 
 
