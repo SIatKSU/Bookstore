@@ -154,27 +154,27 @@ namespace Bookstore.Pages
                 }
                 else
                 {
-                    Debug.WriteLine("cart not null");
                     List<LineItem> cartList = (List<LineItem>)Session["cart"];
                     List<LineItem> newCartList = new List<LineItem>();
+                    bool addItem = true;
+
                     for (int i = 0; i < cartList.Count; i++)
                     {
                         //if current LineItem matches one already in the Cart
                         if ((cartList[i].rowNumber == bookRowIndex) &&
                             (cartList[i].format == selectedFormat))
                         {
-                            Debug.WriteLine(" ASDFJKASL;KJFLKASJFL;KSALDFJKSADFASDF ");
-                            LineItem newTemp = new LineItem(bookRowIndex, selectedFormat, cartList[i].quantity++);
+                            LineItem newTemp = new LineItem(bookRowIndex, selectedFormat, (cartList[i].quantity + 1));
                             newCartList.Add(newTemp);
+                            addItem = false;
                         }
                         else
                         {
                             newCartList.Add(cartList[i]);
                         }
                     }
-                    if (cartList.Count == newCartList.Count)
+                    if (addItem && cartList.Count == newCartList.Count)
                     {
-                        Debug.WriteLine("adding new LineItem");
                         newCartList.Add(new LineItem(bookRowIndex, selectedFormat, 1));
                     }
                     // set new cart to session["cart"]
