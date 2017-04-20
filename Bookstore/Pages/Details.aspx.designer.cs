@@ -157,40 +157,49 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Panel Panel5;
         
         /// <summary>
-        /// CartPanel control.
+        /// RadioButtonListPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel CartPanel;
+        protected global::System.Web.UI.WebControls.Panel RadioButtonListPanel;
         
         /// <summary>
-        /// Panel6 control.
+        /// RBList1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel6;
+        protected global::System.Web.UI.WebControls.RadioButtonList RBList1;
         
         /// <summary>
-        /// DDList1 control.
+        /// AddToCartButtonPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DDList1;
+        protected global::System.Web.UI.WebControls.Panel AddToCartButtonPanel;
         
         /// <summary>
-        /// CartButton control.
+        /// alignPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button CartButton;
+        protected global::System.Web.UI.WebControls.Panel alignPanel;
+        
+        /// <summary>
+        /// AddToCartButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AddToCartButton;
         
         /// <summary>
         /// BookDetailsPanel control.

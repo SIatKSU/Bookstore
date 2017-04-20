@@ -7,7 +7,7 @@
     <br> <br>
      
     <asp:GridView ID="GridView1" runat="server" CellPadding="3" BorderColor="Black" BorderWidth="2px" GridLines="Horizontal" AutoGenerateColumns="false" 
-        PageIndex="10" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" OnDataBound="GridView1_DataBound">
+        PageIndex="10" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" OnDataBound="GridView1_DataBound" ShowHeader="false">
         
         <Columns>
             <asp:TemplateField HeaderText="Coverpage:" ItemStyle-Width="100px">

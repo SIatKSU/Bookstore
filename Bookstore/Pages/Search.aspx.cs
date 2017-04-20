@@ -199,8 +199,6 @@ namespace Bookstore.Pages
                 dr["eBook"] = "$" + StaticData.getMatrixValue(rows[i], 16) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + ebookAvailability + ")"; // StaticData.getMatrixValue(rows[i], 12);
 
                 dt.Rows.Add(dr);
-
-                Debug.WriteLine("..." + dr["ISBN"].ToString());
             }
 
             ViewState["CurrentTable"] = dt;
