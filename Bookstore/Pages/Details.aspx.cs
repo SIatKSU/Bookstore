@@ -148,37 +148,34 @@ namespace Bookstore.Pages
             {
                 if (Session["cart"] == null)
                 {
-                    List<LineItem> cartList = new List<LineItem>();
+                    Session["cart"] = new List<LineItem>();  //if list doesn't exist, create it.
+                }
+                //List<LineItem> cartList = (List<LineItem>)Session["cart"] ?? new List<LineItem>();  //if list doesn't exist, create it.
+                List<LineItem> cartList = (List<LineItem>) Session["cart"];
+                if (cartList.Count == 0)
+                {
                     cartList.Add(new LineItem(bookRowIndex, selectedFormat, 1));
-                    Session["cart"] = cartList;
                 }
                 else
                 {
-                    List<LineItem> cartList = (List<LineItem>)Session["cart"];
-                    List<LineItem> newCartList = new List<LineItem>();
-                    bool addItem = true;
-
-                    for (int i = 0; i < cartList.Count; i++)
-                    {
-                        //if current LineItem matches one already in the Cart
+                    bool foundLineItem = false;
+                    int i = 0;
+                    while ((i < cartList.Count) && (!foundLineItem))
+                    { 
+                        //if current LineItem matches one already in the Cart, increment the quantity by 1.
                         if ((cartList[i].rowNumber == bookRowIndex) &&
                             (cartList[i].format == selectedFormat))
                         {
-                            LineItem newTemp = new LineItem(bookRowIndex, selectedFormat, (cartList[i].quantity + 1));
-                            newCartList.Add(newTemp);
-                            addItem = false;
-                        }
-                        else
-                        {
-                            newCartList.Add(cartList[i]);
+                            cartList[i].quantity++;
+                            foundLineItem = true;
                         }
                     }
-                    if (addItem && cartList.Count == newCartList.Count)
-                    {
-                        newCartList.Add(new LineItem(bookRowIndex, selectedFormat, 1));
+
+                    //if we didn't find a match, add the line item to the cart.
+                    if (!foundLineItem) {
+                        cartList.Add(new LineItem(bookRowIndex, selectedFormat, 1));
                     }
-                    // set new cart to session["cart"]
-                    Session["cart"] = newCartList;
+                    
                 }
             }
             // redirect to cart page

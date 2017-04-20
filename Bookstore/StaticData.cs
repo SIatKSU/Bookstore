@@ -9,6 +9,8 @@ using System.Web;
 /// </summary>
 public static class StaticData
 {
+    public const int QUANTITY_NEW = 9;      //column 9 = quantity new, column 10 = quantity used, column 11= quantity rental, column 12=ebook availability.
+
     private static List<string> newLines;
     //private static string fileName = Constants.booksFile;
     private static string appPath =HttpRuntime.AppDomainAppPath ;

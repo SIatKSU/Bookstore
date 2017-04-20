@@ -49,10 +49,7 @@ namespace Bookstore.Pages
             }
 
             //Customer should never get to this screen if the cart is empty.  But in case this does happen, show an error message.
-            if (IsCartEmpty())
-                ErrorLabel.Visible = true;
-            else
-                ErrorLabel.Visible = false;
+            ErrorLabel.Visible = IsCartEmpty();
         }
         
         public void PopulatePaymentMethodDropDown() {
@@ -164,13 +161,11 @@ namespace Bookstore.Pages
                 ShippingZipTextBox.Text = BillingZipTextBox.Text;
             }
 
-            //if the cart is empty, or the customer didn't fill in the form properly, show an error message.
-            if (IsCartEmpty() || !ValidateDataEntry()) {
+            if (IsCartEmpty() || !ValidateDataEntry() || !CheckStillInStock()) {
                 ErrorLabel.Visible = true;
             }
             else
-            {
-                
+            {              
                 //ok, everything checks out.  lets try to charge the payment!
 
                 string method = PaymentMethodDropDown.SelectedValue;
@@ -191,11 +186,59 @@ namespace Bookstore.Pages
                 ErrorLabel.Visible = !paymentSuccess;
                 if (paymentSuccess)
                 {
+                    //update inventory file.
+
+
                     Response.Redirect("Receipt.aspx");
                 }
 
             }
         }
+
+        //check that the items are still in stock.
+        //did anyone place order in the meantime?
+        public Boolean CheckStillInStock()
+        {
+            List<LineItem> cartList = (List<LineItem>)Session["cart"];
+            StaticData.readFile();
+            bool result = true;
+
+            for (int i = 0; i < cartList.Count; i++)
+            {
+
+                if (cartList[i].format != LineItem.EBOOK)       //ebooks never go out of stock.
+                {
+                    //row 9 = NEW.
+                    int quantityAvailable;
+                    string quantityString = StaticData.getMatrixValue(cartList[i].rowNumber, StaticData.QUANTITY_NEW + cartList[i].format);
+                    bool quantityResult = int.TryParse(quantityString, out quantityAvailable);
+
+                    if (quantityAvailable < cartList[i].quantity)
+                    {
+                        ErrorLabel.Text = "Not enough items in stock.  Please return to the shopping cart page.";
+                        result = false;
+                    }
+                }
+            }
+            return result;
+        }
+
+
+        //returns true if cart is empty, and sets error message.
+        //returns false if cart is not empty.
+        public Boolean IsCartEmpty()
+        {
+            if ((Session["cart"] == null) || ((List<LineItem>)Session["cart"]).Count == 0)
+            {
+                ErrorLabel.Text = "Shopping Cart is empty.  Please click the Home/Search button to search for books.";
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         //SIMULATED credit card payment.
         //returns true if simulated payment went through
@@ -289,25 +332,6 @@ namespace Bookstore.Pages
             }
             return result;
         }
-
-
-
-        //check if the cart is empty.
-        //returns true, and sets the error message, if cart is empty
-        //returns false, if cart is not empty. 
-        public bool IsCartEmpty()
-        {
-            if ((cart != null) && (cart.Count != 0))
-            {
-                return false;
-            }
-            else
-            {
-                ErrorLabel.Text = "Shopping Cart is empty.  Please click the Home/Search button to search for books.";
-                return true;
-            }
-        }
-
 
         //check whether the user filled in all fields properly.
         //returns false, and sets the error message, if there was a problem.
