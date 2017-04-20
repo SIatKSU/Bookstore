@@ -21,14 +21,15 @@
                 <td style="width:300px"">
                     <asp:ImageButton ID="header_image" runat="server" ImageUrl ="~/images/KSU_Logo.png" Width="300px" PostBackUrl="~/Pages/index.aspx"/>
                 </td>
-                <td style="width:740px">
-                    <asp:Label ID="Title" runat="server" Text="Kennesaw State Bookstore" Font-Bold="True" Font-Size="60px"></asp:Label>
+                <td style="width:650px">
+                    <asp:Label ID="Title" runat="server" Text="Kennesaw State Bookstore" Font-Bold="True" Font-Size="55px"></asp:Label>
                 </td>
-                <td style="width:40px; margin-left: auto; margin-right: auto; text-align: center">
-                    <asp:Label ID="CartQuantityText" runat="server" Text="0"></asp:Label>
-                    <asp:ImageButton ID="CartButton" runat="server" Height="40px" ImageUrl="~/images/cart.png" Float="right" PostBackUrl="~/Pages/Cart.aspx"/>
-                </td>
-                <td style="width:10px">
+                <td style="width:140px; margin-left: auto; margin-right: auto; text-align:center" >
+                    <asp:ImageButton ID="CartButton" runat="server" Height="40px" ImageUrl="~/images/cart.png" style="align-self:center" PostBackUrl="~/Pages/Cart.aspx"/>
+                    <br>
+                    <asp:Label ID="CartQuantityText" runat="server" Text="# Items"></asp:Label>
+                    <br>
+                    <asp:Label ID="SubtotalText" runat="server" Text="Subtotal: $"></asp:Label>
 
                 </td>
               
