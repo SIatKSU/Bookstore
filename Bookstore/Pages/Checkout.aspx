@@ -28,10 +28,10 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:Panel ID="Panel0" runat="server" Style="table-layout: fixed; box-sizing: border-box; border-style: solid; border-spacing: 2px" Height="100%">
+    <asp:Panel ID="Panel0" runat="server" Style="border-style: solid; border-spacing: 2px" Height="100%">
         <asp:Panel ID="Panel1" runat="server" Height="60%">
-            <asp:Panel ID="Panel3" runat="server" Width="100%" Height="25px">
-                <asp:Label ID="CheckoutHeaderLabel" runat="server" Text="Checkout" Style="text-align: center; border-style: solid; border-width: 0px 0px 2px 0px" Font-Bold="True" Font-Size="Large" Width="100%"></asp:Label>
+            <asp:Panel ID="Panel3" runat="server" Style="border-style: solid; border-width: 0px 0px 2px 0px" Width="100%" Height="25px">
+                <asp:Label ID="CheckoutHeaderLabel" runat="server" Text="Checkout" Style="text-align: center;border-width: 0px" Font-Bold="True" Font-Size="Large" Width="100%"></asp:Label>
             </asp:Panel>
             <asp:Panel ID="Panel4" runat="server" Width="100%" Height="55%">
                 <asp:Panel ID="BillingAddressPanel" Style="table-layout: fixed; box-sizing: border-box; border-spacing: 0px; border-style: solid; border-width: 0px 2px 0px 0px" runat="server" Width="50%" Height="100%" CssClass="addressPanel">
@@ -108,13 +108,15 @@
                         </asp:DropDownList>
                         <br />
                         &nbsp;<asp:Label ID="Label4" CssClass="addressFieldLabel" runat="server" Text="Zip:"></asp:Label>
-                        <asp:TextBox ID="BillingZipTextBox" runat="server" Width="20%"></asp:TextBox>
+                        <asp:TextBox ID="BillingZipTextBox" runat="server" Style="margin-bottom: 10px" Width="20%"></asp:TextBox>
                         <br />
+                        <!--&nbsp;<asp:Label ID="AddressCheckboxLabel" Text="Check if Shipping Address Same as Billing:" Style="display:inline-block;margin-bottom:5px" runat="server"></asp:Label>-->
+                        &nbsp;<asp:CheckBox ID="AddressCheckBox" runat="server" Style="display:inline-block" Text="Shipping Address Same as Billing Address:" TextAlign="Left" AutoPostBack="True" OnCheckedChanged="AddressCheckBox_CheckedChanged"/>
                     </asp:Panel>
                 </asp:Panel>
-                <asp:Panel ID="ShippingAddressPanel" Style="table-layout: fixed; box-sizing: border-box; border-spacing: 0px" runat="server" Width="49%" Height="100%" CssClass="addressPanel">
+                <asp:Panel ID="ShippingAddressPanel" runat="server" Width="49%" Height="100%" CssClass="addressPanel" Style="vertical-align:top">
                     <asp:Panel ID="Panel6" runat="server" Width="100%" Height="25px" BorderStyle="None">
-                        <asp:Label ID="Label2" runat="server" Text="Billing Address" Style="text-align: center" Font-Bold="True" Width="100%"></asp:Label>
+                        <asp:Label ID="Label2" runat="server" Text="Shipping Address" Style="text-align: center" Font-Bold="True" Width="100%"></asp:Label>
                     </asp:Panel>
                     <asp:Panel ID="Panel8" runat="server" Width="100%" Height="100%" BorderStyle="None" Style="padding-bottom: 10px">
                         &nbsp;<asp:Label ID="Label5" CssClass="addressFieldLabel" runat="server" Text="Street:"></asp:Label>
@@ -187,11 +189,10 @@
                         <br />
                         &nbsp;<asp:Label ID="Label8" CssClass="addressFieldLabel" runat="server" Text="Zip:"></asp:Label>
                         <asp:TextBox ID="ShippingZipTextBox" runat="server" Width="20%"></asp:TextBox>
-                        <br />
                     </asp:Panel>
                 </asp:Panel>
             </asp:Panel>
-            <asp:Panel ID="NameEmailPhonePanel" runat="server" Height="45%" Style="padding-top: 10px; padding-bottom: 10px; border-style: solid; border-width: 2px 0px 0px 0px">
+            <asp:Panel ID="NameEmailPhonePanel" runat="server" Height="45%" Style="padding-top: 10px; margin-top: 0px; padding-bottom: 10px; border-style: solid; border-width: 2px 0px 0px 0px">
                 &nbsp;<asp:Label ID="FullNameLabel" runat="server" CssClass="nameFieldLabel" Text="Full Name:"></asp:Label>
                 <asp:TextBox ID="FullNameTextBox" runat="server" Width="80%"></asp:TextBox>
                 <br />
@@ -228,9 +229,9 @@
                 <asp:TextBox ID="SecurityCodeTextBox" runat="server" onkeydown = "return (!((event.keyCode>=65 && event.keyCode <= 95) || event.keyCode >= 106) && event.keyCode!=32);" Columns="4" MaxLength="3" ></asp:TextBox>
                 <br />
             </asp:Panel>
-            <asp:Panel ID="Panel11" runat="server" Height="40%" Style="overflow: hidden; border-style: solid; border-width: 2px 0px 0px 0px">
-                <asp:Label ID="ErrorLabel" runat="server" visible="false" Font-Bold="True" Style="float: left; font-size:large; margin-left:30px; margin-top:13px" ForeColor="Red" Text="ErrorMessageGoesHere"></asp:Label>
-                <asp:Button ID="PlaceOrderButton" runat="server" Text="Place Order" Style="font-size: large; float: right; margin-right: 50px; margin-top:10px" CssClass="btn" OnClick="PlaceOrderButton_Click" />
+            <asp:Panel ID="Panel11" runat="server" Height="40%" Width="100%" Style="display:inline-block; overflow: hidden; border-style: solid; border-width: 2px 0px 0px 0px">
+                <asp:Label ID="ErrorLabel" runat="server" visible="false" Font-Bold="True" Style="float: left; font-size:large; margin-left:30px; margin-top:11px" ForeColor="Red" Text="ErrorMessageGoesHere"></asp:Label>
+                <asp:Button ID="PlaceOrderButton" runat="server" Text="Place Order" Style="font-size: large; float: right; margin-right: 50px; margin-top: 8px" CssClass="btn" OnClick="PlaceOrderButton_Click" />
             </asp:Panel>
         </asp:Panel>
     </asp:Panel>

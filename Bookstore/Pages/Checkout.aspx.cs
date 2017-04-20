@@ -156,6 +156,14 @@ namespace Bookstore.Pages
 
         protected void PlaceOrderButton_Click(object sender, EventArgs e)
         {
+            if (AddressCheckBox.Checked)
+            {
+                ShippingStreetTextBox.Text = BillingStreetTextBox.Text;
+                ShippingCityTextBox.Text = BillingStreetTextBox.Text;
+                ShippingStateDropDown.SelectedIndex = BillingStateDropDown.SelectedIndex;
+                ShippingZipTextBox.Text = BillingZipTextBox.Text;
+            }
+
             //if the cart is empty, or the customer didn't fill in the form properly, show an error message.
             if (IsCartEmpty() || !ValidateDataEntry()) {
                 ErrorLabel.Visible = true;
@@ -438,6 +446,16 @@ namespace Bookstore.Pages
                 }
             }
             return !isError;
+        }
+
+        protected void AddressCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            ShippingAddressPanel.Visible = !AddressCheckBox.Checked;
+
+            ShippingStreetTextBox.Text = BillingStreetTextBox.Text;
+            ShippingCityTextBox.Text = BillingStreetTextBox.Text;
+            ShippingStateDropDown.SelectedIndex = BillingStateDropDown.SelectedIndex;
+            ShippingZipTextBox.Text = BillingZipTextBox.Text;
         }
     }
 }
