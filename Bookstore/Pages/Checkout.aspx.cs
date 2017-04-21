@@ -11,13 +11,6 @@ namespace Bookstore.Pages
 {
     public partial class Checkout : System.Web.UI.Page
     {
-        //page one:
-        //string[] name = { "Jon", "Smith" };
-        //HttpContext.Session["ArrayOfName"] = name;
-
-        //page two:
-        //string[] strings = (string[])Session["strings"];
-
         //what gets passed from Shopping cart?
         //List of the items in the cart, which is a list of 
         //    a) Row Number (this identifies the book from the Books.csv), 
@@ -26,19 +19,12 @@ namespace Bookstore.Pages
         //From these three things, we can price, title, etc.
 
         //*******DUMMY VALUES WHICH WILL LATER BE READ FROM SESSION STATE***********
-        List<LineItem> cart;
-        double subtotal = 100.49;
+        double cartTotal = 100.49;
         //**************************************************************************
 
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            //*******DUMMY VALUES WHICH WILL LATER BE READ FROM SESSION STATE***********
-            cart = new List<LineItem>();
-            cart.Add(new LineItem(3, LineItem.RENTAL, 1));
-            //**************************************************************************
-
             // Populates first DropDownList
             if (!IsPostBack)
             {
@@ -295,7 +281,7 @@ namespace Bookstore.Pages
             string username = KSULoginTextBox.Text.Trim();
             string password = KSUPasswordTextBox.Text;
 
-            int finAidBalance;
+            double finAidBalance;
 
             string appPath = HttpRuntime.AppDomainAppPath;
             string bursarFile = appPath + "/students.txt";
@@ -306,19 +292,40 @@ namespace Bookstore.Pages
             int i = 0;
             bool foundUserName = false;
 
-            while (i < lines.Length && !foundUserName) {
+            while (!foundUserName && i < lines.Length) {
                 bursarEntry = lines[i].Split(null);
-                if (bursarEntry[2] == username) {
+                if (bursarEntry[2] == username)
+                {
                     foundUserName = true;
                 }
-                i++;
+                else
+                {
+                    i++;
+                }
             }
 
             if (foundUserName && bursarEntry[3] == password)
             {
-                bool finAidValidFormat = int.TryParse(bursarEntry[4], out finAidBalance);
-                if (finAidValidFormat && finAidBalance > subtotal)
+                bool finAidValidFormat = double.TryParse(bursarEntry[4], out finAidBalance);
+                if (finAidValidFormat && finAidBalance > cartTotal)
                 {
+                    //i is the line number in students.txt to edit
+                    //bursarEntry 4 is the financial aid balance
+
+                    finAidBalance -= cartTotal;
+                    bursarEntry[4] = finAidBalance.ToString();
+                    lines[i] = string.Join("\t", bursarEntry);
+
+                    StreamWriter sw = new StreamWriter(bursarFile);
+                    for (int j = 0; j < lines.Length; j++) { 
+                        if (j==i)
+                        {
+
+                        }
+                        sw.WriteLine(lines[j]);
+                    }
+                    sw.Close();
+
                     result = true;
                 }
                 else

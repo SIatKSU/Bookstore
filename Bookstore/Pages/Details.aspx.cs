@@ -169,6 +169,7 @@ namespace Bookstore.Pages
                             cartList[i].quantity++;
                             foundLineItem = true;
                         }
+                        i++;
                     }
 
                     //if we didn't find a match, add the line item to the cart.
