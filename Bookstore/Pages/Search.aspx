@@ -18,7 +18,6 @@
                 </ItemTemplate>
             </asp:TemplateField>
            
-            
             <asp:TemplateField HeaderText ="Title" ItemStyle-Width="1000px" >
                 <ItemTemplate>
                     <a href='<%#Eval("ISBN","/Pages/Details.aspx?isbn={0}") %>'>
@@ -44,12 +43,9 @@
                     <asp:Label ID="eBookText" runat="server" Text="eBook: " Font-Size="Smaller" Font-Bold="true"/>
                     <asp:Label ID="eBookPrice" runat="server" Text='<%# Bind("eBook") %>' Font-Size="Smaller" Font-Bold="true"/>
 
-
                 </ItemTemplate>
                 
-                
             </asp:TemplateField>
-
 
             <asp:BoundField DataField="Author" ItemStyle-Width ="100px" HeaderText="Author:" Visible="false"></asp:BoundField>
             <asp:BoundField DataField="ISBN" ItemStyle-Width="125px" HeaderText="ISBN:" Visible="false"></asp:BoundField>
@@ -60,21 +56,7 @@
             <asp:BoundField DataField="Rental" HtmlEncode="false" ItemStyle-Width ="60px" HeaderText="Rental:" Visible="false"></asp:BoundField>
             <asp:BoundField DataField="eBook" HtmlEncode="false" ItemStyle-Width ="60px" HeaderText="eBook:" Visible="false"></asp:BoundField>
 
-            
-
         </Columns>
         
-
     </asp:GridView>
-
-
-    <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
-    <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
-
-
-
-    
-
-
-
 </asp:Content>

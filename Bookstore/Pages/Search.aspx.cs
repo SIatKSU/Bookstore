@@ -18,20 +18,10 @@ namespace Bookstore.Pages
             type = Request.QueryString["Type"].ToLower();
             value = Request.QueryString["Value"].ToLower();
 
-
             GridView1.PageIndex = 0; //sets default GridView1 page to the first page
             setGridTable(searchData());
-
-
-            TextBox1.Text = type;
-            TextBox2.Text = value;
         }
-        //
-        //
-        //
-        // Todo: Projessor "Tsai-Tien Tseng" doesn't show up..
-        //
-        //
+        
         // returns array with row indicies that contained the search value
         private int[] searchData()
         {

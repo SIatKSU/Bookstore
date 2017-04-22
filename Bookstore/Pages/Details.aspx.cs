@@ -31,10 +31,14 @@ namespace Bookstore.Pages
 
         private void setValues()
         {
+            string description = StaticData.getMatrixValue(bookRowIndex, 17);
+            string replaced = description.Replace("\n", "<br/>");
+            Debug.WriteLine(replaced);
+
             TitleText.Text = StaticData.getMatrixValue(bookRowIndex, 1);
             ISBNText.Text = StaticData.getMatrixValue(bookRowIndex, 0);
             AuthorText.Text = StaticData.getMatrixValue(bookRowIndex, 2);
-            DescriptionText.Text = StaticData.getMatrixValue(bookRowIndex, 17);
+            DescriptionText.Text = replaced;
 
             CoverImage.ImageUrl = "/Images/" + isbn + ".jpg";
 
@@ -142,7 +146,7 @@ namespace Bookstore.Pages
 
             if (selectedFormat == -1)
             {
-                //display error
+                AddToCartError.Visible = true;
             }
             else
             {
@@ -178,9 +182,9 @@ namespace Bookstore.Pages
                     }
                     
                 }
+                // redirect to cart page
+                Response.Redirect("Cart.aspx");
             }
-            // redirect to cart page
-            Response.Redirect("Cart.aspx");
         }
     }
 }
