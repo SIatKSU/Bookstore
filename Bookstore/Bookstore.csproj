@@ -279,6 +279,7 @@
     <Content Include="Pages\MasterPage.master" />
     <Content Include="books.csv" />
     <Content Include="packages.config" />
+    <Content Include="booksWriteTest.csv" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

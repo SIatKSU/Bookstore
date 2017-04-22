@@ -173,13 +173,48 @@ namespace Bookstore.Pages
                 if (paymentSuccess)
                 {
                     //update inventory file.
+                    updateInventoryFile();
 
+                    //empty the cart.
+                    ((List<LineItem>)Session["cart"]).Clear();
+                    cartTotal = 0;
 
                     Response.Redirect("Receipt.aspx");
                 }
 
             }
         }
+
+
+        //note implemented yet - but in future, if there's a problem with updating the inventoryFile, we could flag this order for the Admin Assistant  
+        public bool updateInventoryFile()
+        {
+            bool result = true;
+
+            List<LineItem> cartList = (List<LineItem>)Session["cart"];
+            for (int i = 0; i < cartList.Count; i++)
+            {
+                if (cartList[i].format != LineItem.EBOOK)       //ebook quantity doesn't change
+                {
+                    //row 9 = NEW.
+                    int quantityAvailable;
+                    string quantityString = StaticData.getMatrixValue(cartList[i].rowNumber, StaticData.QUANTITY_NEW + cartList[i].format);
+                    bool quantityResult = int.TryParse(quantityString, out quantityAvailable);
+                    quantityAvailable -= cartList[i].quantity;
+
+                    //insert the updated quantity back into the matrix
+                    StaticData.setMatrixValue(cartList[i].rowNumber, StaticData.QUANTITY_NEW + cartList[i].format, quantityAvailable.ToString());
+                }
+            }
+
+            //finally - write the result back into books.csv
+            StaticData.writeFile();
+         
+
+            return result;
+        }
+
+
 
         //check that the items are still in stock.
         //did anyone place order in the meantime?
@@ -286,57 +321,63 @@ namespace Bookstore.Pages
             string appPath = HttpRuntime.AppDomainAppPath;
             string bursarFile = appPath + "/students.txt";
 
-            string[] lines = File.ReadAllLines(bursarFile);
-            string[] bursarEntry = null;
-
-            int i = 0;
-            bool foundUserName = false;
-
-            while (!foundUserName && i < lines.Length) {
-                bursarEntry = lines[i].Split(null);
-                if (bursarEntry[2] == username)
-                {
-                    foundUserName = true;
-                }
-                else
-                {
-                    i++;
-                }
-            }
-
-            if (foundUserName && bursarEntry[3] == password)
+            if (File.Exists(bursarFile))
             {
-                bool finAidValidFormat = double.TryParse(bursarEntry[4], out finAidBalance);
-                if (finAidValidFormat && finAidBalance > cartTotal)
+                string[] lines = File.ReadAllLines(bursarFile);
+                string[] bursarEntry = null;
+
+                int i = 0;
+                bool foundUserName = false;
+
+                while (!foundUserName && i < lines.Length)
                 {
-                    //i is the line number in students.txt to edit
-                    //bursarEntry 4 is the financial aid balance
-
-                    finAidBalance -= cartTotal;
-                    bursarEntry[4] = finAidBalance.ToString();
-                    lines[i] = string.Join("\t", bursarEntry);
-
-                    StreamWriter sw = new StreamWriter(bursarFile);
-                    for (int j = 0; j < lines.Length; j++) { 
-                        if (j==i)
-                        {
-
-                        }
-                        sw.WriteLine(lines[j]);
+                    bursarEntry = lines[i].Split(null);
+                    if (bursarEntry[2] == username)
+                    {
+                        foundUserName = true;
                     }
-                    sw.Close();
+                    else
+                    {
+                        i++;
+                    }
+                }
 
-                    result = true;
+                if (foundUserName && bursarEntry[3] == password)
+                {
+                    bool finAidValidFormat = double.TryParse(bursarEntry[4], out finAidBalance);
+                    if (finAidValidFormat && finAidBalance > cartTotal)
+                    {
+                        //i is the line number in students.txt to edit
+                        //bursarEntry 4 is the financial aid balance
+
+                        finAidBalance -= cartTotal;
+                        bursarEntry[4] = finAidBalance.ToString();
+                        lines[i] = string.Join("\t", bursarEntry);
+
+                        StreamWriter sw = new StreamWriter(bursarFile);
+                        for (int j = 0; j < lines.Length; j++)
+                        {
+                            sw.WriteLine(lines[j]);
+                        }
+                        sw.Close();
+
+                        result = true;
+                    }
+                    else
+                    {
+                        ErrorLabel.Text = "Insufficient financial aid.  Current available balance: $" + finAidBalance + ".";
+                    }
                 }
                 else
                 {
-                    ErrorLabel.Text = "Insufficient financial aid.  Current available balance: $" + finAidBalance + ".";
+                    ErrorLabel.Text = "Incorrect username or password.";
                 }
             }
             else
             {
-                ErrorLabel.Text = "Incorrect username or password.";
+                ErrorLabel.Text = "Could not connect to Bursar. <br> Please select another payment method or try again later.";
             }
+
             return result;
         }
 

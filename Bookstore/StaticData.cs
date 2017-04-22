@@ -4,197 +4,291 @@ using System.IO;
 using System.Diagnostics;
 using System.Web;
 
-/// <summary>
-/// Summary description for StaticData
-/// </summary>
 public static class StaticData
 {
+
+    public const int NUM_COLUMNS = 18;
+
     public const int QUANTITY_NEW = 9;      //column 9 = quantity new, column 10 = quantity used, column 11= quantity rental, column 12=ebook availability.
 
-    private static List<string> newLines;
-    //private static string fileName = Constants.booksFile;
-    private static string appPath =HttpRuntime.AppDomainAppPath ;
+    private static string appPath = HttpRuntime.AppDomainAppPath ;
     private static string fileName = appPath + "/books.csv";
+
+
+    //private static string testFileName = appPath + "/testBooks.csv";
+    //private static string fileName = testFileName;
 
     // matrix directory (column # - column name)
     // 0-ISBN  1-Title  2-Author 3-Semester 4-Course 5-#ofSections 6-Professor 7-CRN 8-Required/Not
     // 9-New Quantity 10-Used Quantity 11-Rental Quantity 12-Ebook Availability 
     // 13-New Price 14-Used Price 15-Rental Price 16-Ebook Price 17-Description
-    private static string[,] matrix;
+    private static string[][] matrix;
 
     public static void readFile()
     {
-        readLines(); // populates newLines list
-        matrix = new string[newLines.Count, 18];
-        int rows = newLines.Count;
-
-        //populates matrix
-        for (int i = 0; i < rows; i++)
-        {
-            populateArray(newLines[i], i);
-        }
-
-        /* PRINT MATRIX
-        Debug.WriteLine("\n\nPRINTING...");
-        for (int i = 0; i < rows; i++)
-        {
-            Debug.WriteLine(matrix[i, 0]);
-        } */
-    }
-
-    private static void readLines()
-    {
-        //populates line array with original (unformatted) lines from input CSV file.
         string[] lines = File.ReadAllLines(fileName);
 
-        // stores formatted lines from input CSV file
-        newLines = new List<string>();
-        int newIndex = -1;
-        string temp = "";
+        List<string[]> matrixList = new List<string[]>();
 
-        /**
-         * Checks if a line doesn't start with an ISBN. 
-         * If not, the current line is added to the end of the previous line
-         * and the lines array  is adjusted
-         */
+        string[] singleRow = new string[NUM_COLUMNS]; //a single row to be added to the matrixList
+        int colIndex = 0;           //0-17.  track which column we are filling in
+        bool openQuote = false;     //if there is an open quotation mark, keep appending to current cell in current row.
+        int numQuotes = 0;          //temp variable to count the evil quotation marks
+
         for (int i = 0; i < lines.Length; i++)
         {
-            string str = "";
-            if (lines[i].Length >= 3)
+            if (lines[i].Length == 0)
             {
-                str = lines[i].Substring(0, 3);
-            }
-
-            if (str == "978" || str == "979")
-            {
-                newIndex++;
-                temp = lines[i];
-                newLines.Add(lines[i]);
+                singleRow[colIndex] = singleRow[colIndex] + Environment.NewLine;     //if the line is empty, just append 2 new lines to the current field and move on
             }
             else
             {
-                // adds new line character whenever there is one in the file. 
-                // This is so the description could be the exact same in the file and on the site.
-                // temp = temp + Environment.NewLine + lines[i];
-                temp = temp + " " + lines[i];
-                newLines[newIndex] = temp;
+                string[] commaSplitRow = lines[i].Split(',');
+
+                for (int j = 0; j < commaSplitRow.Length; j++)
+                {
+
+                    if (colIndex == 0)
+                    {
+                        singleRow = new string[NUM_COLUMNS];    //create a new row
+                        matrixList.Add(singleRow);              //and add it to the matrix list
+
+                        singleRow[0] = commaSplitRow[0];
+                        colIndex++;
+                    }
+                    else
+                    {
+                        if (openQuote)
+                        {
+                            if (j != 0) //don't do this if this is the first element in the line.
+                            {
+                                singleRow[colIndex] += ","; //if the field is a continuation of the previous field, first append a ',' (unless it's col[0].)
+                            }
+                            else
+                            {
+                                //for the first element in the line, append a space.  (a new line character in the authors' list or title would be bad!)
+                                if (colIndex != 17)
+                                    singleRow[colIndex] += " ";
+                                else
+                                    singleRow[colIndex] += Environment.NewLine;
+                            }
+                        }
+
+                        if (commaSplitRow[j][0] == '"')
+                        {
+                            if (commaSplitRow[j][commaSplitRow[j].Length - 1] == '"')     //first and last elements are "          example: "Spring 2015"
+                            {
+                                singleRow[colIndex] += commaSplitRow[j].Substring(1, commaSplitRow[j].Length - 2);
+                            }
+                            else
+                            {
+                                singleRow[colIndex] += commaSplitRow[j].Substring(1, commaSplitRow[j].Length - 1);    //only first element is "
+                            }
+                        }
+                        else
+                        {
+                            if (openQuote && commaSplitRow[j][commaSplitRow[j].Length - 1] == '"')              //only last element is "
+                            {
+                                singleRow[colIndex] += commaSplitRow[j].Substring(0, commaSplitRow[j].Length - 1);     //remove last ''
+                            }
+                            else
+                            {
+                                    singleRow[colIndex] += commaSplitRow[j];
+                            }
+                        }
+
+                        //count the evil quotation marks
+                        numQuotes = GetHowManyTimeOccurenceCharInString(commaSplitRow[j], '"');
+
+                        if (numQuotes % 2 == 1)
+                        {
+                            openQuote = !openQuote;  //if there are an odd number of quotation marks, flip the openQuote flag
+                        }
+
+                        if (!openQuote) //if no open quotation marks, move to the next column.  Otherwise, we'll keep adding to this column
+                        {
+                            if (colIndex != NUM_COLUMNS - 1)
+                            {
+                                colIndex++;
+                            }
+                            else
+                            {
+                                colIndex = 0;
+                            }
+                        }
+                    }
+
+                }
             }
+
         }
-    }
+        matrix = new string[matrixList.Count][];
 
-    private static void populateArray(string str, int row)
-    {
-        int col = 0;
-        string temp = "";
-        char curr = '`', prev = '`', next = '`';
-        bool quot = false;
-
-        for (int i = 0; i < str.Length; i++)
+        for (int i = 0; i < matrixList.Count; i++)
         {
-            curr = str[i];
-            if (i >= 1) { prev = str[i - 1]; } // sets prev char
-            if (i < str.Length - 1) { next = str[i + 1]; } // sets next char   
+            matrix[i] = new string[NUM_COLUMNS];
 
-            if (curr == '"' && prev == ',') // start of quote
+            for (int j = 0; j < NUM_COLUMNS; j++)
             {
-                quot = true;
+                //Console.WriteLine(matrixList[i][j]);
+                matrix[i][j] = matrixList[i][j];
             }
-            else if ((quot && curr == '"' && next == ',') ||
-                (quot && curr == ',' && prev == '"')) // end of quote
-            {
-                quot = false;
-                matrix[row, col] = temp;
-                col++;
-                temp = "";
-            }
-            else if (quot && curr == '"' && next == '"' && prev == ' ')
-            {
-                //do nothing
-            }
-            else if (quot && curr == '"' && prev == '"' && next != ' ')
-            {
-                temp = temp + curr;
-            }
-            else if (quot && curr == '"' && next == '"' && prev != ' ')
-            {
-                temp = temp + curr;
-            }
-            else if (quot && curr == '"' && prev == '"' && next == ' ')
-            {
-                //do nothing
-            }
-            else if (quot && curr != '"')
-            {
-                temp = temp + curr;
-            }
-            else if (!quot && curr != '"' && curr != ',') // always last
-            {
-                string s1 = prev.ToString();
-                string s2 = curr.ToString();
-                string s3 = next.ToString();
-                string s4 = s1 + s2 + s3;
-                temp = temp + curr;
-            }
-            else if (curr == ',' && prev == '"' && next == '"')
-            {
-                quot = true;
-            }
-            else if (curr == ',' && prev == '"' && next != '"')
-            {
-                quot = false;
-            }
-            else if (!quot && curr == ',') // end of non-quote
-            {
-                matrix[row, col] = temp;
-                col++;
-                temp = "";
-            }
-            else
-            {
-                Debug.WriteLine("SOMETHING WENT WRONT WHILE PARSING FILE: " + prev + curr + next + quot);
-            }
+        }       
 
-            if (i == (str.Length - 1))
+    }
+
+    public static void outputMatrix()
+    {
+        Console.WriteLine("Number of books in matrix: " + matrix.Length);
+        Console.WriteLine();
+
+
+        for (int i = 0; i < matrix.Length; i++)
+        {
+            Console.WriteLine("Row: " + i);
+            Console.WriteLine("Row: " + i);
+            Console.WriteLine("Row: " + i);
+            for (int j = 0; j < NUM_COLUMNS; j++)
             {
-                matrix[row, col] = temp;
-                col++;
-                temp = "";
+                Console.WriteLine(matrix[i][j]);
             }
+            Console.ReadKey();
         }
     }
 
-    public static string[,] getMatrix()
+    //debugging method. 
+    //list all the lines that don't start with ISBN - what do they look like?
+    public static void listInconsistentLines()
+    {
+        string[] lines = File.ReadAllLines(fileName);
+
+        List<string[]> badList = new List<string[]>();
+        string str;
+        string outputStr;
+
+        string badLinesFile = @"D:\oldfiles\Desktop\ksu\2017 Spring\swe\project and homework\code\read_books_csv\read_books_csv\badLines.txt";
+
+        using (FileStream fs = new FileStream(badLinesFile, FileMode.OpenOrCreate))
+        {
+            using (StreamWriter sw = new StreamWriter(fs))
+            {
+
+                for (int i = 0; i < lines.Length; i++)
+                {
+
+                    if (lines[i].Length == 0)
+                    {
+                        outputStr = "Line " + i + ": Empty line found.";
+                        Console.WriteLine(outputStr);
+                        sw.WriteLine(outputStr);
+
+                    }
+                    else if (lines[i].Length >= 3)
+                    {
+                        str = lines[i].Substring(0, 3);
+                        if (str != "978" || str == "979")
+                        {
+                            outputStr = "Line " + i + ": \n" + lines[i] + "\n";
+                            Console.Write(outputStr);
+                            sw.Write(outputStr);
+                        }
+                    }
+                }
+            }
+        }
+        Console.ReadKey();
+    }
+
+    //http://stackoverflow.com/questions/5340564/counting-how-many-times-a-certain-char-appears-in-a-string-before-any-other-char
+    //by Mehdi Bugnard
+    public static int GetHowManyTimeOccurenceCharInString(string text, char c)
+    {
+        int count = 0;
+        foreach (char ch in text)
+        {
+            if (ch.Equals(c))
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+
+    
+    //write the matrix back to the books.csv file.
+    //currently, this is done when customer successfully makes a purchase.
+    public static void writeFile()
+    {
+        //18 fields.
+        string[] line = new string [18];
+
+        //if it contains space, comma, quotation mark, put a " " around it
+        char[] checkChars = { ' ', ',' }; //, '\"' };
+        
+        //string testFileName = appPath + "/booksWriteTest.csv";
+        //System.IO.StreamWriter sw = new System.IO.StreamWriter(testFileName);
+
+        using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate))
+        {
+            using (StreamWriter sw = new StreamWriter(fs))
+            {
+                
+                for (int i = 0; i < matrix.Length; i++)
+                {
+                    for (int j = 0; j < matrix[j].Length; j++)
+                    {
+                        //if it contains space, comma, quotation mark, put a " on it!
+                        if (matrix[i][j].IndexOfAny(checkChars) != -1) 
+                        { 
+                            line[j] = "\"" + matrix[i][j] + "\"";
+                        }
+                        else
+                        {
+                            line[j] = matrix[i][j];
+                        }
+                    }
+
+                    sw.WriteLine(string.Join(",", line));
+                }
+
+            }
+        }
+    }
+        
+    public static string[][] getMatrix()
     {
         return matrix;
     }
 
     public static string[] getMatrixRow(int row)
     {
-        string[] rowArray = new string[newLines.Count];
-        for (int i = 0; i < newLines.Count; i++)
-        {
-            rowArray[i] = matrix[row, i];
-        }
-        return rowArray;
+        return matrix[row];
     }
 
     public static string[] getMatrixColumn(int col)
     {
-        string[] colArray = new string[newLines.Count];
-        for (int i = 0; i < newLines.Count; i++)
+        string[] colArray = new string[matrix.Length];
+        for (int i = 0; i < matrix.Length; i++)
         {
-            colArray[i] = matrix[i, col];
+            colArray[i] = matrix[i][col];
         }
         return colArray;
     }
 
     public static string getMatrixValue(int row, int col)
     {
-        return matrix[row, col];
+        return matrix[row][col];
+    }
+
+    public static void setMatrixValue(int row, int col, string newValue)
+    {
+        matrix[row][col] = newValue;
     }
 
     public static int getRowCount()
     {
-        return newLines.Count;
+        return matrix.Length;
     }
+
 }
