@@ -22,6 +22,33 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label SearchHeaderLabel;
         
         /// <summary>
+        /// TitleDetailsPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel TitleDetailsPanel;
+        
+        /// <summary>
+        /// ISBN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ISBN;
+        
+        /// <summary>
+        /// SortList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList SortList;
+        
+        /// <summary>
         /// GridView1 control.
         /// </summary>
         /// <remarks>

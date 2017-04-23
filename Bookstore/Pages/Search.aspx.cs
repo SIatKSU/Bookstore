@@ -15,11 +15,24 @@ namespace Bookstore.Pages
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            populateSortList();
             type = Request.QueryString["Type"].ToLower();
             value = Request.QueryString["Value"].ToLower();
 
             GridView1.PageIndex = 0; //sets default GridView1 page to the first page
             setGridTable(searchData());
+        }
+
+        // Populates sortList
+        private void populateSortList()
+        {
+                ListItem titleItem = new ListItem("Title", "Title");
+                ListItem professorItem = new ListItem("Professor");
+                ListItem courseItem = new ListItem("Course");
+
+                SortList.Items.Add(titleItem);
+                SortList.Items.Add(courseItem);
+                SortList.Items.Add(professorItem);
         }
         
         // returns array with row indicies that contained the search value
@@ -214,6 +227,11 @@ namespace Bookstore.Pages
         protected void GridView1_DataBound(object sender, EventArgs e)
         {
             // this.GridView1.PageIndex = (this.GridView1.PageCount - 3);
+        }
+
+        protected void SortList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
         protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)

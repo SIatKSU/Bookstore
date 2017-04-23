@@ -5,9 +5,14 @@
 
     <asp:Label ID="SearchHeaderLabel" runat="server" Text="Search Results" style="text-align:center" Width="1100px" Font-Bold="True" Font-Size="Large" BorderWidth="2px"></asp:Label>
     <br> <br>
+
+    <asp:Panel ID="TitleDetailsPanel" runat="server"  Height ="20px" Width="1100px" style="float:left;text-align:center" BorderColor="Black" BorderWidth="2px">
+        <asp:Label ID="ISBN" runat="server" Font-Size="Medium" Text="Sort By:" /> &nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:DropDownList ID="SortList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="SortList_SelectedIndexChanged"/>
+    </asp:Panel>
      
     <asp:GridView ID="GridView1" runat="server" CellPadding="3" BorderColor="Black" BorderWidth="2px" GridLines="Horizontal" AutoGenerateColumns="false" 
-        PageIndex="10" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" OnDataBound="GridView1_DataBound" ShowHeader="false">
+        PageIndex="10" AllowPaging="true" OnPageIndexChanging="GridView1_PageIndexChanging" OnDataBound="GridView1_DataBound" ShowHeader="false" PagerStyle-HorizontalAlign="Center">
         
         <Columns>
             <asp:TemplateField HeaderText="Coverpage:" ItemStyle-Width="100px">
