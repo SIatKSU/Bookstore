@@ -5,7 +5,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     
-        <asp:Panel style="padding:25px" ID="Panel1" runat="server" BorderColor="Black" BorderStyle="Solid" BorderWidth="2px" Height="800px" Width="100%">
+        <asp:Panel style="padding:25px" ID="Panel1" runat="server" BorderColor="Black" BorderStyle="Solid" BorderWidth="2px" Width="100%" ScrollBars="Vertical">
             <asp:Panel ID="Panel2" runat="server" Height="100%" Width="100%">
 
                 
