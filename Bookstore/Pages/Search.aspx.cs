@@ -176,7 +176,7 @@ namespace Bookstore.Pages
                 int newQuantity = StaticData.convertToInt(rows[i], StaticData.QUANTITY_NEW);
                 if (newQuantity > 0)
                 {
-                    string newPriceStr = String.Format("Subtotal: {0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_NEW)));
+                    string newPriceStr = String.Format("{0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_NEW)));
                     dr["New"] = newPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 9) + ")";
                 }
                 else
@@ -187,7 +187,7 @@ namespace Bookstore.Pages
                 int usedQuantity = StaticData.convertToInt(rows[i], StaticData.QUANTITY_USED);
                 if (usedQuantity > 0)
                 {
-                    string usedPriceStr = String.Format("Subtotal: {0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_USED)));
+                    string usedPriceStr = String.Format("{0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_USED)));
                     dr["Used"] = usedPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 10) + ")";
                 }
                 else
@@ -198,7 +198,7 @@ namespace Bookstore.Pages
                 int rentalQuantity = StaticData.convertToInt(rows[i], StaticData.QUANTITY_RENTAL);
                 if (rentalQuantity > 0)
                 {
-                    string rentalPriceStr = String.Format("Subtotal: {0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_RENTAL)));
+                    string rentalPriceStr = String.Format("{0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_RENTAL)));
                     dr["Rental"] = rentalPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 11) + ")";
                 }
                 else
@@ -211,7 +211,7 @@ namespace Bookstore.Pages
                 if (Int32.Parse(ebookAvailability) >= 99999)
                 {
                     ebookAvailability = "In-Stock";
-                    string eBookPriceStr = String.Format("Subtotal: {0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_EBOOK)));
+                    string eBookPriceStr = String.Format("{0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_EBOOK)));
                     dr["eBook"] = eBookPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + ebookAvailability + ")"; 
                 }
                 else

@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/MasterPage.master" AutoEventWireup="true" CodeBehind="Details.aspx.cs" Inherits="Bookstore.Pages.Details" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <link href="../MyStyles.css" rel="stylesheet" type="text/css" />
     </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
@@ -41,7 +42,7 @@
 
                             <asp:Panel ID="AddToCartButtonPanel" runat="server"  Width="170px" Height="100px" style="float:left" HorizontalAlign="Center">
                                 <asp:Panel ID="alignPanel" runat="server" Width="100%" style="padding-top:20px;padding-bottom:20px">
-                                    <asp:Button ID="AddToCartButton" runat="server" Text="Add to Cart" style="float:right;padding:12px" Width="170px" Font-Size="Large" OnClick="AddToCartButton_Click" />
+                                    <asp:Button ID="AddToCartButton" runat="server" Text="Add to Cart" style="float:right" Width="170px" Font-Size="Large" CssClass="btn" OnClick="AddToCartButton_Click" />
                                 </asp:Panel>
                             </asp:Panel>
                            
