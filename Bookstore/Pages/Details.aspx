@@ -48,6 +48,7 @@
                             <asp:Panel ID="ErrorMessagePanel" runat="server" Height ="100px" Width="180px" style="float:right">
                                 <asp:Panel ID="Panel6" runat="server" Width="100%" style="padding-top:25px;padding-bottom:20px">
                                     <asp:Label ID="AddToCartError" runat="server" Text="Please select an item <br> to add to cart." Visible="False" Font-Bold="True" Font-Size="Medium" Font-Underline="False" ForeColor="Red"></asp:Label> 
+                                    <asp:Label ID="eBookAlreadyInCartError" runat="server" Text="eBook is already <br> in the cart." Visible="False" Font-Bold="True" Font-Size="Medium" Font-Underline="False"></asp:Label> 
                                 </asp:Panel>
                             </asp:Panel>
 

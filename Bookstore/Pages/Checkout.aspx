@@ -222,8 +222,8 @@
                 </asp:DropDownList>
                 <asp:DropDownList ID="ExpYearDropDown" runat="server" AutoPostBack="false">
                 </asp:DropDownList>
-                <asp:TextBox ID="PayPalPasswordTextBox" runat="server" Visible="False" Width="20%"></asp:TextBox>
-                <asp:TextBox ID="KSUPasswordTextBox" runat="server" Visible="False" Width="20%"></asp:TextBox>
+                <asp:TextBox ID="PayPalPasswordTextBox" runat="server" Visible="False" Width="20%" TextMode="Password"></asp:TextBox>
+                <asp:TextBox ID="KSUPasswordTextBox" runat="server" Visible="False" Width="20%" TextMode="Password"></asp:TextBox>
                 <br />
                 &nbsp;<asp:Label ID="paymentLabel3" CssClass="paymentFieldLabel" Style="width: 120px" runat="server" Text="Security Code:"></asp:Label>
                 <asp:TextBox ID="SecurityCodeTextBox" runat="server" onkeydown = "return (!((event.keyCode>=65 && event.keyCode <= 95) || event.keyCode >= 106) && event.keyCode!=32);" Columns="4" MaxLength="3" ></asp:TextBox>

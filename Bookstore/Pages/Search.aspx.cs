@@ -153,19 +153,7 @@ namespace Bookstore.Pages
             //add elements to DataRow
             for (int i = 0; i < rows.Length; i++)
             {
-                string ebookAvailability = StaticData.getMatrixValue(rows[i], 12);
                 string description = StaticData.getMatrixValue(rows[i], 17);   //gets whole book description
-
-
-                //changes eBook availability string to "Yes"
-                if (Int32.Parse(ebookAvailability) >= 99999)
-                {
-                    ebookAvailability = "In-Stock";
-                }
-                else
-                {
-                    ebookAvailability = "Not In-Stock";
-                }
 
                 //cuts description to < 260 chars
                 if (description.Length > 260)
@@ -183,10 +171,58 @@ namespace Bookstore.Pages
                 dr["ISBN"] = StaticData.getMatrixValue(rows[i], 0);
                 dr["Description"] = description;
                 dr["Format"] = "  Price:" + "<br>" + "<br>" + "  Quantity:";
-                dr["New"] = "$" + StaticData.getMatrixValue(rows[i], 13) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 9) + ")";
-                dr["Used"] = "$" + StaticData.getMatrixValue(rows[i], 14) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 10) + ")";
-                dr["Rental"] = "$" + StaticData.getMatrixValue(rows[i], 15) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 11) + ")";
-                dr["eBook"] = "$" + StaticData.getMatrixValue(rows[i], 16) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + ebookAvailability + ")"; // StaticData.getMatrixValue(rows[i], 12);
+
+
+                int newQuantity = StaticData.convertToInt(rows[i], StaticData.QUANTITY_NEW);
+                if (newQuantity > 0)
+                {
+                    string newPriceStr = String.Format("Subtotal: {0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_NEW)));
+                    dr["New"] = newPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 9) + ")";
+                }
+                else
+                {
+                    dr["New"] = "Not In-Stock";
+                }
+
+                int usedQuantity = StaticData.convertToInt(rows[i], StaticData.QUANTITY_USED);
+                if (usedQuantity > 0)
+                {
+                    string usedPriceStr = String.Format("Subtotal: {0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_USED)));
+                    dr["Used"] = usedPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 10) + ")";
+                }
+                else
+                {
+                    dr["Used"] = "Not In-Stock";
+                }
+                
+                int rentalQuantity = StaticData.convertToInt(rows[i], StaticData.QUANTITY_RENTAL);
+                if (rentalQuantity > 0)
+                {
+                    string rentalPriceStr = String.Format("Subtotal: {0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_RENTAL)));
+                    dr["Rental"] = rentalPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 11) + ")";
+                }
+                else
+                {
+                    dr["Rental"] = "Not In-Stock";
+                }
+
+                string ebookAvailability = StaticData.getMatrixValue(rows[i], 12);
+                //check eBook availability
+                if (Int32.Parse(ebookAvailability) >= 99999)
+                {
+                    ebookAvailability = "In-Stock";
+                    string eBookPriceStr = String.Format("Subtotal: {0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_EBOOK)));
+                    dr["eBook"] = eBookPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + ebookAvailability + ")"; 
+                }
+                else
+                {
+                    dr["eBook"] = "Not In-Stock";
+                }
+            
+                //dr["New"] = "$" + StaticData.getMatrixValue(rows[i], 13) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 9) + ")";
+                //dr["Used"] = "$" + StaticData.getMatrixValue(rows[i], 14) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 10) + ")";
+                //dr["Rental"] = "$" + StaticData.getMatrixValue(rows[i], 15) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 11) + ")";
+                //dr["eBook"] = "$" + StaticData.getMatrixValue(rows[i], 16) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + ebookAvailability + ")"; // StaticData.getMatrixValue(rows[i], 12);
 
                 dt.Rows.Add(dr);
             }

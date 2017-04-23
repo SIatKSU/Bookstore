@@ -9,7 +9,26 @@ public static class StaticData
 
     public const int NUM_COLUMNS = 18;
 
-    public const int QUANTITY_NEW = 9;      //column 9 = quantity new, column 10 = quantity used, column 11= quantity rental, column 12=ebook availability.
+
+    public const int ISBN = 0;
+    public const int TITLE = 1;
+    public const int AUTHOR = 2;
+    public const int SEMESTER = 3;
+    public const int COURSE = 4;
+    public const int NUM_SECTIONS = 5;
+    public const int PROFESSOR = 6;
+    public const int CRN = 7;
+    public const int REQUIRED =8;
+    public const int QUANTITY_NEW = 9;      
+    public const int QUANTITY_USED = 10;
+    public const int QUANTITY_RENTAL = 11;
+    public const int EBOOK_AVAIL = 12;
+    public const int PRICE_NEW = 13;
+    public const int PRICE_USED = 14;
+    public const int PRICE_RENTAL = 15;
+    public const int PRICE_EBOOK = 16;
+    public const int DESCRIPTION = 17;
+
 
     private static string appPath = HttpRuntime.AppDomainAppPath ;
     private static string fileName = appPath + "/books.csv";
@@ -66,8 +85,8 @@ public static class StaticData
                             }
                             else
                             {
-                                //for the first element in the line, append a space.  (a new line character in the authors' list or title would be bad!)
-                                if (colIndex != 17)
+                                //preserve newlines in the description, but not for the other fields.
+                                if (colIndex != DESCRIPTION)
                                     singleRow[colIndex] += " ";
                                 else
                                     singleRow[colIndex] += Environment.NewLine;
@@ -166,7 +185,7 @@ public static class StaticData
         string str;
         string outputStr;
 
-        string badLinesFile = @"D:\oldfiles\Desktop\ksu\2017 Spring\swe\project and homework\code\read_books_csv\read_books_csv\badLines.txt";
+        string badLinesFile = appPath + "/badLines.txt";
 
         using (FileStream fs = new FileStream(badLinesFile, FileMode.OpenOrCreate))
         {
@@ -289,6 +308,16 @@ public static class StaticData
     public static int getRowCount()
     {
         return matrix.Length;
+    }
+
+    //convert a cell's string value to int.
+    //if the value cannot be converted, i.e. "inf", return 0.
+    public static int convertToInt(int row, int col)
+    {
+        int result;
+        bool valid = int.TryParse(matrix[row][col], out result);
+
+        return valid ? result : 0;
     }
 
 }
