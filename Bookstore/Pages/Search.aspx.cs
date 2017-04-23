@@ -20,23 +20,28 @@ namespace Bookstore.Pages
             value = Request.QueryString["Value"].ToLower();
 
             GridView1.PageIndex = 0; //sets default GridView1 page to the first page
-            setGridTable(searchData());
+            setGridTable(searchData("ISBN"));
         }
 
         // Populates sortList
         private void populateSortList()
         {
-                ListItem titleItem = new ListItem("Title", "Title");
-                ListItem professorItem = new ListItem("Professor");
+            if (!IsPostBack)
+            {
+                ListItem isbnItem = new ListItem("ISBN");
+                ListItem titleItem = new ListItem("Title");
+                ListItem authorItem = new ListItem("Author");
                 ListItem courseItem = new ListItem("Course");
 
+                SortList.Items.Add(isbnItem);
                 SortList.Items.Add(titleItem);
+                SortList.Items.Add(authorItem);
                 SortList.Items.Add(courseItem);
-                SortList.Items.Add(professorItem);
+            }
         }
-        
+
         // returns array with row indicies that contained the search value
-        private int[] searchData()
+        private int[] searchData(string sortBy)
         {
             var indicesOfMatches = new List<int>();
 
@@ -73,7 +78,60 @@ namespace Bookstore.Pages
                     }
                 }
             }
-            return indicesOfMatches.ToArray();
+
+            // sort list
+            return sortList(indicesOfMatches, sortBy);
+        }
+
+        private int[] sortList(List<int> list, String selectedSort)
+        {
+            int selectedCol;
+
+            //set selectedColumn
+            switch (selectedSort)
+            {
+                case "Title":
+                    selectedCol = 1;
+                    break;
+                case "Course":
+                    selectedCol = 4;
+                    break;
+                case "Author":
+                    selectedCol = 2;
+                    break;
+                case "ISBN":
+                    selectedCol = 0;
+                    break;
+                default:
+                    selectedCol = 0;
+                    break;
+            }
+
+            List<string> sortValueList = new List<string>();
+
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                sortValueList.Add(StaticData.getMatrixValue(list[i], selectedCol));
+            }
+
+            //sort the values list alphabetically
+            sortValueList = sortValueList.OrderBy(q => q).ToList();
+
+            List<int> sortedIndexList = new List<int>();
+
+            for (int i = 0; i < sortValueList.Count; i++)
+            {
+                for (int j = 0; j < StaticData.getMatrixColumn(0).Length; j++)
+                {
+                    if (sortValueList[i] == StaticData.getMatrixValue(j, selectedCol))
+                    {
+                        sortedIndexList.Add(j);
+                    }
+                }
+            }
+
+            return sortedIndexList.ToArray();
         }
 
         private List<int> getKeywordMatcheIndices(string value)
@@ -267,13 +325,13 @@ namespace Bookstore.Pages
 
         protected void SortList_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            setGridTable(searchData(SortList.SelectedValue));
         }
 
         protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             GridView1.PageIndex = e.NewPageIndex;
-            setGridTable(searchData());
+            setGridTable(searchData(SortList.SelectedValue));
         }
     }
 }
