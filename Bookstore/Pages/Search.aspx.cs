@@ -31,12 +31,10 @@ namespace Bookstore.Pages
                 ListItem isbnItem = new ListItem("ISBN");
                 ListItem titleItem = new ListItem("Title");
                 ListItem authorItem = new ListItem("Author");
-                ListItem courseItem = new ListItem("Course");
-
+        
                 SortList.Items.Add(isbnItem);
                 SortList.Items.Add(titleItem);
                 SortList.Items.Add(authorItem);
-                SortList.Items.Add(courseItem);
             }
         }
 
@@ -92,9 +90,6 @@ namespace Bookstore.Pages
             {
                 case "Title":
                     selectedCol = 1;
-                    break;
-                case "Course":
-                    selectedCol = 4;
                     break;
                 case "Author":
                     selectedCol = 2;
