@@ -12,16 +12,25 @@ public partial class Pages_Cart : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         string labText = "";
-        if (Session["cart"] != null)
-        {
-            List<LineItem> cartList = (List<LineItem>)Session["cart"];
-            for (int i = 0; i < cartList.Count; i++)
-            {
 
-                labText = labText + "<br>" + "row: " + cartList[i].rowNumber + "  format: " + cartList[i].format + "  quantity: " + cartList[i].quantity;
-            }
-            Debug.WriteLine(cartList.Count);
-            Label1.Text = labText;
+        //just in case cart is null, create it.
+        if (Session["cart"] == null)
+        {
+            Session["cart"] = new Cart();
         }
+        Cart cart = (Cart)Session["cart"];
+
+        for (int i = 0; i < cart.cartList.Count; i++)
+        {
+
+            labText = labText + "<br>" + "row: " + cart.cartList[i].rowNumber + "  format: " + cart.cartList[i].format + "  quantity: " + cart.cartList[i].quantity;
+        }
+        Debug.WriteLine(cart.cartList.Count);
+        Label1.Text = labText;
+
+        //calculate total
+        cart.calcTotal();
+        
+
     }
 }

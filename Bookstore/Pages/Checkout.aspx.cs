@@ -11,20 +11,21 @@ namespace Bookstore.Pages
 {
     public partial class Checkout : System.Web.UI.Page
     {
-        //what gets passed from Shopping cart?
-        //List of the items in the cart, which is a list of 
-        //    a) Row Number (this identifies the book from the Books.csv), 
-        //    b) Format and 
-        //    c) Quantity.  
-        //From these three things, we can price, title, etc.
-
-        //*******DUMMY VALUES WHICH WILL LATER BE READ FROM SESSION STATE***********
-        double cartTotal = 100.49;
-        //**************************************************************************
-
+        Cart cart;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            //just in case cart is null, create it.
+            if (Session["cart"] == null)
+            {
+                Session["cart"] = new Cart();
+            }
+            cart = (Cart)Session["cart"];
+
+            //Customer should never get to this screen if the cart is empty.  But in case this does happen, show an error message.
+            ErrorLabel.Visible = IsCartEmpty();
+
+
             // Populates first DropDownList
             if (!IsPostBack)
             {
@@ -34,8 +35,6 @@ namespace Bookstore.Pages
                 PopulateYearsDropDown();
             }
 
-            //Customer should never get to this screen if the cart is empty.  But in case this does happen, show an error message.
-            ErrorLabel.Visible = IsCartEmpty();
         }
         
         public void PopulatePaymentMethodDropDown() {
@@ -176,8 +175,7 @@ namespace Bookstore.Pages
                     updateInventoryFile();
 
                     //empty the cart.
-                    ((List<LineItem>)Session["cart"]).Clear();
-                    cartTotal = 0;
+                    cart = new Cart();
 
                     Response.Redirect("Receipt.aspx");
                 }
@@ -191,19 +189,18 @@ namespace Bookstore.Pages
         {
             bool result = true;
 
-            List<LineItem> cartList = (List<LineItem>)Session["cart"];
-            for (int i = 0; i < cartList.Count; i++)
+            for (int i = 0; i < cart.cartList.Count; i++)
             {
-                if (cartList[i].format != LineItem.EBOOK)       //ebook quantity doesn't change
+                if (cart.cartList[i].format != LineItem.EBOOK)       //ebook quantity doesn't change
                 {
                     //row 9 = NEW.
                     int quantityAvailable;
-                    string quantityString = StaticData.getMatrixValue(cartList[i].rowNumber, StaticData.QUANTITY_NEW + cartList[i].format);
+                    string quantityString = StaticData.getMatrixValue(cart.cartList[i].rowNumber, StaticData.QUANTITY_NEW + cart.cartList[i].format);
                     bool quantityResult = int.TryParse(quantityString, out quantityAvailable);
-                    quantityAvailable -= cartList[i].quantity;
+                    quantityAvailable -= cart.cartList[i].quantity;
 
                     //insert the updated quantity back into the matrix
-                    StaticData.setMatrixValue(cartList[i].rowNumber, StaticData.QUANTITY_NEW + cartList[i].format, quantityAvailable.ToString());
+                    StaticData.setMatrixValue(cart.cartList[i].rowNumber, StaticData.QUANTITY_NEW + cart.cartList[i].format, quantityAvailable.ToString());
                 }
             }
 
@@ -220,21 +217,20 @@ namespace Bookstore.Pages
         //did anyone place order in the meantime?
         public Boolean CheckStillInStock()
         {
-            List<LineItem> cartList = (List<LineItem>)Session["cart"];
             StaticData.readFile();
             bool result = true;
 
-            for (int i = 0; i < cartList.Count; i++)
+            for (int i = 0; i < cart.cartList.Count; i++)
             {
 
-                if (cartList[i].format != LineItem.EBOOK)       //ebooks never go out of stock.
+                if (cart.cartList[i].format != LineItem.EBOOK)       //ebooks never go out of stock.
                 {
                     //row 9 = NEW.
                     int quantityAvailable;
-                    string quantityString = StaticData.getMatrixValue(cartList[i].rowNumber, StaticData.QUANTITY_NEW + cartList[i].format);
+                    string quantityString = StaticData.getMatrixValue(cart.cartList[i].rowNumber, StaticData.QUANTITY_NEW + cart.cartList[i].format);
                     bool quantityResult = int.TryParse(quantityString, out quantityAvailable);
 
-                    if (quantityAvailable < cartList[i].quantity)
+                    if (quantityAvailable < cart.cartList[i].quantity)
                     {
                         ErrorLabel.Text = "Not enough items in stock.  Please return to the shopping cart page.";
                         result = false;
@@ -249,7 +245,7 @@ namespace Bookstore.Pages
         //returns false if cart is not empty.
         public Boolean IsCartEmpty()
         {
-            if ((Session["cart"] == null) || ((List<LineItem>)Session["cart"]).Count == 0)
+            if (cart.cartList.Count == 0)
             {
                 ErrorLabel.Text = "Shopping Cart is empty.  Please click the Home/Search button to search for books.";
                 return true;
@@ -316,7 +312,7 @@ namespace Bookstore.Pages
             string username = KSULoginTextBox.Text.Trim();
             string password = KSUPasswordTextBox.Text;
 
-            double finAidBalance;
+            decimal finAidBalance;
 
             string appPath = HttpRuntime.AppDomainAppPath;
             string bursarFile = appPath + "/students.txt";
@@ -344,13 +340,13 @@ namespace Bookstore.Pages
 
                 if (foundUserName && bursarEntry[3] == password)
                 {
-                    bool finAidValidFormat = double.TryParse(bursarEntry[4], out finAidBalance);
-                    if (finAidValidFormat && finAidBalance > cartTotal)
+                    bool finAidValidFormat = decimal.TryParse(bursarEntry[4], out finAidBalance);
+                    if (finAidValidFormat && finAidBalance > cart.total)
                     {
                         //i is the line number in students.txt to edit
                         //bursarEntry 4 is the financial aid balance
 
-                        finAidBalance -= cartTotal;
+                        finAidBalance -= cart.total;
                         bursarEntry[4] = finAidBalance.ToString();
                         lines[i] = string.Join("\t", bursarEntry);
 

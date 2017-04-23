@@ -17,6 +17,8 @@ namespace Bookstore.Pages
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            eBookAlreadyInCartError.Visible = false;
+
             isbn = Request.QueryString["isbn"].ToLower();
 
             setBookRowIndex();
@@ -47,19 +49,51 @@ namespace Bookstore.Pages
 
         private void setCartPanel()
         {
-            ListItem newItem = new ListItem("New $" + StaticData.getMatrixValue(bookRowIndex, 13));
-            ListItem usedItem = new ListItem("Used $" + StaticData.getMatrixValue(bookRowIndex, 14));
-            ListItem rentItem = new ListItem("Rental $" + StaticData.getMatrixValue(bookRowIndex, 15));
-            ListItem eBookItem = new ListItem("eBook $" + StaticData.getMatrixValue(bookRowIndex, 16));
+            //to format as $
+            string newPriceStr = String.Format("Subtotal: {0:C}", Convert.ToDecimal(StaticData.getMatrixValue(bookRowIndex, StaticData.PRICE_NEW)));
+            string usedPriceStr = String.Format("Subtotal: {0:C}", Convert.ToDecimal(StaticData.getMatrixValue(bookRowIndex, StaticData.PRICE_USED)));
+            string rentalPriceStr = String.Format("Subtotal: {0:C}", Convert.ToDecimal(StaticData.getMatrixValue(bookRowIndex, StaticData.PRICE_RENTAL)));
+            string eBookPriceStr = String.Format("Subtotal: {0:C}", Convert.ToDecimal(StaticData.getMatrixValue(bookRowIndex, StaticData.PRICE_EBOOK)));
+
+            ListItem newItem = new ListItem("New " + newPriceStr);
+            ListItem usedItem = new ListItem("Used " + usedPriceStr);
+            ListItem rentItem = new ListItem("Rental " + rentalPriceStr);
+            ListItem eBookItem = new ListItem("eBook " + eBookPriceStr);
+
+            //ListItem newItem = new ListItem("New $" + StaticData.getMatrixValue(bookRowIndex, 13));
+            //ListItem usedItem = new ListItem("Used $" + StaticData.getMatrixValue(bookRowIndex, 14));
+            //ListItem rentItem = new ListItem("Rental $" + StaticData.getMatrixValue(bookRowIndex, 15));
+            //ListItem eBookItem = new ListItem("eBook $" + StaticData.getMatrixValue(bookRowIndex, 16));
             newItem.Value = "0";
             usedItem.Value = "1";
             rentItem.Value = "2";
             eBookItem.Value = "3";
 
-            RBList1.Items.Add(newItem);
-            RBList1.Items.Add(usedItem);
-            RBList1.Items.Add(rentItem);
-            RBList1.Items.Add(eBookItem);
+
+            //if format out of stock, don't add to the dropdown
+            int newQuantity, usedQuantity, rentalQuantity, eBookQuantity;
+            bool valid;
+            string quantityStr;
+
+            quantityStr = StaticData.getMatrixValue(bookRowIndex, StaticData.QUANTITY_NEW);
+            valid = int.TryParse(quantityStr, out newQuantity);
+            if (valid && newQuantity > 0)
+                RBList1.Items.Add(newItem);
+
+            quantityStr = StaticData.getMatrixValue(bookRowIndex, StaticData.QUANTITY_USED);
+            valid = int.TryParse(quantityStr, out usedQuantity);
+            if (valid && usedQuantity > 0)
+                RBList1.Items.Add(usedItem);
+
+            quantityStr = StaticData.getMatrixValue(bookRowIndex, StaticData.QUANTITY_RENTAL);
+            valid = int.TryParse(quantityStr, out rentalQuantity);
+            if (valid && rentalQuantity > 0)
+                RBList1.Items.Add(rentItem);
+
+            quantityStr = StaticData.getMatrixValue(bookRowIndex, StaticData.EBOOK_AVAIL);
+            valid = int.TryParse(quantityStr, out eBookQuantity);
+            if (valid && eBookQuantity > 0)
+                RBList1.Items.Add(eBookItem);
 
         }
 
@@ -150,40 +184,23 @@ namespace Bookstore.Pages
             }
             else
             {
+                //just in case cart is null, create it.
                 if (Session["cart"] == null)
                 {
-                    Session["cart"] = new List<LineItem>();  //if list doesn't exist, create it.
+                    Session["cart"] = new Cart();
                 }
-                //List<LineItem> cartList = (List<LineItem>)Session["cart"] ?? new List<LineItem>();  //if list doesn't exist, create it.
-                List<LineItem> cartList = (List<LineItem>) Session["cart"];
-                if (cartList.Count == 0)
+                Cart cart = (Cart) Session["cart"];
+
+                int addResult = cart.AddToCart(bookRowIndex, selectedFormat, 1);
+                if (addResult == -1)
                 {
-                    cartList.Add(new LineItem(bookRowIndex, selectedFormat, 1));
+                    eBookAlreadyInCartError.Visible = true;
                 }
                 else
                 {
-                    bool foundLineItem = false;
-                    int i = 0;
-                    while ((i < cartList.Count) && (!foundLineItem))
-                    { 
-                        //if current LineItem matches one already in the Cart, increment the quantity by 1.
-                        if ((cartList[i].rowNumber == bookRowIndex) &&
-                            (cartList[i].format == selectedFormat))
-                        {
-                            cartList[i].quantity++;
-                            foundLineItem = true;
-                        }
-                        i++;
-                    }
-
-                    //if we didn't find a match, add the line item to the cart.
-                    if (!foundLineItem) {
-                        cartList.Add(new LineItem(bookRowIndex, selectedFormat, 1));
-                    }
-                    
+                    // redirect to cart page
+                    Response.Redirect("Cart.aspx");
                 }
-                // redirect to cart page
-                Response.Redirect("Cart.aspx");
             }
         }
     }
