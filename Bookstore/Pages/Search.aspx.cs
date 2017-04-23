@@ -274,7 +274,7 @@ namespace Bookstore.Pages
 
                 string ebookAvailability = StaticData.getMatrixValue(rows[i], 12);
                 //check eBook availability
-                if (Int32.Parse(ebookAvailability) >= 99999)
+                if (Int32.Parse(ebookAvailability) > 0)
                 {
                     ebookAvailability = "In-Stock";
                     string eBookPriceStr = String.Format("{0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_EBOOK)));

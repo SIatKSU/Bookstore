@@ -10,7 +10,7 @@ namespace Bookstore
         public const decimal TAXRATE = 7;
         public const decimal SHIPPING = 14.99M;
 
-        public List<LineItem> cartList;                                //LineItem is defined at the end of this class
+        public List<LineItem> cartList;                               
 
         public decimal subTotal;   //calculated each time book is added or removed from cart
 
@@ -123,5 +123,15 @@ namespace Bookstore
                 subTotal += cartList[i].price * cartList[i].quantity;
             }
         }       
+
+        public int GetNumOfItems()
+        {
+            int numOfItems = 0;
+            for (int i = 0; i < cartList.Count; i++)
+            {
+                numOfItems += cartList[i].quantity;
+            }
+            return numOfItems;
+        }
     }
 }

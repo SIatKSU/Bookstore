@@ -23,8 +23,6 @@ public partial class MasterPage : System.Web.UI.MasterPage
 
         StaticData.readFile(); //this will be moved to a more appropriate place later
        
-        int numOfItems = 0;
-
         //just in case cart is null, create it.
         if (Session["cart"] == null)
         {
@@ -32,23 +30,11 @@ public partial class MasterPage : System.Web.UI.MasterPage
         }
         cart = (Cart)Session["cart"];
 
-        numOfItems = getNumOfItems();
-            
-        CartQuantityText.Text = numOfItems.ToString() + " Items";
+        int numOfItems = cart.GetNumOfItems();
+        string itemString = numOfItems == 1 ? " Item" : " Items";
+        CartQuantityText.Text = numOfItems.ToString() + itemString;
 
         string subTotalString = String.Format("Subtotal: {0:C}", cart.subTotal);
         SubtotalText.Text = subTotalString;
-    }
-
-    private int getNumOfItems()
-    {
-        int numOfItems = 0;
-
-        for (int i = 0; i < cart.cartList.Count; i++)
-        {
-            numOfItems += cart.cartList[i].quantity;
-        }
-
-        return numOfItems;
     }
 }

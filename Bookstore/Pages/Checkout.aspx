@@ -231,7 +231,7 @@
             </asp:Panel>
             <asp:Panel ID="Panel11" runat="server" Height="40%" Width="100%" Style="display:inline-block; overflow: hidden; border-style: solid; border-width: 2px 0px 0px 0px">
                 <asp:Label ID="ErrorLabel" runat="server" visible="false" Font-Bold="True" Style="float: left; font-size:large; margin-left:30px; margin-top:11px" ForeColor="Red" Text="ErrorMessageGoesHere"></asp:Label>
-                <asp:Button ID="PlaceOrderButton" runat="server" Text="Place Order" Style="font-size: large; float: right; margin-right: 50px; margin-top: 8px" CssClass="btn" OnClick="PlaceOrderButton_Click" />
+                <asp:Button ID="PlaceOrderButton" runat="server" Text="Place Order" Style="font-size: large; float: right; margin-right: 50px; margin-top: 7px" CssClass="btn" OnClick="PlaceOrderButton_Click" />
             </asp:Panel>
         </asp:Panel>
     </asp:Panel>
