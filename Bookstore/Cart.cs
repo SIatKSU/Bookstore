@@ -117,6 +117,7 @@ namespace Bookstore
                 return 0;               //success
         }
 
+        //calc tax, shipping and total
         public void calcTotal()
         {
             bool hasShipping = false;
@@ -131,7 +132,8 @@ namespace Bookstore
                 i++;
             }
 
-            total = subTotal + TAXRATE * subTotal;
+            tax = TAXRATE * subTotal;
+            total = subTotal + tax;
             if (hasShipping)
             {
                 shipping = SHIPPING;

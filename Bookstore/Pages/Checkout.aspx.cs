@@ -12,6 +12,7 @@ namespace Bookstore.Pages
     public partial class Checkout : System.Web.UI.Page
     {
         Cart cart;
+        CustomerInfo customerInfo;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -177,11 +178,61 @@ namespace Bookstore.Pages
                     //empty the cart.
                     cart = new Cart();
 
+                    //Copy the customer information for the Receipts page, into Session state.
+                    LoadSessionData();
+
                     Response.Redirect("Receipt.aspx");
                 }
 
             }
         }
+
+
+        public void LoadSessionData()
+        {
+            if (customerInfo == null)
+            {
+                customerInfo = new CustomerInfo();
+            }
+
+            customerInfo.FullName = FullNameTextBox.Text;
+            customerInfo.Email = EmailTextBox.Text;
+            customerInfo.PhoneNumber = PhoneTextBox.Text;
+
+            customerInfo.BillingStreet = BillingStreetTextBox.Text;
+            customerInfo.BillingCity = BillingCityTextBox.Text;
+            customerInfo.BillingState = BillingStateDropDown.Text;
+            customerInfo.BillingZip = BillingZipTextBox.Text;
+
+            customerInfo.ShippingStreet = ShippingStreetTextBox.Text;
+            customerInfo.ShippingCity = ShippingCityTextBox.Text;
+            customerInfo.ShippingState = ShippingStateDropDown.Text;
+            customerInfo.ShippingZip = ShippingZipTextBox.Text;
+
+            customerInfo.PaymentMethod = PaymentMethodDropDown.Text;
+
+            string paymentMethod = PaymentMethodDropDown.SelectedValue;
+            if (paymentMethod == "creditcard")
+            {
+                customerInfo.CardNumber = CardNumberTextBox.Text;
+                customerInfo.SecurityCode = SecurityCodeTextBox.Text;
+                customerInfo.ExpirationMonth = ExpMonthDropDown.Text;
+                customerInfo.ExpirationYear = ExpYearDropDown.Text;
+            }
+            else if (paymentMethod == "paypal")
+            {
+                customerInfo.PayPalEmail = PayPalEmailTextBox.Text;
+                customerInfo.PayPalPassword = PayPalPasswordTextBox.Text;
+            }
+            else
+            {
+                customerInfo.KSUlogin = KSULoginTextBox.Text;
+                customerInfo.KSUPassword = KSUPasswordTextBox.Text;
+            }
+
+            Session["CustomerInfo"] = customerInfo;
+        }
+
 
 
         //note implemented yet - but in future, if there's a problem with updating the inventoryFile, we could flag this order for the Admin Assistant  
