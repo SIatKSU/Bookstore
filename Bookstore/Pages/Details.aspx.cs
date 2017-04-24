@@ -196,7 +196,11 @@ namespace Bookstore.Pages
                 {
                     eBookAlreadyInCartError.Visible = true;
                 }
-                else
+                else if (addResult == -2)
+                {
+                    //could put an error: out of stock message here.  
+                    //Or just let the page refresh and they can try again.
+                }
                 {
                     // redirect to cart page
                     Response.Redirect("Cart.aspx");

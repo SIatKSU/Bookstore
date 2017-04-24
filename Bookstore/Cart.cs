@@ -16,6 +16,7 @@ namespace Bookstore
 
         public decimal tax;        //calculated on loading the cart page
         public decimal total;      //calculated on loading the cart page
+        public decimal shipping;   //calculated on loading the cart page
 
         public Cart () {    //constructor
             cartList = new List<LineItem>();        
@@ -23,6 +24,7 @@ namespace Bookstore
 
         //add an item to the cart and update subtotal
         //returns -1 if trying to add an eBook when eBook was already purchased
+        //returns -2 if trying to add more of a book to cart than exists in stock
         //returns 0 otherwise
         public int AddToCart(int rowNumber, int format, int quantity)
         {
@@ -45,7 +47,16 @@ namespace Bookstore
                     }
                     else
                     {
-                        cartList[i].quantity += quantity;
+                        int quantityInStock = StaticData.convertToInt(cartList[i].rowNumber, cartList[i].format + StaticData.QUANTITY_NEW);
+                        if (cartList[i].quantity > quantityInStock)
+                        {
+                            result = -2;    //Error!  Trying to add more items to the cart than exist in stock.
+                        }
+                        else
+                        {
+                            cartList[i].quantity += quantity;
+                        }
+                        
                     }                   
                 }
                 i++;
@@ -65,13 +76,16 @@ namespace Bookstore
 
 
         //remove an item from the cart and recalculate subtotal
-        //returns true if cart updated successfully
-        //returns false if item not found.  *this should never happen*
-        public bool RemoveFromCart(int rowNumber, int format, int quantityToRemove)
+        //returns 0 if cart updated successfully
+        //returns -1 if item not found.  *this should never happen*
+        //returns -2 if trying to remove more of an item from the cart than is currently in the cart.
+        public int RemoveFromCart(int rowNumber, int format, int quantityToRemove)
         {
-            //search cartList for the item to be removed
+            bool removingTooMuch = false;
             bool foundLineItem = false;
             int i = 0;
+
+            //search cartList for the item to be removed
             while ((i < cartList.Count) && (!foundLineItem))
             {
                 if ((cartList[i].rowNumber == rowNumber) &&
@@ -82,6 +96,10 @@ namespace Bookstore
                     {
                         cartList.Remove(cartList[i]);
                     }
+                    else if (cartList[i].quantity < quantityToRemove)
+                    {
+                        removingTooMuch = true;
+                    }
                     else
                     {
                         cartList[i].quantity -= quantityToRemove;
@@ -91,7 +109,12 @@ namespace Bookstore
             }
             RecalcSubtotal();
 
-            return foundLineItem;       //return true if we found and removed an item (should always be the case)
+            if (removingTooMuch)
+                return -2;              //trying to remove too much
+            else if (!foundLineItem)
+                return -1;              //item not found
+            else
+                return 0;               //success
         }
 
         public void calcTotal()
@@ -111,7 +134,12 @@ namespace Bookstore
             total = subTotal + TAXRATE * subTotal;
             if (hasShipping)
             {
+                shipping = SHIPPING;
                 total += SHIPPING;
+            }
+            else
+            {
+                shipping = 0;
             }
         }
 
