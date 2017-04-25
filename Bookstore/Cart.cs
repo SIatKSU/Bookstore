@@ -132,7 +132,7 @@ namespace Bookstore
                 i++;
             }
 
-            tax = TAXRATE * subTotal;
+            tax = TAXRATE * subTotal / 100;
             total = subTotal + tax;
             if (hasShipping)
             {
