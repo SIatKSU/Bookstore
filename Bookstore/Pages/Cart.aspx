@@ -62,7 +62,7 @@
             <asp:TemplateField HeaderText= "&nbsp;&nbsp;&nbsp;Quantity" ItemStyle-Width="140px">
                 <ItemTemplate>
                     <asp:Button ID="DecrementBtn" runat="server" Font-Size="Large" Font-Bold="true" Text="-" />
-                    <asp:TextBox ID="QuantityTextBox" Width="40px" Font-Size="Large" runat="server" Text='<%# Bind("Quantity") %>'></asp:TextBox>
+                    <asp:TextBox ID="QuantityTextBox" Width="40px" Font-Size="Large" runat="server" Text='<%# Bind("Quantity") %>' style="text-align:center" />
                     <asp:Button ID="IncrementBtn" runat="server" Font-Size="Large" Font-Bold="true" Text="+" />
                 </ItemTemplate>
             </asp:TemplateField>
