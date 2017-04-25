@@ -2,6 +2,12 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
     <link href="../MyStyles.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .gridColumn {
+            padding-right: 20px;
+        }
+    </style>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <asp:Label ID="CartHeaderLabel" runat="server" Text="Shopping Cart" Style="text-align: center" Width="1100px" Font-Bold="True" Font-Size="Large" BorderWidth="2px"></asp:Label>
@@ -9,22 +15,43 @@
     <br>
     <asp:Label ID="ErrorLabel" runat="server" Text="Errors go here." Style="text-align: left; border-style: solid; border-color: black; border-width:2px 2px 2px 2px" Width="1100px" Font-Bold="True" Font-Size="Large" ForeColor="Red"></asp:Label>
     
-    <asp:GridView ID="GridView1" AutoGenerateColumns="False" runat="server" GridLines="Horizontal">
+                <!--<asp:HyperLinkField HeaderText="Title:" DataNavigateUrlFields="TitleURL" DataTextField="Title">
+                <ItemStyle HorizontalAlign="Left" Width="350px" CssClass="gridColumn"/>
+            </asp:HyperLinkField>-->
+
+    <asp:GridView ID="GridView1" AutoGenerateColumns="False" runat="server" BorderColor="Black" BorderWidth="2px" GridLines="Horizontal">
         <Columns>
-            <asp:TemplateField HeaderText="Coverpage:" ItemStyle-Width="100px">
+            <asp:TemplateField HeaderText="Coverpage:" ItemStyle-Width="100px" ItemStyle-CssClass="gridColumn">
                 <ItemTemplate>
                     <a href='<%#Eval("ISBN","/Pages/Details.aspx?isbn={0}") %>'>
                         <img src='<%#Eval("ISBN","/Images/{0}.jpg") %>' width="100" />
                     </a>
                 </ItemTemplate>
+                <ItemStyle Width="100px"></ItemStyle>
             </asp:TemplateField>
-            <asp:HyperLinkField HeaderText="Title" DataNavigateUrlFields="TitleURL" DataTextField="Title">
-                <ItemStyle HorizontalAlign="Left" Width="100px" />
-            </asp:HyperLinkField>
-            <asp:BoundField DataField="Format" HeaderText="Format">
+
+            <asp:TemplateField HeaderText ="Title & Author:" ItemStyle-Width="350px" ItemStyle-CssClass="gridColumn" >
+                <ItemTemplate>
+                    <a href='<%#Eval("ISBN","/Pages/Details.aspx?isbn={0}") %>'>
+                        <asp:Label ID="Title" runat="server" Text='<%# Bind("Title") %>' Font-Size="Large" Font-Bold="True" style="padding-bottom:10px"/>
+                    </a>
+                    <asp:Label ID="Author" style="display:block; padding-top:10px" runat="server" Text='<%# Bind("Author") %>'/>
+                </ItemTemplate>                
+            </asp:TemplateField>
+
+            <asp:BoundField DataField="Author" HeaderText="Author:">
+                <ItemStyle HorizontalAlign="Left" Width="130px" CssClass="gridColumn"/>
+            </asp:BoundField>
+            <asp:BoundField DataField="Format" HeaderText="Format:">
                 <ItemStyle HorizontalAlign="Left" Width="100px" />
             </asp:BoundField>
-            <asp:BoundField DataField="Quantity" HeaderText="Quantity">
+            <asp:BoundField DataField="Price" HeaderText="Price:">
+                <ItemStyle HorizontalAlign="Left" Width="100px" />
+            </asp:BoundField>
+            <asp:BoundField DataField="Quantity" HeaderText="Quantity:">
+                <ItemStyle HorizontalAlign="Left" Width="100px" />
+            </asp:BoundField>
+            <asp:BoundField DataField="Total" HeaderText="Total:">
                 <ItemStyle HorizontalAlign="Left" Width="100px" />
             </asp:BoundField>
         </Columns>

@@ -62,8 +62,11 @@ public partial class Pages_Cart : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("ISBN"));
         dt.Columns.Add(new DataColumn("Title"));
         dt.Columns.Add(new DataColumn("TitleURL"));
+        dt.Columns.Add(new DataColumn("Author"));
         dt.Columns.Add(new DataColumn("Format"));
+        dt.Columns.Add(new DataColumn("Price"));
         dt.Columns.Add(new DataColumn("Quantity"));
+        dt.Columns.Add(new DataColumn("Total"));
 
         //add elements to DataRow
         for (int i = 0; i < cart.cartList.Count; i++)
@@ -76,6 +79,8 @@ public partial class Pages_Cart : System.Web.UI.Page
             dr["ISBN"] = isbn;
             dr["Title"] = StaticData.getMatrixValue(cart.cartList[i].rowNumber, StaticData.TITLE);
             dr["TitleURL"] = @"/Pages/Details.aspx?isbn=" + isbn;
+
+            dr["Author"] = StaticData.getMatrixValue(cart.cartList[i].rowNumber, StaticData.AUTHOR);
 
             switch (cart.cartList[i].format)
             {
@@ -96,8 +101,11 @@ public partial class Pages_Cart : System.Web.UI.Page
                     break;
             }
 
+            dr["Price"] = String.Format("{0:C}", cart.cartList[i].price);
             dr["Quantity"] = cart.cartList[i].quantity;
 
+            decimal lineTotal = cart.cartList[i].price * cart.cartList[i].quantity;
+            dr["Total"] = String.Format("{0:C}", lineTotal);
             dt.Rows.Add(dr);
         }
 
