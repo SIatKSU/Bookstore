@@ -25,16 +25,13 @@ namespace Bookstore
 
         //credit card
         public string CardNumber;
-        public string SecurityCode;
         public string ExpirationMonth;
         public string ExpirationYear;
 
         //paypal
         public string PayPalEmail;
-        public string PayPalPassword;
 
         //KSU login
         public string KSUlogin;
-        public string KSUPassword;
     }
 }

@@ -11,6 +11,11 @@ namespace Bookstore.Pages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            //here is how you access the customer info.
+            CustomerInfo customerInfo = (CustomerInfo)Session["CustomerInfo"];
+
+            //for example:
+            //labelXYZ = customerInfo.FullName;
 
         }
     }

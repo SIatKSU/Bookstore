@@ -215,19 +215,16 @@ namespace Bookstore.Pages
             if (paymentMethod == "creditcard")
             {
                 customerInfo.CardNumber = CardNumberTextBox.Text;
-                customerInfo.SecurityCode = SecurityCodeTextBox.Text;
                 customerInfo.ExpirationMonth = ExpMonthDropDown.Text;
                 customerInfo.ExpirationYear = ExpYearDropDown.Text;
             }
             else if (paymentMethod == "paypal")
             {
                 customerInfo.PayPalEmail = PayPalEmailTextBox.Text;
-                customerInfo.PayPalPassword = PayPalPasswordTextBox.Text;
             }
             else
             {
                 customerInfo.KSUlogin = KSULoginTextBox.Text;
-                customerInfo.KSUPassword = KSUPasswordTextBox.Text;
             }
 
             Session["CustomerInfo"] = customerInfo;
