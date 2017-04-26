@@ -39,11 +39,13 @@ namespace Bookstore.Pages
         }
         
         public void PopulatePaymentMethodDropDown() {
-            ListItem creditcard = new ListItem("MasterCard/Visa", "creditcard");
+            ListItem MasterCard = new ListItem("MasterCard", "MasterCard");
+            ListItem Visa = new ListItem("Visa", "Visa");
             ListItem paypal = new ListItem("PayPal", "paypal");
             ListItem financialaid = new ListItem("Financial Aid", "financialaid");
 
-            PaymentMethodDropDown.Items.Add(creditcard);
+            PaymentMethodDropDown.Items.Add(MasterCard);
+            PaymentMethodDropDown.Items.Add(Visa);
             PaymentMethodDropDown.Items.Add(paypal);
             PaymentMethodDropDown.Items.Add(financialaid);
         }
@@ -96,7 +98,7 @@ namespace Bookstore.Pages
         {
             string method = PaymentMethodDropDown.SelectedValue;
 
-            if (method == "creditcard")
+            if (method == "MasterCard" || method == "Visa")
             {
                 CardNumberTextBox.Visible = true;
                 PayPalEmailTextBox.Visible = false;
@@ -156,7 +158,7 @@ namespace Bookstore.Pages
 
                 string method = PaymentMethodDropDown.SelectedValue;
                 bool paymentSuccess;
-                if (method == "creditcard")
+                if (method == "MasterCard" || method == "Visa")
                 {
                     paymentSuccess = ChargeCreditCard();
                 }
@@ -212,11 +214,15 @@ namespace Bookstore.Pages
             customerInfo.PaymentMethod = PaymentMethodDropDown.Text;
 
             string paymentMethod = PaymentMethodDropDown.SelectedValue;
-            if (paymentMethod == "creditcard")
+            if (paymentMethod == "MasterCard")
             {
                 customerInfo.CardNumber = CardNumberTextBox.Text;
-                customerInfo.ExpirationMonth = ExpMonthDropDown.Text;
-                customerInfo.ExpirationYear = ExpYearDropDown.Text;
+                
+            }
+            else if (paymentMethod == "Visa"){
+                customerInfo.CardNumber = CardNumberTextBox.Text;
+                
+
             }
             else if (paymentMethod == "paypal")
             {
@@ -513,7 +519,7 @@ namespace Bookstore.Pages
                 //payment information
                 string paymentMethod = PaymentMethodDropDown.SelectedValue;
 
-                if (paymentMethod == "creditcard")
+                if (paymentMethod == "Visa" || paymentMethod == "MasterCard") 
                 {
                     System.DateTime currentDate = System.DateTime.Now;
                     int expMonth;
