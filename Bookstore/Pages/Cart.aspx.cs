@@ -13,7 +13,7 @@ public partial class Pages_Cart : System.Web.UI.Page
     private Cart cart;
 
     protected void Page_Load(object sender, EventArgs e)
-    {
+    {                
         //just in case cart is null, create it.
         if (Session["cart"] == null)
         {
@@ -21,7 +21,28 @@ public partial class Pages_Cart : System.Web.UI.Page
         }
         cart = (Cart)Session["cart"];
 
-        if (cart.GetNumOfItems()==0)
+        CheckIsCartEmpty();
+
+        if (!IsPostBack) // If page loads for first time
+        {
+            // Assign the Session["update"] with unique value ------need to handle user pressing F5
+            Session["update"] = Server.UrlEncode(System.DateTime.Now.ToString());
+
+            SetGridTable();
+        }
+
+        SetTotals();
+    }
+
+    //need to handle user pressing F5
+    protected override void OnPreRender(EventArgs e)
+    {
+        ViewState["update"] = Session["update"];
+    }
+
+    private void CheckIsCartEmpty()
+    {
+        if (cart.GetNumOfItems() == 0)
         {
             CheckoutBtn.Visible = false;
             ErrorLabel.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Cart is empty.";
@@ -32,19 +53,13 @@ public partial class Pages_Cart : System.Web.UI.Page
             CheckoutBtn.Visible = true;
             ErrorLabel.Visible = false;
         }
-
-        //calculate total
-        cart.calcTotal();
-
-        SetGridTable();
-        //SetTotalsTable();  //better to do this as labels on a panel.
-        SetTotals();
-
-
     }
 
     private void SetTotals()
     {
+        //calculate Tax, shipping and total
+        cart.calcTaxShippingAndTotal();
+
         SubtotalLabel.Text = String.Format("{0:C}", cart.subTotal);
         TaxLabel.Text = String.Format("{0:C}", cart.tax);
         ShippingLabel.Text = String.Format("{0:C}", cart.shipping);
@@ -67,6 +82,7 @@ public partial class Pages_Cart : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Price"));
         dt.Columns.Add(new DataColumn("Quantity"));
         dt.Columns.Add(new DataColumn("Total"));
+        dt.Columns.Add(new DataColumn("RowNumber"));
 
         //add elements to DataRow
         for (int i = 0; i < cart.cartList.Count; i++)
@@ -106,50 +122,18 @@ public partial class Pages_Cart : System.Web.UI.Page
 
             decimal lineTotal = cart.cartList[i].price * cart.cartList[i].quantity;
             dr["Total"] = String.Format("{0:C}", lineTotal);
+
+            dr["RowNumber"] = cart.cartList[i].rowNumber;
             dt.Rows.Add(dr);
         }
 
+
         GridView1.DataSource = dt;
         GridView1.DataBind();
+        Session["CartSource"] = dt;
+
     }
-
-    private void SetTotalsTable()
-    {
-        //create DataTable & DataRow
-        DataTable dt = new DataTable();
-        DataRow dr = null;
-
-        //Adds columns to DataTable
-        //dt.Columns.Add(new DataColumn("Blank1"));
-        dt.Columns.Add(new DataColumn("BlankSpace"));
-        dt.Columns.Add(new DataColumn("Label"));
-        dt.Columns.Add(new DataColumn("Amount"));
-
-        //add elements to DataRow
-        dr = dt.NewRow();
-        dr["Label"] = "Subtotal:";
-        dr["Amount"] = cart.subTotal;
-        dt.Rows.Add(dr);
-
-        dr = dt.NewRow();
-        dr["Label"] = "7% tax:";
-        dr["Amount"] = cart.tax;
-        dt.Rows.Add(dr);
-
-        dr = dt.NewRow();
-        dr["Label"] = "Shipping:";
-        dr["Amount"] = cart.shipping;
-        dt.Rows.Add(dr);
-
-        dr = dt.NewRow();
-        dr["Label"] = "Total:";
-        dr["Amount"] = cart.total;
-        dt.Rows.Add(dr);
-
-        GridView2.DataSource = dt;
-        GridView2.DataBind();
-    }
-
+    
 
 
     protected void CheckoutButton_Click(object sender, EventArgs e)
@@ -160,5 +144,99 @@ public partial class Pages_Cart : System.Web.UI.Page
     protected void ContinueShoppingBtn_Click(object sender, EventArgs e)
     {
         Response.Redirect("Index.aspx");
+    }
+
+    protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        // If page not Refreshed
+        if (Session["update"].ToString() == ViewState["update"].ToString())
+        {
+            if ((e.CommandName == "DeleteRow") || (e.CommandName == "Decrement") || (e.CommandName == "Increment"))
+            {
+                // Retrieve the row index stored in the 
+                // CommandArgument property.
+                int index = Convert.ToInt32(e.CommandArgument);
+
+                // Retrieve the row that contains the button 
+                // from the Rows collection.
+                //TableRow row = GridView1.Rows[index];
+
+                DataTable dt = (DataTable)GridView1.DataSource ?? (DataTable)Session["CartSource"];
+                //Debug.WriteLine(dt.Rows[index]["RowNumber"]);
+                //Debug.WriteLine(dt.Rows[index]["Format"]);
+
+                int rowNumber = Convert.ToInt32(dt.Rows[index]["RowNumber"]);
+
+                string formatStr = dt.Rows[index]["Format"].ToString();
+                int formatNum;
+                switch (formatStr)
+                {
+                    case "New":
+                        formatNum = LineItem.NEW;
+                        break;
+                    case "Used":
+                        formatNum = LineItem.USED;
+                        break;
+                    case "Rental":
+                        formatNum = LineItem.RENTAL;
+                        break;
+                    case "eBook":
+                        formatNum = LineItem.EBOOK;
+                        break;
+                    default:
+                        formatNum = LineItem.NEW;
+                        //formatNum = -1;
+                        break;
+                }
+
+                LineItem currLine = cart.GetLineItem(rowNumber, formatNum);
+                
+                if (e.CommandName == "DeleteRow")
+                {
+                    cart.DeleteLine(currLine);
+                    dt.Rows[index].Delete();
+                }
+                else if (e.CommandName == "Decrement")
+                {
+                    if (currLine.quantity == 1)
+                    {
+                        cart.DeleteLine(currLine);
+                        dt.Rows[index].Delete();
+                    }
+                    else
+                    {
+                        cart.RemoveFromCart(rowNumber, formatNum, 1);
+                        dt.Rows[index]["Quantity"] = currLine.quantity;
+
+                        decimal lineTotal = currLine.price * currLine.quantity;
+                        dt.Rows[index]["Total"] = String.Format("{0:C}", lineTotal);
+                    }
+                }
+                else //if (e.CommandName == "Increment")
+                {
+                    cart.AddToCart(rowNumber, formatNum, 1);
+                    dt.Rows[index]["Quantity"] = currLine.quantity;
+
+                    decimal lineTotal = currLine.price * currLine.quantity;
+                    dt.Rows[index]["Total"] = String.Format("{0:C}", lineTotal);
+                }
+               
+                SetTotals();
+                CheckIsCartEmpty();
+
+                //refresh cart icon
+                ((MasterPage)this.Master).RefreshCartIcon();
+                
+                GridView1.DataSource = dt;
+                GridView1.DataBind(); //refresh the gridview. 
+            }
+
+            // After the event/ method, again update the session 
+            Session["update"] = Server.UrlEncode(System.DateTime.Now.ToString());
+        }
+        else
+        {   //handle page being refreshed; without this line it could show the previous condition of the datagrid (for example before a deletion)
+            SetGridTable();
+        }
     }
 }

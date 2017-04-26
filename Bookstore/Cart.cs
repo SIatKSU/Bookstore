@@ -75,6 +75,39 @@ namespace Bookstore
         }
 
 
+
+        //returns a LiteItem given the rowNumber and format.
+        //if the LineItem with matching rowNumber and format is not found, returns null.
+        public LineItem GetLineItem(int rowNumber, int format)
+        {
+            bool foundLineItem = false;
+            int i = 0;
+
+            //search cartList for the item to be removed
+            while ((i < cartList.Count) && (!foundLineItem))
+            {
+                if ((cartList[i].rowNumber == rowNumber) &&
+                    (cartList[i].format == format))
+                {
+                    foundLineItem = true;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+
+            return foundLineItem ? cartList[i] : null;
+        }
+
+        //remove an entire LineItem from the cart.
+        public void DeleteLine(LineItem lineToDelete)
+        {
+            cartList.Remove(lineToDelete);
+            RecalcSubtotal();
+        }
+
+
         //remove an item from the cart and recalculate subtotal
         //returns 0 if cart updated successfully
         //returns -1 if item not found.  *this should never happen*
@@ -118,7 +151,7 @@ namespace Bookstore
         }
 
         //calc tax, shipping and total
-        public void calcTotal()
+        public void calcTaxShippingAndTotal()
         {
             bool hasShipping = false;
             int i = 0;
