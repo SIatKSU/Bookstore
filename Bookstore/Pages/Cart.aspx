@@ -25,15 +25,13 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <asp:Label ID="CartHeaderLabel" runat="server" Text="Shopping Cart" Style="text-align: center" Width="1100px" Font-Bold="True" Font-Size="Large" BorderWidth="2px"></asp:Label>
-    <br>
-    <br>
-    <asp:Label ID="ErrorLabel" runat="server" Text="Errors go here." Style="text-align: left; border-style: solid; border-color: black; border-width: 2px 2px 2px 2px" Width="1100px" Font-Bold="True" Font-Size="Large" ForeColor="Red"></asp:Label>
+    <asp:Label ID="ErrorLabel" runat="server" Text="Errors go here." Style="text-align: left; border-style: solid; border-color: black; border-width: 0px 2px 0px 2px" Width="1100px" Font-Bold="True" Font-Size="Large" ForeColor="Red"></asp:Label>
 
     <!--<asp:HyperLinkField HeaderText="Title:" DataNavigateUrlFields="TitleURL" DataTextField="Title">
                 <ItemStyle HorizontalAlign="Left" Width="350px" CssClass="gridColumn"/>
             </asp:HyperLinkField>-->
 
-    <asp:GridView ID="GridView1" AutoGenerateColumns="False" runat="server" BorderColor="Black" Font-Size="Large" CssClass="gridView" GridLines="Horizontal" OnRowDeleting="PendingRecordsGridview_RowDeleting" OnRowCommand="GridView1_RowCommand">
+    <asp:GridView ID="GridView1" AutoGenerateColumns="False" runat="server" BorderColor="Black" Font-Size="Large" CssClass="gridView" GridLines="Horizontal" OnRowDeleting="PendingRecordsGridview_RowDeleting" OnRowCommand="GridView1_RowCommand" OnRowDataBound="gridDetail_RowDataBound">
         <Columns>
             <asp:TemplateField HeaderText="Coverpage:" ItemStyle-Width="100px" HeaderStyle-CssClass="grid1stColumn" ItemStyle-CssClass="grid1stColumn">
                 <ItemTemplate>
@@ -71,6 +69,7 @@
                     <asp:TextBox ID="QuantityTextBox" Width="40px" Font-Size="Large" runat="server" AutoPostBack="true" onkeydown="return (!(event.keyCode>=65) && event.keyCode!=32);" OnTextChanged="TextChangedEvent" Text='<%# Bind("Quantity") %>' Style="text-align: center" />
                     <asp:Button ID="IncrementBtn" runat="server" Font-Size="Large" Font-Bold="true" Text="+" CommandName="Increment" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />
                     <asp:Label ID="QuantityInStock" Style="width: 100px; display: block; padding-top: 10px; text-align: center; font-size: medium" runat="server" Text='<%# Bind("InStock") %>' />
+                    <asp:Label ID="eBookLabel" Style="display: block; text-align: left" runat="server" Text="&nbsp;&nbsp;&nbsp;eBook" Visible="false" />
                 </ItemTemplate>
 
                 <ItemStyle Width="140px"></ItemStyle>

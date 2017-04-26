@@ -48,12 +48,11 @@ public partial class Pages_Cart : System.Web.UI.Page
         {
             CheckoutBtn.Visible = false;
             ErrorLabel.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Cart is empty.";
-            ErrorLabel.Visible = true;
         }
         else
         {
             CheckoutBtn.Visible = true;
-            ErrorLabel.Visible = false;
+            ErrorLabel.Text = "&nbsp;";
         }
     }
 
@@ -198,9 +197,8 @@ public partial class Pages_Cart : System.Web.UI.Page
                 }
                 else if (result == -2) //trying to add more items than exist in stock
                 {
-                    CheckoutBtn.Visible = false;
-                    ErrorLabel.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Not enough items in stock to add to cart.";
-                    ErrorLabel.Visible = true;
+                    //CheckoutBtn.Visible = false;
+                    ErrorLabel.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Not enough items in stock.";
 
                     isError = true;
                 }
@@ -274,9 +272,8 @@ public partial class Pages_Cart : System.Web.UI.Page
                     }
                     else if (result == -2) //trying to add more items than exist in stock
                     {
-                        CheckoutBtn.Visible = false;
+                        //CheckoutBtn.Visible = false;
                         ErrorLabel.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Not enough items in stock.";
-                        ErrorLabel.Visible = true;
 
                         isError = true;
                     }
@@ -310,4 +307,24 @@ public partial class Pages_Cart : System.Web.UI.Page
     {
 
     }
+
+    protected void gridDetail_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            //if (((Label)e.Row.FindControl("lblScenario")).Text == "Actual")
+
+            if (e.Row.Cells[2].Text == "eBook")
+            {
+                //Button minusButton = (Button)e.Row.Cells[4].Controls[0];
+                //minusButton.Visible = false;
+                ((Button)e.Row.Cells[4].FindControl("DecrementBtn")).Visible = false;
+                ((Button)e.Row.Cells[4].FindControl("IncrementBtn")).Visible = false;
+                ((TextBox)e.Row.Cells[4].FindControl("QuantityTextBox")).Visible = false;
+                ((Label)e.Row.Cells[4].FindControl("QuantityInStock")).Visible = false;
+                ((Label)e.Row.Cells[4].FindControl("eBookLabel")).Visible = true;
+            }
+        }
+    }
+
 }
