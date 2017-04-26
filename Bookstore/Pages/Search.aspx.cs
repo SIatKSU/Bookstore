@@ -31,7 +31,7 @@ namespace Bookstore.Pages
                 ListItem isbnItem = new ListItem("ISBN");
                 ListItem titleItem = new ListItem("Title");
                 ListItem authorItem = new ListItem("Author");
-        
+
                 SortList.Items.Add(isbnItem);
                 SortList.Items.Add(titleItem);
                 SortList.Items.Add(authorItem);
@@ -260,7 +260,7 @@ namespace Bookstore.Pages
                 {
                     dr["Used"] = "Not In-Stock";
                 }
-                
+
                 int rentalQuantity = StaticData.convertToInt(rows[i], StaticData.QUANTITY_RENTAL);
                 if (rentalQuantity > 0)
                 {
@@ -278,13 +278,13 @@ namespace Bookstore.Pages
                 {
                     ebookAvailability = "In-Stock";
                     string eBookPriceStr = String.Format("{0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_EBOOK)));
-                    dr["eBook"] = eBookPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + ebookAvailability + ")"; 
+                    dr["eBook"] = eBookPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + ebookAvailability + ")";
                 }
                 else
                 {
                     dr["eBook"] = "Not In-Stock";
                 }
-            
+
                 //dr["New"] = "$" + StaticData.getMatrixValue(rows[i], 13) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 9) + ")";
                 //dr["Used"] = "$" + StaticData.getMatrixValue(rows[i], 14) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 10) + ")";
                 //dr["Rental"] = "$" + StaticData.getMatrixValue(rows[i], 15) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 11) + ")";
@@ -303,7 +303,15 @@ namespace Bookstore.Pages
 
         private void setHeaderText(int rows)
         {
-            if (rows <= 10)
+            if (rows == 0)
+            {
+                SearchHeaderLabel.Visible = false;
+                TitleDetailsPanel.Visible = false;
+                SearchErrorLabel.Visible = true;
+                SearchAgainPanel.Visible = true;
+                SearchErrorLabel.Text = "0 results found for \"" + Request.QueryString["Value"] + "\"";
+            }
+            else if (rows <= 10)
             {
                 SearchHeaderLabel.Text = "Showing 1-" + rows + " of " + rows + " results for \"" + Request.QueryString["Value"] + "\"";
             }
@@ -321,6 +329,11 @@ namespace Bookstore.Pages
         protected void SortList_SelectedIndexChanged(object sender, EventArgs e)
         {
             setGridTable(searchData(SortList.SelectedValue));
+        }
+
+        protected void SearchAgainButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("index.aspx");
         }
 
         protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
