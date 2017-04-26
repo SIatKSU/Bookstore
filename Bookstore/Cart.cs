@@ -48,7 +48,7 @@ namespace Bookstore
                     else
                     {
                         int quantityInStock = StaticData.convertToInt(cartList[i].rowNumber, cartList[i].format + StaticData.QUANTITY_NEW);
-                        if (cartList[i].quantity > quantityInStock)
+                        if ((cartList[i].quantity + quantity) > quantityInStock)
                         {
                             result = -2;    //Error!  Trying to add more items to the cart than exist in stock.
                         }

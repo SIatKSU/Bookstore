@@ -83,6 +83,7 @@ public partial class Pages_Cart : System.Web.UI.Page
         dt.Columns.Add(new DataColumn("Quantity"));
         dt.Columns.Add(new DataColumn("Total"));
         dt.Columns.Add(new DataColumn("RowNumber"));
+        dt.Columns.Add(new DataColumn("InStock"));
 
         //add elements to DataRow
         for (int i = 0; i < cart.cartList.Count; i++)
@@ -124,6 +125,15 @@ public partial class Pages_Cart : System.Web.UI.Page
             dr["Total"] = String.Format("{0:C}", lineTotal);
 
             dr["RowNumber"] = cart.cartList[i].rowNumber;
+
+            if (cart.cartList[i].format != LineItem.EBOOK) {
+                dr["InStock"] = StaticData.getMatrixValue(cart.cartList[i].rowNumber, StaticData.QUANTITY_NEW + cart.cartList[i].format) + " in stock";
+            }
+            else
+            {
+                dr["InStock"] = "";
+            }
+
             dt.Rows.Add(dr);
         }
 
@@ -190,37 +200,53 @@ public partial class Pages_Cart : System.Web.UI.Page
                 }
 
                 LineItem currLine = cart.GetLineItem(rowNumber, formatNum);
-                
+
+                bool deletingRow = false;
+
                 if (e.CommandName == "DeleteRow")
                 {
-                    cart.DeleteLine(currLine);
-                    dt.Rows[index].Delete();
+                    deletingRow = true;
                 }
                 else if (e.CommandName == "Decrement")
                 {
                     if (currLine.quantity == 1)
                     {
-                        cart.DeleteLine(currLine);
-                        dt.Rows[index].Delete();
+                        deletingRow = true;
                     }
                     else
                     {
                         cart.RemoveFromCart(rowNumber, formatNum, 1);
-                        dt.Rows[index]["Quantity"] = currLine.quantity;
-
-                        decimal lineTotal = currLine.price * currLine.quantity;
-                        dt.Rows[index]["Total"] = String.Format("{0:C}", lineTotal);
                     }
                 }
                 else //if (e.CommandName == "Increment")
                 {
                     cart.AddToCart(rowNumber, formatNum, 1);
-                    dt.Rows[index]["Quantity"] = currLine.quantity;
+                }
 
+                if (deletingRow)
+                {
+                    cart.DeleteLine(currLine);
+                    dt.Rows[index].Delete();
+                }
+                else
+                {
+                    dt.Rows[index]["Quantity"] = currLine.quantity;
                     decimal lineTotal = currLine.price * currLine.quantity;
                     dt.Rows[index]["Total"] = String.Format("{0:C}", lineTotal);
+
+
+                    /*
+                    if (currLine.format != LineItem.EBOOK)
+                    {
+                        dt.Rows[index]["InStock"] = StaticData.getMatrixValue(currLine.rowNumber, StaticData.QUANTITY_NEW + currLine.format) + " in stock";
+                    }
+                    else
+                    {
+                        dt.Rows[index]["InStock"] = "";
+                    }
+                    */
                 }
-               
+
                 SetTotals();
                 CheckIsCartEmpty();
 

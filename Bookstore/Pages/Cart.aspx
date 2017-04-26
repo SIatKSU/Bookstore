@@ -69,6 +69,7 @@
                     <asp:Button ID="DecrementBtn" runat="server" Font-Size="Large" Font-Bold="true" Text="-" CommandName="Decrement" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"/>
                     <asp:TextBox ID="QuantityTextBox" Width="40px" Font-Size="Large" runat="server" Text='<%# Bind("Quantity") %>' style="text-align:center" />
                     <asp:Button ID="IncrementBtn" runat="server" Font-Size="Large" Font-Bold="true" Text="+" CommandName="Increment" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>"/>
+                    <asp:Label ID="QuantityInStock" style="width:100px; display:block; padding-top:10px; text-align:center; font-size:medium" runat="server" Text='<%# Bind("InStock") %>'/>
                 </ItemTemplate>
 
 <ItemStyle Width="140px"></ItemStyle>
