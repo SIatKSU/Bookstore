@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.Windows;
 
 public partial class Pages_Cart : System.Web.UI.Page
 {
@@ -29,6 +30,7 @@ public partial class Pages_Cart : System.Web.UI.Page
             Session["update"] = Server.UrlEncode(System.DateTime.Now.ToString());
 
             SetGridTable();
+
         }
 
         SetTotals();
@@ -98,7 +100,7 @@ public partial class Pages_Cart : System.Web.UI.Page
             dr["TitleURL"] = @"/Pages/Details.aspx?isbn=" + isbn;
 
             dr["Author"] = StaticData.getMatrixValue(cart.cartList[i].rowNumber, StaticData.AUTHOR);
-
+            
             switch (cart.cartList[i].format)
             {
                 case LineItem.NEW:
@@ -140,7 +142,7 @@ public partial class Pages_Cart : System.Web.UI.Page
 
         GridView1.DataSource = dt;
         GridView1.DataBind();
-        Session["CartSource"] = dt;
+        //Session["CartSource"] = dt;
 
     }
     
@@ -156,12 +158,66 @@ public partial class Pages_Cart : System.Web.UI.Page
         Response.Redirect("Index.aspx");
     }
 
+
+    protected void TextChangedEvent(object sender, EventArgs e)
+    {
+
+        /*
+        //Get the current row in grid
+        GridViewRow currentRow = (GridViewRow)(sender as TextBox).Parent.Parent;
+
+        Label rowNumberLabel = (Label)currentRow.Cells[1].FindControl("RowNumber");
+        int rowNumber = Convert.ToInt32(rowNumberLabel.Text);
+
+        int format = LineItem.FormatStringToInt(currentRow.Cells[2].Text);
+
+        int newQuantity;
+        string quantityStr = (sender as TextBox).Text;
+        bool result = int.TryParse(quantityStr, out newQuantity);
+        if (!result)
+        {
+            newQuantity = 0;
+        }
+    
+        LineItem currLine = cart.GetLineItem(rowNumber, format);
+
+        if (newQuantity != currLine.quantity)
+        {
+            if (newQuantity == 0)
+            {
+                cart.DeleteLine(currLine);
+                GridView1.DeleteRow(currentRow.RowIndex);
+            }
+            else
+            {
+                if (newQuantity > currLine.quantity)
+                {
+                    cart.AddToCart(rowNumber, format, newQuantity - currLine.quantity);
+                }
+                else
+                {
+                    cart.RemoveFromCart(rowNumber, format, currLine.quantity - newQuantity);
+                }
+
+            }
+
+            SetTotals();
+            CheckIsCartEmpty();
+
+            //refresh cart icon
+            ((MasterPage)this.Master).RefreshCartIcon();
+        }
+
+        */
+    }
+
+
     protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         // If page not Refreshed
         if (Session["update"].ToString() == ViewState["update"].ToString())
         {
-            if ((e.CommandName == "DeleteRow") || (e.CommandName == "Decrement") || (e.CommandName == "Increment"))
+            if ((e.CommandName == "DeleteThisRow") || (e.CommandName == "Decrement") || (e.CommandName == "Increment"))
             {
                 // Retrieve the row index stored in the 
                 // CommandArgument property.
@@ -169,41 +225,26 @@ public partial class Pages_Cart : System.Web.UI.Page
 
                 // Retrieve the row that contains the button 
                 // from the Rows collection.
-                //TableRow row = GridView1.Rows[index];
+                TableRow gridRow = GridView1.Rows[index];
 
-                DataTable dt = (DataTable)GridView1.DataSource ?? (DataTable)Session["CartSource"];
+                Label rowNumberLabel = (Label)gridRow.Cells[1].FindControl("RowNumber");
+                int rowNumber = Convert.ToInt32(rowNumberLabel.Text);
+
+                int format = LineItem.FormatStringToInt(gridRow.Cells[2].Text);
+
+                //DataTable dt = (DataTable)GridView1.DataSource ?? (DataTable)Session["CartSource"];
                 //Debug.WriteLine(dt.Rows[index]["RowNumber"]);
                 //Debug.WriteLine(dt.Rows[index]["Format"]);
 
-                int rowNumber = Convert.ToInt32(dt.Rows[index]["RowNumber"]);
+                //int rowNumber = Convert.ToInt32(dt.Rows[index]["RowNumber"]);
+                //string formatStr = dt.Rows[index]["Format"].ToString();
+                //int formatNum = LineItem.FormatStringToInt(formatStr);
 
-                string formatStr = dt.Rows[index]["Format"].ToString();
-                int formatNum;
-                switch (formatStr)
-                {
-                    case "New":
-                        formatNum = LineItem.NEW;
-                        break;
-                    case "Used":
-                        formatNum = LineItem.USED;
-                        break;
-                    case "Rental":
-                        formatNum = LineItem.RENTAL;
-                        break;
-                    case "eBook":
-                        formatNum = LineItem.EBOOK;
-                        break;
-                    default:
-                        formatNum = LineItem.NEW;
-                        //formatNum = -1;
-                        break;
-                }
-
-                LineItem currLine = cart.GetLineItem(rowNumber, formatNum);
+                LineItem currLine = cart.GetLineItem(rowNumber, format);
 
                 bool deletingRow = false;
 
-                if (e.CommandName == "DeleteRow")
+                if (e.CommandName == "DeleteThisRow")
                 {
                     deletingRow = true;
                 }
@@ -215,24 +256,29 @@ public partial class Pages_Cart : System.Web.UI.Page
                     }
                     else
                     {
-                        cart.RemoveFromCart(rowNumber, formatNum, 1);
+                        cart.RemoveFromCart(rowNumber, format, 1);
                     }
                 }
                 else //if (e.CommandName == "Increment")
                 {
-                    cart.AddToCart(rowNumber, formatNum, 1);
+                    cart.AddToCart(rowNumber, format, 1);
                 }
 
                 if (deletingRow)
                 {
                     cart.DeleteLine(currLine);
-                    dt.Rows[index].Delete();
+                    GridView1.DeleteRow(index);
+                    //dt.Rows[index].Delete();
                 }
                 else
                 {
-                    dt.Rows[index]["Quantity"] = currLine.quantity;
+                    //dt.Rows[index]["Quantity"] = currLine.quantity;
+                    TextBox quantityTextBox = (TextBox)gridRow.Cells[4].FindControl("QuantityTextBox");
+                    quantityTextBox.Text = currLine.quantity.ToString();
+
                     decimal lineTotal = currLine.price * currLine.quantity;
-                    dt.Rows[index]["Total"] = String.Format("{0:C}", lineTotal);
+                    gridRow.Cells[5].Text = String.Format("{0:C}", lineTotal);
+                    //dt.Rows[index]["Total"] = String.Format("{0:C}", lineTotal);
 
 
                     /*
@@ -253,16 +299,24 @@ public partial class Pages_Cart : System.Web.UI.Page
                 //refresh cart icon
                 ((MasterPage)this.Master).RefreshCartIcon();
                 
-                GridView1.DataSource = dt;
-                GridView1.DataBind(); //refresh the gridview. 
+                //GridView1.DataSource = dt;
+                //GridView1.DataBind(); //refresh the gridview. 
             }
 
             // After the event/ method, again update the session 
             Session["update"] = Server.UrlEncode(System.DateTime.Now.ToString());
         }
         else
-        {   //handle page being refreshed; without this line it could show the previous condition of the datagrid (for example before a deletion)
+        {   //handle page being refreshed; without this line, if the user presses F5, it could show the previous condition of the datagrid (for example before a deletion)
             SetGridTable();
         }
+    }
+
+
+    //necessary to do this because we are using the GridView.DeleteRow command.
+    //http://stackoverflow.com/questions/14301815/the-gridview-pendingrecordsgridview-fired-event-rowdeleting-which-wasnt-handl
+    public void PendingRecordsGridview_RowDeleting(Object sender, GridViewDeleteEventArgs e)
+    {
+
     }
 }

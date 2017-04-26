@@ -18,8 +18,8 @@ public static class StaticData
     public const int NUM_SECTIONS = 5;
     public const int PROFESSOR = 6;
     public const int CRN = 7;
-    public const int REQUIRED =8;
-    public const int QUANTITY_NEW = 9;      
+    public const int REQUIRED = 8;
+    public const int QUANTITY_NEW = 9;
     public const int QUANTITY_USED = 10;
     public const int QUANTITY_RENTAL = 11;
     public const int EBOOK_AVAIL = 12;
@@ -30,7 +30,7 @@ public static class StaticData
     public const int DESCRIPTION = 17;
 
 
-    private static string appPath = HttpRuntime.AppDomainAppPath ;
+    private static string appPath = HttpRuntime.AppDomainAppPath;
     private static string fileName = appPath + "/books.csv";
 
 
@@ -112,7 +112,7 @@ public static class StaticData
                             }
                             else
                             {
-                                    singleRow[colIndex] += commaSplitRow[j];
+                                singleRow[colIndex] += commaSplitRow[j];
                             }
                         }
 
@@ -152,7 +152,7 @@ public static class StaticData
                 //Console.WriteLine(matrixList[i][j]);
                 matrix[i][j] = matrixList[i][j];
             }
-        }       
+        }
 
     }
 
@@ -234,17 +234,17 @@ public static class StaticData
     }
 
 
-    
+
     //write the matrix back to the books.csv file.
     //currently, this is done when customer successfully makes a purchase.
     public static void writeFile()
     {
         //18 fields.
-        string[] line = new string [18];
+        string[] line = new string[18];
 
         //if it contains space, comma, quotation mark, put a " " around it
         char[] checkChars = { ' ', ',' }; //, '\"' };
-        
+
         //string testFileName = appPath + "/booksWriteTest.csv";
         //System.IO.StreamWriter sw = new System.IO.StreamWriter(testFileName);
 
@@ -252,14 +252,14 @@ public static class StaticData
         {
             using (StreamWriter sw = new StreamWriter(fs))
             {
-                
+
                 for (int i = 0; i < matrix.Length; i++)
                 {
                     for (int j = 0; j < matrix[j].Length; j++)
                     {
                         //if it contains space, comma, quotation mark, put a " on it!
-                        if (matrix[i][j].IndexOfAny(checkChars) != -1) 
-                        { 
+                        if (matrix[i][j].IndexOfAny(checkChars) != -1)
+                        {
                             line[j] = "\"" + matrix[i][j] + "\"";
                         }
                         else
@@ -274,7 +274,7 @@ public static class StaticData
             }
         }
     }
-        
+
     public static string[][] getMatrix()
     {
         return matrix;
@@ -319,5 +319,4 @@ public static class StaticData
 
         return valid ? result : 0;
     }
-
 }
