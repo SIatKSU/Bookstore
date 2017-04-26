@@ -85,14 +85,14 @@
         <HeaderStyle HorizontalAlign="Left" />
     </asp:GridView>
 
-    <asp:Panel ID="TotalsPanel" runat="server" Width="1100px" Style="display: inline-block; float: left; padding-top: 8px; padding-bottom: 8px; border-style: solid; border-width: 2px 2px 0px 2px" BorderColor="Black">
-        <asp:Panel ID="Panel1" Width="200px" Style="display: inline-block; padding-bottom: 10px" runat="server">
+    <asp:Panel ID="TotalsPanel" runat="server" Width="1100px" Style="display: inline-block; font-size:large; float: left; padding-top: 8px; padding-bottom: 8px; border-style: solid; border-width: 2px 2px 0px 2px" BorderColor="Black">
+        <asp:Panel ID="Panel1" Width="810px" Style="display: inline-block; padding-bottom: 10px" runat="server">
             <asp:Label ID="Label1" runat="server" Style="display: block; text-align: right; padding-bottom: 10px" Text="Subtotal:"></asp:Label>
             <asp:Label ID="Label2" runat="server" Style="display: block; text-align: right; padding-bottom: 10px" Text="7% tax:"></asp:Label>
             <asp:Label ID="Label3" runat="server" Style="display: block; text-align: right; padding-bottom: 10px" Text="Shipping:"></asp:Label>
             <asp:Label ID="Label4" runat="server" Style="display: block; text-align: right; padding-bottom: 10px" Text="Total:"></asp:Label>
         </asp:Panel>
-        <asp:Panel ID="Panel2" Width="200px" Style="display: inline-block; padding-left: 40px; padding-bottom: 10px" runat="server">
+        <asp:Panel ID="Panel2" Width="200px" Style="display: inline-block; font-size:large; padding-left: 40px; padding-bottom: 10px" runat="server">
             <asp:Label ID="SubtotalLabel" runat="server" Style="display: block; text-align: left; padding-bottom: 10px" Text=""></asp:Label>
             <asp:Label ID="TaxLabel" runat="server" Style="display: block; text-align: left; padding-bottom: 10px" Text=""></asp:Label>
             <asp:Label ID="ShippingLabel" runat="server" Style="display: block; text-align: left; padding-bottom: 10px" Text=""></asp:Label>
