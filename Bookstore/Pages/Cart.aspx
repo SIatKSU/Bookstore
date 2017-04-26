@@ -79,18 +79,12 @@
             <asp:BoundField DataField="Total" HeaderText="Total:">
                 <ItemStyle HorizontalAlign="Left" Width="140px" />
             </asp:BoundField>
+            
+            <asp:ButtonField CommandName="DeleteThisRow" Text="Remove" ItemStyle-Width="100px"/>
 
-
-            <asp:TemplateField ShowHeader="False">
-                <ItemTemplate>
-                    <asp:LinkButton ID="DeleteRowButton" runat="server" CausesValidation="false" AutoPostBack="true" CommandName="DeleteThisRow" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" Text="Delete"></asp:LinkButton>
-                </ItemTemplate>
-                <ItemStyle Width="100px" />
-            </asp:TemplateField>
         </Columns>
         <HeaderStyle HorizontalAlign="Left" />
     </asp:GridView>
-
 
     <asp:Panel ID="TotalsPanel" runat="server" Width="1100px" Style="display: inline-block; float: left; padding-top: 8px; padding-bottom: 8px; border-style: solid; border-width: 2px 2px 0px 2px" BorderColor="Black">
         <asp:Panel ID="Panel1" Width="200px" Style="display: inline-block; padding-bottom: 10px" runat="server">

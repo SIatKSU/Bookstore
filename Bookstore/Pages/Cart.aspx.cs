@@ -161,8 +161,9 @@ public partial class Pages_Cart : System.Web.UI.Page
 
     protected void TextChangedEvent(object sender, EventArgs e)
     {
+        int result;
+        bool isError = false;
 
-        /*
         //Get the current row in grid
         GridViewRow currentRow = (GridViewRow)(sender as TextBox).Parent.Parent;
 
@@ -173,8 +174,8 @@ public partial class Pages_Cart : System.Web.UI.Page
 
         int newQuantity;
         string quantityStr = (sender as TextBox).Text;
-        bool result = int.TryParse(quantityStr, out newQuantity);
-        if (!result)
+        bool hasQuantity = int.TryParse(quantityStr, out newQuantity);
+        if (!hasQuantity)
         {
             newQuantity = 0;
         }
@@ -186,29 +187,40 @@ public partial class Pages_Cart : System.Web.UI.Page
             if (newQuantity == 0)
             {
                 cart.DeleteLine(currLine);
-                GridView1.DeleteRow(currentRow.RowIndex);
+            }
+            else if (newQuantity > currLine.quantity)
+            {
+                result = cart.AddToCart(rowNumber, format, newQuantity - currLine.quantity);
+                if (result == -1) //ebook 
+                {
+                    //ErrorLabel.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Error: you can only order 1 copy of an eBook.";
+                    //ErrorLabel.Visible = true;
+                }
+                else if (result == -2) //trying to add more items than exist in stock
+                {
+                    CheckoutBtn.Visible = false;
+                    ErrorLabel.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Not enough items in stock to add to cart.";
+                    ErrorLabel.Visible = true;
+
+                    isError = true;
+                }
             }
             else
             {
-                if (newQuantity > currLine.quantity)
-                {
-                    cart.AddToCart(rowNumber, format, newQuantity - currLine.quantity);
-                }
-                else
-                {
-                    cart.RemoveFromCart(rowNumber, format, currLine.quantity - newQuantity);
-                }
-
+                cart.RemoveFromCart(rowNumber, format, currLine.quantity - newQuantity);
             }
 
+
             SetTotals();
-            CheckIsCartEmpty();
+            SetGridTable();
 
             //refresh cart icon
             ((MasterPage)this.Master).RefreshCartIcon();
+
+            if (!isError)
+                CheckIsCartEmpty();
         }
 
-        */
     }
 
 
@@ -219,6 +231,9 @@ public partial class Pages_Cart : System.Web.UI.Page
         {
             if ((e.CommandName == "DeleteThisRow") || (e.CommandName == "Decrement") || (e.CommandName == "Increment"))
             {
+                int result;
+                Boolean isError = false;
+
                 // Retrieve the row index stored in the 
                 // CommandArgument property.
                 int index = Convert.ToInt32(e.CommandArgument);
@@ -232,27 +247,17 @@ public partial class Pages_Cart : System.Web.UI.Page
 
                 int format = LineItem.FormatStringToInt(gridRow.Cells[2].Text);
 
-                //DataTable dt = (DataTable)GridView1.DataSource ?? (DataTable)Session["CartSource"];
-                //Debug.WriteLine(dt.Rows[index]["RowNumber"]);
-                //Debug.WriteLine(dt.Rows[index]["Format"]);
-
-                //int rowNumber = Convert.ToInt32(dt.Rows[index]["RowNumber"]);
-                //string formatStr = dt.Rows[index]["Format"].ToString();
-                //int formatNum = LineItem.FormatStringToInt(formatStr);
-
                 LineItem currLine = cart.GetLineItem(rowNumber, format);
-
-                bool deletingRow = false;
 
                 if (e.CommandName == "DeleteThisRow")
                 {
-                    deletingRow = true;
+                    cart.DeleteLine(currLine);
                 }
                 else if (e.CommandName == "Decrement")
                 {
                     if (currLine.quantity == 1)
                     {
-                        deletingRow = true;
+                        cart.DeleteLine(currLine);
                     }
                     else
                     {
@@ -261,50 +266,36 @@ public partial class Pages_Cart : System.Web.UI.Page
                 }
                 else //if (e.CommandName == "Increment")
                 {
-                    cart.AddToCart(rowNumber, format, 1);
-                }
-
-                if (deletingRow)
-                {
-                    cart.DeleteLine(currLine);
-                    GridView1.DeleteRow(index);
-                    //dt.Rows[index].Delete();
-                }
-                else
-                {
-                    //dt.Rows[index]["Quantity"] = currLine.quantity;
-                    TextBox quantityTextBox = (TextBox)gridRow.Cells[4].FindControl("QuantityTextBox");
-                    quantityTextBox.Text = currLine.quantity.ToString();
-
-                    decimal lineTotal = currLine.price * currLine.quantity;
-                    gridRow.Cells[5].Text = String.Format("{0:C}", lineTotal);
-                    //dt.Rows[index]["Total"] = String.Format("{0:C}", lineTotal);
-
-
-                    /*
-                    if (currLine.format != LineItem.EBOOK)
+                    result = cart.AddToCart(rowNumber, format, 1);
+                    if (result == -1) //ebook 
                     {
-                        dt.Rows[index]["InStock"] = StaticData.getMatrixValue(currLine.rowNumber, StaticData.QUANTITY_NEW + currLine.format) + " in stock";
+                        //ErrorLabel.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Error: you can only order 1 copy of an eBook.";
+                        //ErrorLabel.Visible = true;
                     }
-                    else
+                    else if (result == -2) //trying to add more items than exist in stock
                     {
-                        dt.Rows[index]["InStock"] = "";
+                        CheckoutBtn.Visible = false;
+                        ErrorLabel.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "Not enough items in stock.";
+                        ErrorLabel.Visible = true;
+
+                        isError = true;
                     }
-                    */
+
                 }
+
 
                 SetTotals();
-                CheckIsCartEmpty();
+                SetGridTable();
 
                 //refresh cart icon
                 ((MasterPage)this.Master).RefreshCartIcon();
-                
-                //GridView1.DataSource = dt;
-                //GridView1.DataBind(); //refresh the gridview. 
-            }
 
-            // After the event/ method, again update the session 
-            Session["update"] = Server.UrlEncode(System.DateTime.Now.ToString());
+                if (!isError)
+                    CheckIsCartEmpty();
+
+                // After the event/ method, again update the session 
+                Session["update"] = Server.UrlEncode(System.DateTime.Now.ToString());
+            }
         }
         else
         {   //handle page being refreshed; without this line, if the user presses F5, it could show the previous condition of the datagrid (for example before a deletion)
