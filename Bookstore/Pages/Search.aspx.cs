@@ -15,25 +15,31 @@ namespace Bookstore.Pages
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            populateSortList();
             type = Request.QueryString["Type"].ToLower();
             value = Request.QueryString["Value"].ToLower();
 
-
             GridView1.PageIndex = 0; //sets default GridView1 page to the first page
-            setGridTable(searchData());
-
-
-            TextBox1.Text = type;
-            TextBox2.Text = value;
+            setGridTable(searchData("ISBN"));
         }
-        //
-        //
-        //
-        // Todo: Projessor "Tsai-Tien Tseng" doesn't show up..
-        //
-        //
+
+        // Populates sortList
+        private void populateSortList()
+        {
+            if (!IsPostBack)
+            {
+                ListItem isbnItem = new ListItem("ISBN");
+                ListItem titleItem = new ListItem("Title");
+                ListItem authorItem = new ListItem("Author");
+
+                SortList.Items.Add(isbnItem);
+                SortList.Items.Add(titleItem);
+                SortList.Items.Add(authorItem);
+            }
+        }
+
         // returns array with row indicies that contained the search value
-        private int[] searchData()
+        private int[] searchData(string sortBy)
         {
             var indicesOfMatches = new List<int>();
 
@@ -70,7 +76,57 @@ namespace Bookstore.Pages
                     }
                 }
             }
-            return indicesOfMatches.ToArray();
+
+            // sort list
+            return sortList(indicesOfMatches, sortBy);
+        }
+
+        private int[] sortList(List<int> list, String selectedSort)
+        {
+            int selectedCol;
+
+            //set selectedColumn
+            switch (selectedSort)
+            {
+                case "Title":
+                    selectedCol = 1;
+                    break;
+                case "Author":
+                    selectedCol = 2;
+                    break;
+                case "ISBN":
+                    selectedCol = 0;
+                    break;
+                default:
+                    selectedCol = 0;
+                    break;
+            }
+
+            List<string> sortValueList = new List<string>();
+
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                sortValueList.Add(StaticData.getMatrixValue(list[i], selectedCol));
+            }
+
+            //sort the values list alphabetically
+            sortValueList = sortValueList.OrderBy(q => q).ToList();
+
+            List<int> sortedIndexList = new List<int>();
+
+            for (int i = 0; i < sortValueList.Count; i++)
+            {
+                for (int j = 0; j < StaticData.getMatrixColumn(0).Length; j++)
+                {
+                    if (sortValueList[i] == StaticData.getMatrixValue(j, selectedCol))
+                    {
+                        sortedIndexList.Add(j);
+                    }
+                }
+            }
+
+            return sortedIndexList.ToArray();
         }
 
         private List<int> getKeywordMatcheIndices(string value)
@@ -163,19 +219,7 @@ namespace Bookstore.Pages
             //add elements to DataRow
             for (int i = 0; i < rows.Length; i++)
             {
-                string ebookAvailability = StaticData.getMatrixValue(rows[i], 12);
                 string description = StaticData.getMatrixValue(rows[i], 17);   //gets whole book description
-
-
-                //changes eBook availability string to "Yes"
-                if (Int32.Parse(ebookAvailability) >= 99999)
-                {
-                    ebookAvailability = "In-Stock";
-                }
-                else
-                {
-                    ebookAvailability = "Not In-Stock";
-                }
 
                 //cuts description to < 260 chars
                 if (description.Length > 260)
@@ -193,14 +237,60 @@ namespace Bookstore.Pages
                 dr["ISBN"] = StaticData.getMatrixValue(rows[i], 0);
                 dr["Description"] = description;
                 dr["Format"] = "  Price:" + "<br>" + "<br>" + "  Quantity:";
-                dr["New"] = "$" + StaticData.getMatrixValue(rows[i], 13) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 9) + ")";
-                dr["Used"] = "$" + StaticData.getMatrixValue(rows[i], 14) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 10) + ")";
-                dr["Rental"] = "$" + StaticData.getMatrixValue(rows[i], 15) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 11) + ")";
-                dr["eBook"] = "$" + StaticData.getMatrixValue(rows[i], 16) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + ebookAvailability + ")"; // StaticData.getMatrixValue(rows[i], 12);
+
+
+                int newQuantity = StaticData.convertToInt(rows[i], StaticData.QUANTITY_NEW);
+                if (newQuantity > 0)
+                {
+                    string newPriceStr = String.Format("{0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_NEW)));
+                    dr["New"] = newPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 9) + ")";
+                }
+                else
+                {
+                    dr["New"] = "Not In-Stock";
+                }
+
+                int usedQuantity = StaticData.convertToInt(rows[i], StaticData.QUANTITY_USED);
+                if (usedQuantity > 0)
+                {
+                    string usedPriceStr = String.Format("{0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_USED)));
+                    dr["Used"] = usedPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 10) + ")";
+                }
+                else
+                {
+                    dr["Used"] = "Not In-Stock";
+                }
+
+                int rentalQuantity = StaticData.convertToInt(rows[i], StaticData.QUANTITY_RENTAL);
+                if (rentalQuantity > 0)
+                {
+                    string rentalPriceStr = String.Format("{0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_RENTAL)));
+                    dr["Rental"] = rentalPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 11) + ")";
+                }
+                else
+                {
+                    dr["Rental"] = "Not In-Stock";
+                }
+
+                string ebookAvailability = StaticData.getMatrixValue(rows[i], 12);
+                //check eBook availability
+                if (Int32.Parse(ebookAvailability) > 0)
+                {
+                    ebookAvailability = "In-Stock";
+                    string eBookPriceStr = String.Format("{0:C}", Convert.ToDecimal(StaticData.getMatrixValue(rows[i], StaticData.PRICE_EBOOK)));
+                    dr["eBook"] = eBookPriceStr + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + ebookAvailability + ")";
+                }
+                else
+                {
+                    dr["eBook"] = "Not In-Stock";
+                }
+
+                //dr["New"] = "$" + StaticData.getMatrixValue(rows[i], 13) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 9) + ")";
+                //dr["Used"] = "$" + StaticData.getMatrixValue(rows[i], 14) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 10) + ")";
+                //dr["Rental"] = "$" + StaticData.getMatrixValue(rows[i], 15) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + StaticData.getMatrixValue(rows[i], 11) + ")";
+                //dr["eBook"] = "$" + StaticData.getMatrixValue(rows[i], 16) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Quantity: " + ebookAvailability + ")"; // StaticData.getMatrixValue(rows[i], 12);
 
                 dt.Rows.Add(dr);
-
-                Debug.WriteLine("..." + dr["ISBN"].ToString());
             }
 
             ViewState["CurrentTable"] = dt;
@@ -213,7 +303,15 @@ namespace Bookstore.Pages
 
         private void setHeaderText(int rows)
         {
-            if (rows <= 10)
+            if (rows == 0)
+            {
+                SearchHeaderLabel.Visible = false;
+                TitleDetailsPanel.Visible = false;
+                SearchErrorLabel.Visible = true;
+                SearchAgainPanel.Visible = true;
+                SearchErrorLabel.Text = "0 results found for \"" + Request.QueryString["Value"] + "\"";
+            }
+            else if (rows <= 10)
             {
                 SearchHeaderLabel.Text = "Showing 1-" + rows + " of " + rows + " results for \"" + Request.QueryString["Value"] + "\"";
             }
@@ -228,10 +326,20 @@ namespace Bookstore.Pages
             // this.GridView1.PageIndex = (this.GridView1.PageCount - 3);
         }
 
+        protected void SortList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setGridTable(searchData(SortList.SelectedValue));
+        }
+
+        protected void SearchAgainButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("index.aspx");
+        }
+
         protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             GridView1.PageIndex = e.NewPageIndex;
-            setGridTable(searchData());
+            setGridTable(searchData(SortList.SelectedValue));
         }
     }
 }

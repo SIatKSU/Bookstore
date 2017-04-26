@@ -10,4 +10,166 @@
 
 
 public partial class Pages_Cart {
+    
+    /// <summary>
+    /// CartHeaderLabel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label CartHeaderLabel;
+    
+    /// <summary>
+    /// ErrorLabel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label ErrorLabel;
+    
+    /// <summary>
+    /// GridView1 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.GridView GridView1;
+    
+    /// <summary>
+    /// TotalsPanel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel TotalsPanel;
+    
+    /// <summary>
+    /// Panel1 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel Panel1;
+    
+    /// <summary>
+    /// Label1 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label Label1;
+    
+    /// <summary>
+    /// Label2 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label Label2;
+    
+    /// <summary>
+    /// Label3 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label Label3;
+    
+    /// <summary>
+    /// Label4 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label Label4;
+    
+    /// <summary>
+    /// Panel2 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel Panel2;
+    
+    /// <summary>
+    /// SubtotalLabel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label SubtotalLabel;
+    
+    /// <summary>
+    /// TaxLabel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label TaxLabel;
+    
+    /// <summary>
+    /// ShippingLabel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label ShippingLabel;
+    
+    /// <summary>
+    /// TotalLabel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label TotalLabel;
+    
+    /// <summary>
+    /// BottomPanel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel BottomPanel;
+    
+    /// <summary>
+    /// ContinueShoppingBtn control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Button ContinueShoppingBtn;
+    
+    /// <summary>
+    /// DividerPanel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel DividerPanel;
+    
+    /// <summary>
+    /// CheckoutBtn control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Button CheckoutBtn;
 }

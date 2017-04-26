@@ -11,33 +11,21 @@ namespace Bookstore.Pages
 {
     public partial class Checkout : System.Web.UI.Page
     {
-        //page one:
-        //string[] name = { "Jon", "Smith" };
-        //HttpContext.Session["ArrayOfName"] = name;
-
-        //page two:
-        //string[] strings = (string[])Session["strings"];
-
-        //what gets passed from Shopping cart?
-        //List of the items in the cart, which is a list of 
-        //    a) Row Number (this identifies the book from the Books.csv), 
-        //    b) Format and 
-        //    c) Quantity.  
-        //From these three things, we can price, title, etc.
-
-        //*******DUMMY VALUES WHICH WILL LATER BE READ FROM SESSION STATE***********
-        List<LineItem> cart;
-        double subtotal = 100.49;
-        //**************************************************************************
-
+        Cart cart;
+        CustomerInfo customerInfo;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            //just in case cart is null, create it.
+            if (Session["cart"] == null)
+            {
+                Session["cart"] = new Cart();
+            }
+            cart = (Cart)Session["cart"];
 
-            //*******DUMMY VALUES WHICH WILL LATER BE READ FROM SESSION STATE***********
-            cart = new List<LineItem>();
-            cart.Add(new LineItem(3, LineItem.RENTAL, 1));
-            //**************************************************************************
+            //Customer should never get to this screen if the cart is empty.  But in case this does happen, show an error message.
+            ErrorLabel.Visible = IsCartEmpty();
+
 
             // Populates first DropDownList
             if (!IsPostBack)
@@ -48,19 +36,16 @@ namespace Bookstore.Pages
                 PopulateYearsDropDown();
             }
 
-            //Customer should never get to this screen if the cart is empty.  But in case this does happen, show an error message.
-            if (IsCartEmpty())
-                ErrorLabel.Visible = true;
-            else
-                ErrorLabel.Visible = false;
         }
         
         public void PopulatePaymentMethodDropDown() {
-            ListItem creditcard = new ListItem("MasterCard/Visa", "creditcard");
+            ListItem MasterCard = new ListItem("MasterCard", "MasterCard");
+            ListItem Visa = new ListItem("Visa", "Visa");
             ListItem paypal = new ListItem("PayPal", "paypal");
             ListItem financialaid = new ListItem("Financial Aid", "financialaid");
 
-            PaymentMethodDropDown.Items.Add(creditcard);
+            PaymentMethodDropDown.Items.Add(MasterCard);
+            PaymentMethodDropDown.Items.Add(Visa);
             PaymentMethodDropDown.Items.Add(paypal);
             PaymentMethodDropDown.Items.Add(financialaid);
         }
@@ -113,7 +98,7 @@ namespace Bookstore.Pages
         {
             string method = PaymentMethodDropDown.SelectedValue;
 
-            if (method == "creditcard")
+            if (method == "MasterCard" || method == "Visa")
             {
                 CardNumberTextBox.Visible = true;
                 PayPalEmailTextBox.Visible = false;
@@ -156,18 +141,24 @@ namespace Bookstore.Pages
 
         protected void PlaceOrderButton_Click(object sender, EventArgs e)
         {
-            //if the cart is empty, or the customer didn't fill in the form properly, show an error message.
-            if (IsCartEmpty() || !ValidateDataEntry()) {
+            if (AddressCheckBox.Checked)
+            {
+                ShippingStreetTextBox.Text = BillingStreetTextBox.Text;
+                ShippingCityTextBox.Text = BillingStreetTextBox.Text;
+                ShippingStateDropDown.SelectedIndex = BillingStateDropDown.SelectedIndex;
+                ShippingZipTextBox.Text = BillingZipTextBox.Text;
+            }
+
+            if (IsCartEmpty() || !ValidateDataEntry() || !CheckStillInStock()) {
                 ErrorLabel.Visible = true;
             }
             else
-            {
-                
+            {              
                 //ok, everything checks out.  lets try to charge the payment!
 
                 string method = PaymentMethodDropDown.SelectedValue;
                 bool paymentSuccess;
-                if (method == "creditcard")
+                if (method == "MasterCard" || method == "Visa")
                 {
                     paymentSuccess = ChargeCreditCard();
                 }
@@ -183,11 +174,146 @@ namespace Bookstore.Pages
                 ErrorLabel.Visible = !paymentSuccess;
                 if (paymentSuccess)
                 {
+                    //update inventory file.
+                    updateInventoryFile();
+
+                    //Copy the customer information for the Receipts page, into Session state.
+                    LoadSessionData();
+
+                    //clear the cart.
+                    cart = new Cart();
+                    Session["cart"] = cart;
+
                     Response.Redirect("Receipt.aspx");
                 }
 
             }
         }
+
+
+        public void LoadSessionData()
+        {
+            if (customerInfo == null)
+            {
+                customerInfo = new CustomerInfo();
+            }
+
+            customerInfo.OrderCart = cart;
+
+            customerInfo.FullName = FullNameTextBox.Text;
+            customerInfo.Email = EmailTextBox.Text;
+            customerInfo.PhoneNumber = PhoneTextBox.Text;
+
+            customerInfo.BillingStreet = BillingStreetTextBox.Text;
+            customerInfo.BillingCity = BillingCityTextBox.Text;
+            customerInfo.BillingState = BillingStateDropDown.Text;
+            customerInfo.BillingZip = BillingZipTextBox.Text;
+
+            customerInfo.ShippingStreet = ShippingStreetTextBox.Text;
+            customerInfo.ShippingCity = ShippingCityTextBox.Text;
+            customerInfo.ShippingState = ShippingStateDropDown.Text;
+            customerInfo.ShippingZip = ShippingZipTextBox.Text;
+
+            customerInfo.PaymentMethod = PaymentMethodDropDown.Text;
+
+            string paymentMethod = PaymentMethodDropDown.SelectedValue;
+            if (paymentMethod == "MasterCard")
+            {
+                customerInfo.CardNumber = CardNumberTextBox.Text;
+                
+            }
+            else if (paymentMethod == "Visa"){
+                customerInfo.CardNumber = CardNumberTextBox.Text;
+                customerInfo.ExpirationMonth = ExpMonthDropDown.Text;
+
+            }
+            else if (paymentMethod == "paypal")
+            {
+                customerInfo.PayPalEmail = PayPalEmailTextBox.Text;
+                customerInfo.ExpirationYear = ExpYearDropDown.Text;
+            }
+            else
+            {
+                customerInfo.KSUlogin = KSULoginTextBox.Text;
+            }
+
+            Session["CustomerInfo"] = customerInfo;
+        }
+
+
+
+        //note implemented yet - but in future, if there's a problem with updating the inventoryFile, we could flag this order for the Admin Assistant  
+        public bool updateInventoryFile()
+        {
+            bool result = true;
+
+            for (int i = 0; i < cart.cartList.Count; i++)
+            {
+                if (cart.cartList[i].format != LineItem.EBOOK)       //ebook quantity doesn't change
+                {
+                    //row 9 = NEW.
+                    int quantityAvailable;
+                    string quantityString = StaticData.getMatrixValue(cart.cartList[i].rowNumber, StaticData.QUANTITY_NEW + cart.cartList[i].format);
+                    bool quantityResult = int.TryParse(quantityString, out quantityAvailable);
+                    quantityAvailable -= cart.cartList[i].quantity;
+
+                    //insert the updated quantity back into the matrix
+                    StaticData.setMatrixValue(cart.cartList[i].rowNumber, StaticData.QUANTITY_NEW + cart.cartList[i].format, quantityAvailable.ToString());
+                }
+            }
+
+            //finally - write the result back into books.csv
+            StaticData.writeFile();
+         
+
+            return result;
+        }
+
+
+
+        //check that the items are still in stock.
+        //did anyone place order in the meantime?
+        public Boolean CheckStillInStock()
+        {
+            StaticData.readFile();
+            bool result = true;
+
+            for (int i = 0; i < cart.cartList.Count; i++)
+            {
+
+                if (cart.cartList[i].format != LineItem.EBOOK)       //ebooks never go out of stock.
+                {
+                    //row 9 = NEW.
+                    int quantityAvailable;
+                    string quantityString = StaticData.getMatrixValue(cart.cartList[i].rowNumber, StaticData.QUANTITY_NEW + cart.cartList[i].format);
+                    bool quantityResult = int.TryParse(quantityString, out quantityAvailable);
+
+                    if (quantityAvailable < cart.cartList[i].quantity)
+                    {
+                        ErrorLabel.Text = "Not enough items in stock.  Please return to the shopping cart page.";
+                        result = false;
+                    }
+                }
+            }
+            return result;
+        }
+
+
+        //returns true if cart is empty, and sets error message.
+        //returns false if cart is not empty.
+        public Boolean IsCartEmpty()
+        {
+            if (cart.cartList.Count == 0)
+            {
+                ErrorLabel.Text = "Shopping Cart is empty.  Please click the Home/Search button to search for books.";
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         //SIMULATED credit card payment.
         //returns true if simulated payment went through
@@ -244,62 +370,70 @@ namespace Bookstore.Pages
             string username = KSULoginTextBox.Text.Trim();
             string password = KSUPasswordTextBox.Text;
 
-            int finAidBalance;
+            decimal finAidBalance;
 
             string appPath = HttpRuntime.AppDomainAppPath;
             string bursarFile = appPath + "/students.txt";
 
-            string[] lines = File.ReadAllLines(bursarFile);
-            string[] bursarEntry = null;
-
-            int i = 0;
-            bool foundUserName = false;
-
-            while (i < lines.Length && !foundUserName) {
-                bursarEntry = lines[i].Split(null);
-                if (bursarEntry[2] == username) {
-                    foundUserName = true;
-                }
-                i++;
-            }
-
-            if (foundUserName && bursarEntry[3] == password)
+            if (File.Exists(bursarFile))
             {
-                bool finAidValidFormat = int.TryParse(bursarEntry[4], out finAidBalance);
-                if (finAidValidFormat && finAidBalance > subtotal)
+                string[] lines = File.ReadAllLines(bursarFile);
+                string[] bursarEntry = null;
+
+                int i = 0;
+                bool foundUserName = false;
+
+                while (!foundUserName && i < lines.Length)
                 {
-                    result = true;
+                    bursarEntry = lines[i].Split(null);
+                    if (bursarEntry[2] == username)
+                    {
+                        foundUserName = true;
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                }
+
+                if (foundUserName && bursarEntry[3] == password)
+                {
+                    bool finAidValidFormat = decimal.TryParse(bursarEntry[4], out finAidBalance);
+                    if (finAidValidFormat && finAidBalance > cart.total)
+                    {
+                        //i is the line number in students.txt to edit
+                        //bursarEntry 4 is the financial aid balance
+
+                        finAidBalance -= cart.total;
+                        bursarEntry[4] = finAidBalance.ToString();
+                        lines[i] = string.Join("\t", bursarEntry);
+
+                        StreamWriter sw = new StreamWriter(bursarFile);
+                        for (int j = 0; j < lines.Length; j++)
+                        {
+                            sw.WriteLine(lines[j]);
+                        }
+                        sw.Close();
+
+                        result = true;
+                    }
+                    else
+                    {
+                        ErrorLabel.Text = "Insufficient financial aid.  Current available balance: $" + finAidBalance + ".";
+                    }
                 }
                 else
                 {
-                    ErrorLabel.Text = "Insufficient financial aid.  Current available balance: $" + finAidBalance + ".";
+                    ErrorLabel.Text = "Incorrect username or password.";
                 }
             }
             else
             {
-                ErrorLabel.Text = "Incorrect username or password.";
+                ErrorLabel.Text = "Could not connect to Bursar. <br> Please select another payment method or try again later.";
             }
+
             return result;
         }
-
-
-
-        //check if the cart is empty.
-        //returns true, and sets the error message, if cart is empty
-        //returns false, if cart is not empty. 
-        public bool IsCartEmpty()
-        {
-            if ((cart != null) && (cart.Count != 0))
-            {
-                return false;
-            }
-            else
-            {
-                ErrorLabel.Text = "Shopping Cart is empty.  Please click the Home/Search button to search for books.";
-                return true;
-            }
-        }
-
 
         //check whether the user filled in all fields properly.
         //returns false, and sets the error message, if there was a problem.
@@ -389,7 +523,7 @@ namespace Bookstore.Pages
                 //payment information
                 string paymentMethod = PaymentMethodDropDown.SelectedValue;
 
-                if (paymentMethod == "creditcard")
+                if (paymentMethod == "Visa" || paymentMethod == "MasterCard") 
                 {
                     System.DateTime currentDate = System.DateTime.Now;
                     int expMonth;
@@ -438,6 +572,16 @@ namespace Bookstore.Pages
                 }
             }
             return !isError;
+        }
+
+        protected void AddressCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            ShippingAddressPanel.Visible = !AddressCheckBox.Checked;
+
+            ShippingStreetTextBox.Text = BillingStreetTextBox.Text;
+            ShippingCityTextBox.Text = BillingStreetTextBox.Text;
+            ShippingStateDropDown.SelectedIndex = BillingStateDropDown.SelectedIndex;
+            ShippingZipTextBox.Text = BillingZipTextBox.Text;
         }
     }
 }

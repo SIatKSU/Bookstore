@@ -157,13 +157,58 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Panel Panel5;
         
         /// <summary>
-        /// CartPanel control.
+        /// RadioButtonListPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel CartPanel;
+        protected global::System.Web.UI.WebControls.Panel RadioButtonListPanel;
+        
+        /// <summary>
+        /// RBList1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList RBList1;
+        
+        /// <summary>
+        /// AddToCartButtonPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel AddToCartButtonPanel;
+        
+        /// <summary>
+        /// alignPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel alignPanel;
+        
+        /// <summary>
+        /// AddToCartButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AddToCartButton;
+        
+        /// <summary>
+        /// ErrorMessagePanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel ErrorMessagePanel;
         
         /// <summary>
         /// Panel6 control.
@@ -175,22 +220,22 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Panel Panel6;
         
         /// <summary>
-        /// DDList1 control.
+        /// AddToCartError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DDList1;
+        protected global::System.Web.UI.WebControls.Label AddToCartError;
         
         /// <summary>
-        /// CartButton control.
+        /// eBookAlreadyInCartError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button CartButton;
+        protected global::System.Web.UI.WebControls.Label eBookAlreadyInCartError;
         
         /// <summary>
         /// BookDetailsPanel control.

@@ -48,6 +48,15 @@ public partial class MasterPage {
     protected global::System.Web.UI.WebControls.Label Title;
     
     /// <summary>
+    /// CartButton control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.ImageButton CartButton;
+    
+    /// <summary>
     /// CartQuantityText control.
     /// </summary>
     /// <remarks>
@@ -57,13 +66,13 @@ public partial class MasterPage {
     protected global::System.Web.UI.WebControls.Label CartQuantityText;
     
     /// <summary>
-    /// CartButton control.
+    /// SubtotalText control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.ImageButton CartButton;
+    protected global::System.Web.UI.WebControls.Label SubtotalText;
     
     /// <summary>
     /// Menu1 control.
