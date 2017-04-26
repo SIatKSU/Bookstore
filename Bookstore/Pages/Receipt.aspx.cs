@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data;
 
 namespace Bookstore.Pages
 {
@@ -32,10 +33,14 @@ namespace Bookstore.Pages
             String BZip = customerinfo.BillingZip;
             BState = " " + BState.Trim();
             BZip = ", " + BZip.Trim();
+            String SState = customerinfo.ShippingState;
+            String SZip = customerinfo.ShippingZip;
+            SState = " " + SState.Trim();
+            SZip = ", " + SZip.Trim();
 
 
             citystateBLabel.Text = string.Concat(string.Concat(customerinfo.BillingCity, BState), BZip);
-            citystateLabel4.Text = string.Concat(string.Concat(customerinfo.ShippingCity, customerinfo.ShippingState), customerinfo.ShippingZip);
+            citystateLabel4.Text = string.Concat(string.Concat(customerinfo.ShippingCity, SState), SZip);
             String lastfourdigits;
             if (customerinfo.PaymentMethod == "MasterCard"||customerinfo.PaymentMethod == "Visa") { 
                 lastfourdigits = customerinfo.CardNumber.Substring(Math.Max(0, customerinfo.CardNumber.Length - 4));
@@ -45,16 +50,34 @@ namespace Bookstore.Pages
                 
             }
             else if(customerinfo.PaymentMethod == "paypal") {
-                PaymentMethodLabel1.Text = customerinfo.PayPalEmail;
+                String paypal = "PayPal Email: ";
+                String paypalemail = customerinfo.PayPalEmail;
+                PaymentMethodLabel1.Text = string.Concat(paypal, paypalemail);
             }
             else
             {
-                PaymentMethodLabel1.Text = customerinfo.KSUlogin;
+                String ksu = "KSU ID: ";
+                PaymentMethodLabel1.Text = string.Concat(ksu, customerinfo.KSUlogin);
             }
+            //filling out subtotal, tax, shipping tax, and total
+            decimal subtotal = Math.Round(customerinfo.OrderCart.subTotal,2);
+            decimal tax = Math.Round(customerinfo.OrderCart.tax, 2);
+            decimal shipping = Math.Round(customerinfo.OrderCart.shipping, 2);
+            decimal total = Math.Round(customerinfo.OrderCart.total, 2);
+            ActualSubtotalLabel.Text = subtotal.ToString();
+            ActualTaxLabel.Text = tax.ToString();
+            ActualShippingLabel.Text = shipping.ToString();
+            ActualTotalLabel.Text = total.ToString();   
+
             
 
 
         }
+      
        
+
+            //add elements to DataRow
+           
+
     }
 }

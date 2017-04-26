@@ -319,13 +319,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label SubTotalLabel1;
         
         /// <summary>
-        /// SubtotalLabel control.
+        /// ActualSubtotalLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label SubtotalLabel;
+        protected global::System.Web.UI.WebControls.Label ActualSubtotalLabel;
         
         /// <summary>
         /// taxLabel2 control.
@@ -337,13 +337,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label taxLabel2;
         
         /// <summary>
-        /// TaxLabel control.
+        /// ActualTaxLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label TaxLabel;
+        protected global::System.Web.UI.WebControls.Label ActualTaxLabel;
         
         /// <summary>
         /// ShippingLabel control.
@@ -355,13 +355,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label ShippingLabel;
         
         /// <summary>
-        /// Label3 control.
+        /// ActualShippingLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label3;
+        protected global::System.Web.UI.WebControls.Label ActualShippingLabel;
         
         /// <summary>
         /// Panel12 control.
@@ -382,13 +382,13 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label totalLabel4;
         
         /// <summary>
-        /// TotalLabel control.
+        /// ActualTotalLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label TotalLabel;
+        protected global::System.Web.UI.WebControls.Label ActualTotalLabel;
         
         /// <summary>
         /// Panel11 control.
