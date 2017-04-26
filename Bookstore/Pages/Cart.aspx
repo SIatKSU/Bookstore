@@ -1,68 +1,105 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/MasterPage.master" AutoEventWireup="true" Inherits="Pages_Cart" Codebehind="Cart.aspx.cs" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/MasterPage.master" AutoEventWireup="true" Inherits="Pages_Cart" CodeBehind="Cart.aspx.cs" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="../MyStyles.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .gridView {
+            border-style: solid;
+            border-width: 2px 2px 0px 2px;
+        }
+
+        .grid1stColumn {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .gridColumn {
+            padding-right: 20px;
+        }
+
+        .plusMinus {
+            margin: 0px;
+        }
+    </style>
+
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <asp:Label ID="CartHeaderLabel" runat="server" Text="Shopping Cart" Style="text-align: center" Width="1100px" Font-Bold="True" Font-Size="Large" BorderWidth="2px"></asp:Label>
-    <br>
-    <br>
-    <asp:Label ID="ErrorLabel" runat="server" Text="Errors go here." Style="text-align: left; border-style: solid; border-color: black; border-width:2px 2px 2px 2px" Width="1100px" Font-Bold="True" Font-Size="Large" ForeColor="Red"></asp:Label>
-    
-    <asp:GridView ID="GridView1" AutoGenerateColumns="False" runat="server" GridLines="Horizontal">
+    <asp:Label ID="ErrorLabel" runat="server" Text="Errors go here." Style="text-align: left; border-style: solid; border-color: black; border-width: 0px 2px 0px 2px" Width="1100px" Font-Bold="True" Font-Size="Large" ForeColor="Red"></asp:Label>
+
+    <!--<asp:HyperLinkField HeaderText="Title:" DataNavigateUrlFields="TitleURL" DataTextField="Title">
+                <ItemStyle HorizontalAlign="Left" Width="350px" CssClass="gridColumn"/>
+            </asp:HyperLinkField>-->
+
+    <asp:GridView ID="GridView1" AutoGenerateColumns="False" runat="server" BorderColor="Black" Font-Size="Large" CssClass="gridView" GridLines="Horizontal" OnRowDeleting="PendingRecordsGridview_RowDeleting" OnRowCommand="GridView1_RowCommand" OnRowDataBound="gridDetail_RowDataBound">
         <Columns>
-            <asp:TemplateField HeaderText="Coverpage:" ItemStyle-Width="100px">
+            <asp:TemplateField HeaderText="Coverpage:" ItemStyle-Width="100px" HeaderStyle-CssClass="grid1stColumn" ItemStyle-CssClass="grid1stColumn">
                 <ItemTemplate>
                     <a href='<%#Eval("ISBN","/Pages/Details.aspx?isbn={0}") %>'>
                         <img src='<%#Eval("ISBN","/Images/{0}.jpg") %>' width="100" />
                     </a>
                 </ItemTemplate>
+
+                <HeaderStyle CssClass="grid1stColumn"></HeaderStyle>
+
+                <ItemStyle Width="100px"></ItemStyle>
             </asp:TemplateField>
-            <asp:HyperLinkField HeaderText="Title" DataNavigateUrlFields="TitleURL" DataTextField="Title">
-                <ItemStyle HorizontalAlign="Left" Width="100px" />
-            </asp:HyperLinkField>
-            <asp:BoundField DataField="Format" HeaderText="Format">
+
+            <asp:TemplateField HeaderText="Title & Author:" ItemStyle-Width="350px" ItemStyle-CssClass="gridColumn">
+                <ItemTemplate>
+                    <a href='<%#Eval("ISBN","/Pages/Details.aspx?isbn={0}") %>'>
+                        <asp:Label ID="Title" runat="server" Text='<%# Bind("Title") %>' Font-Size="Large" Font-Bold="True" Style="padding-bottom: 10px" />
+                    </a>
+                    <asp:Label ID="Author" Style="display: block; padding-top: 10px" runat="server" Text='<%# Bind("Author") %>' />
+                    <asp:Label ID="RowNumber" Style="display: block; padding-top: 10px" Visible="false" runat="server" Text='<%# Bind("RowNumber") %>' />
+                </ItemTemplate>
+
+                <ItemStyle CssClass="gridColumn" Width="350px"></ItemStyle>
+            </asp:TemplateField>
+            <asp:BoundField DataField="Format" HeaderText="Format:">
                 <ItemStyle HorizontalAlign="Left" Width="100px" />
             </asp:BoundField>
-            <asp:BoundField DataField="Quantity" HeaderText="Quantity">
-                <ItemStyle HorizontalAlign="Left" Width="100px" />
+            <asp:BoundField DataField="Price" HeaderText="Price:">
+                <ItemStyle HorizontalAlign="Left" Font-Size="Large" Width="100px" />
             </asp:BoundField>
+
+            <asp:TemplateField HeaderText="&nbsp;&nbsp;&nbsp;Quantity" ItemStyle-Width="140px">
+                <ItemTemplate>
+                    <asp:Button ID="DecrementBtn" runat="server" Font-Size="Large" Font-Bold="true" Text="-" CommandName="Decrement" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />
+                    <asp:TextBox ID="QuantityTextBox" Width="40px" Font-Size="Large" runat="server" AutoPostBack="true" onkeydown="return (!(event.keyCode>=65) && event.keyCode!=32);" OnTextChanged="TextChangedEvent" Text='<%# Bind("Quantity") %>' Style="text-align: center" />
+                    <asp:Button ID="IncrementBtn" runat="server" Font-Size="Large" Font-Bold="true" Text="+" CommandName="Increment" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" />
+                    <asp:Label ID="QuantityInStock" Style="width: 100px; display: block; padding-top: 10px; text-align: center; font-size: medium" runat="server" Text='<%# Bind("InStock") %>' />
+                    <asp:Label ID="eBookLabel" Style="display: block; text-align: left" runat="server" Text="&nbsp;&nbsp;&nbsp;eBook" Visible="false" />
+                </ItemTemplate>
+
+                <ItemStyle Width="140px"></ItemStyle>
+            </asp:TemplateField>
+
+            <asp:BoundField DataField="Total" HeaderText="Total:">
+                <ItemStyle HorizontalAlign="Left" Width="140px" />
+            </asp:BoundField>
+            
+            <asp:ButtonField CommandName="DeleteThisRow" Text="Remove" ItemStyle-Width="100px"/>
+
         </Columns>
         <HeaderStyle HorizontalAlign="Left" />
     </asp:GridView>
 
-    <!--
-    <asp:GridView ID="GridView2" AutoGenerateColumns="false" runat="server" ShowHeader="False" GridLines="None">
-        <Columns>
-            <asp:BoundField DataField="BlankSpace" >
-            <ItemStyle HorizontalAlign="Left" Width="100px" />
-            </asp:BoundField>
-            <asp:BoundField DataField="Label" HeaderText="Format" >
-            <ItemStyle HorizontalAlign="Left" Width="100px" />
-            </asp:BoundField>
-            <asp:BoundField DataField="Amount" HeaderText="Quantity" >
-            <ItemStyle HorizontalAlign="Left" Width="100px" />
-            </asp:BoundField>
-        </Columns>
-    </asp:GridView>  -->
-
-    
-    
-    <asp:Panel ID="TotalsPanel" runat="server" Width="1100px" Style="display: inline-block; float: left; padding-top: 8px; padding-bottom: 8px" BorderColor="Black" BorderWidth="2px">
-        <asp:Panel ID="Panel1" Width="200px" Style="display: inline-block; padding-bottom: 10px" runat="server">
-            <asp:Label ID="Label1" runat="server" Style="display: block; text-align:right; padding-bottom: 10px" Text="Subtotal:"></asp:Label>
-            <asp:Label ID="Label2" runat="server" Style="display: block; text-align:right; padding-bottom: 10px" Text="7% tax:"></asp:Label>
-            <asp:Label ID="Label3" runat="server" Style="display: block; text-align:right; padding-bottom: 10px" Text="Shipping:"></asp:Label>
-            <asp:Label ID="Label4" runat="server" Style="display: block; text-align:right; padding-bottom: 10px" Text="Total:"></asp:Label>
+    <asp:Panel ID="TotalsPanel" runat="server" Width="1100px" Style="display: inline-block; font-size:large; float: left; padding-top: 8px; padding-bottom: 8px; border-style: solid; border-width: 2px 2px 0px 2px" BorderColor="Black">
+        <asp:Panel ID="Panel1" Width="810px" Style="display: inline-block; padding-bottom: 10px" runat="server">
+            <asp:Label ID="Label1" runat="server" Style="display: block; text-align: right; padding-bottom: 10px" Text="Subtotal:"></asp:Label>
+            <asp:Label ID="Label2" runat="server" Style="display: block; text-align: right; padding-bottom: 10px" Text="7% tax:"></asp:Label>
+            <asp:Label ID="Label3" runat="server" Style="display: block; text-align: right; padding-bottom: 10px" Text="Shipping:"></asp:Label>
+            <asp:Label ID="Label4" runat="server" Style="display: block; text-align: right; padding-bottom: 10px" Text="Total:"></asp:Label>
         </asp:Panel>
-        <asp:Panel ID="Panel2" Width="200px" Style="display: inline-block; padding-left: 40px; padding-bottom: 10px " runat="server">
-            <asp:Label ID="SubtotalLabel" runat="server" Style="display: block; text-align:left; padding-bottom: 10px" Text=""></asp:Label>
-            <asp:Label ID="TaxLabel" runat="server" Style="display: block; text-align:left; padding-bottom: 10px" Text=""></asp:Label>
-            <asp:Label ID="ShippingLabel" runat="server" Style="display: block; text-align:left; padding-bottom: 10px" Text=""></asp:Label>
-            <asp:Label ID="TotalLabel" runat="server" Style="display: block; text-align:left; padding-bottom: 10px" Text=""></asp:Label>
+        <asp:Panel ID="Panel2" Width="200px" Style="display: inline-block; font-size:large; padding-left: 40px; padding-bottom: 10px" runat="server">
+            <asp:Label ID="SubtotalLabel" runat="server" Style="display: block; text-align: left; padding-bottom: 10px" Text=""></asp:Label>
+            <asp:Label ID="TaxLabel" runat="server" Style="display: block; text-align: left; padding-bottom: 10px" Text=""></asp:Label>
+            <asp:Label ID="ShippingLabel" runat="server" Style="display: block; text-align: left; padding-bottom: 10px" Text=""></asp:Label>
+            <asp:Label ID="TotalLabel" runat="server" Style="display: block; text-align: left; padding-bottom: 10px" Text=""></asp:Label>
         </asp:Panel>
     </asp:Panel>
-    
+
     <asp:Panel ID="BottomPanel" runat="server" Width="900px" Style="float: left; padding-top: 8px; padding-bottom: 8px; padding-left: 100px; padding-right: 100px; text-align: center" BorderColor="Black" BorderWidth="2px">
         <asp:Button ID="ContinueShoppingBtn" runat="server" Text="Continue Shopping" Style="display: inline-block; float: left; width: 300px" Font-Size="Large" CssClass="btn" OnClick="ContinueShoppingBtn_Click" />
         <!--<asp:Panel ID="DividerPanel" runat="server" Style="display: inline-block" Width="300px">

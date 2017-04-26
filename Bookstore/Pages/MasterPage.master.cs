@@ -22,7 +22,12 @@ public partial class MasterPage : System.Web.UI.MasterPage
 
 
         StaticData.readFile(); //this will be moved to a more appropriate place later
-       
+
+        RefreshCartIcon();
+    }
+
+    public void RefreshCartIcon()
+    {
         //just in case cart is null, create it.
         if (Session["cart"] == null)
         {

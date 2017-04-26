@@ -1,14 +1,22 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/MasterPage.master" AutoEventWireup="true" CodeBehind="Search.aspx.cs" Inherits="Bookstore.Pages.Search" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <link href="../MyStyles.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <asp:Label ID="SearchHeaderLabel" runat="server" Text="Search Results" style="text-align:center" Width="1100px" Font-Bold="True" Font-Size="Large" BorderWidth="2px"></asp:Label>
+    <asp:Label ID="SearchErrorLabel" runat="server" Text="Search Error" style="text-align:center;display:inline-block;padding-bottom:40px;padding-top:10px" Width="100%" Font-Bold="True" 
+        Visible="false" ForeColor="#ff0000" Font-Size="Large" />
+
+    <asp:Panel ID="SearchAgainPanel" runat="server" style="text-align:center" Visible="false">
+        <asp:Button ID="SearchAgainButton" runat="server" CssClass="btn" Style="padding:7px" Text="Go Back To Search Page" OnClick="SearchAgainButton_Click"/>
+    </asp:Panel>
+
+    <asp:Label ID="SearchHeaderLabel" runat="server" Text="Search Results" style="text-align:center;display:inline-block;padding:5px" Width="1090px" Font-Bold="True" Font-Size="Large" BorderWidth="2px" />
     <br> <br>
 
-    <asp:Panel ID="TitleDetailsPanel" runat="server"  Height ="20px" Width="1100px" style="float:left;text-align:center" BorderColor="Black" BorderWidth="2px">
-        <asp:Label ID="ISBN" runat="server" Font-Size="Medium" Text="Sort By:" /> &nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:DropDownList ID="SortList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="SortList_SelectedIndexChanged"/>
+    <asp:Panel ID="TitleDetailsPanel" runat="server" Width="1100px" style="float:left;text-align:center" BorderColor="Black" BorderWidth="2px">
+        <asp:Label ID="ISBN" runat="server" Font-Size="Medium" Text="Sort By:" style="display:inline-block;padding:5px"/> &nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:DropDownList ID="SortList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="SortList_SelectedIndexChanged" style="padding:3px"/>
     </asp:Panel>
      
     <asp:GridView ID="GridView1" runat="server" CellPadding="3" BorderColor="Black" BorderWidth="2px" GridLines="Horizontal" AutoGenerateColumns="false" 

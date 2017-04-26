@@ -48,7 +48,7 @@ namespace Bookstore
                     else
                     {
                         int quantityInStock = StaticData.convertToInt(cartList[i].rowNumber, cartList[i].format + StaticData.QUANTITY_NEW);
-                        if (cartList[i].quantity > quantityInStock)
+                        if ((cartList[i].quantity + quantity) > quantityInStock)
                         {
                             result = -2;    //Error!  Trying to add more items to the cart than exist in stock.
                         }
@@ -72,6 +72,39 @@ namespace Bookstore
             RecalcSubtotal();
 
             return result;
+        }
+
+
+
+        //returns a LiteItem given the rowNumber and format.
+        //if the LineItem with matching rowNumber and format is not found, returns null.
+        public LineItem GetLineItem(int rowNumber, int format)
+        {
+            bool foundLineItem = false;
+            int i = 0;
+
+            //search cartList for the item to be removed
+            while ((i < cartList.Count) && (!foundLineItem))
+            {
+                if ((cartList[i].rowNumber == rowNumber) &&
+                    (cartList[i].format == format))
+                {
+                    foundLineItem = true;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+
+            return foundLineItem ? cartList[i] : null;
+        }
+
+        //remove an entire LineItem from the cart.
+        public void DeleteLine(LineItem lineToDelete)
+        {
+            cartList.Remove(lineToDelete);
+            RecalcSubtotal();
         }
 
 
@@ -118,7 +151,7 @@ namespace Bookstore
         }
 
         //calc tax, shipping and total
-        public void calcTotal()
+        public void calcTaxShippingAndTotal()
         {
             bool hasShipping = false;
             int i = 0;

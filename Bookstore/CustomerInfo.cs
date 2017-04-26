@@ -7,6 +7,8 @@ namespace Bookstore
 {
     public class CustomerInfo
     {
+        public Cart OrderCart;      //the contents of the order is stored here.    
+
         public string FullName;
         public string Email;
         public string PhoneNumber;

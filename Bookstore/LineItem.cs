@@ -25,5 +25,31 @@ namespace Bookstore
             this.quantity = quantity;
             this.price = price;
         }
+
+
+        public static int FormatStringToInt(string formatStr)
+        {
+            int formatNum;
+            switch (formatStr)
+            {
+                case "New":
+                    formatNum = NEW;
+                    break;
+                case "Used":
+                    formatNum = USED;
+                    break;
+                case "Rental":
+                    formatNum = RENTAL;
+                    break;
+                case "eBook":
+                    formatNum = EBOOK;
+                    break;
+                default:
+                    formatNum = -1;
+                    break;
+            }
+            return formatNum;
+        }
+
     }
 }

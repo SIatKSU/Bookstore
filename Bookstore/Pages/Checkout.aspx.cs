@@ -177,11 +177,12 @@ namespace Bookstore.Pages
                     //update inventory file.
                     updateInventoryFile();
 
-                    //empty the cart.
-                    cart = new Cart();
-
                     //Copy the customer information for the Receipts page, into Session state.
                     LoadSessionData();
+
+                    //clear the cart.
+                    cart = new Cart();
+                    Session["cart"] = cart;
 
                     Response.Redirect("Receipt.aspx");
                 }
@@ -196,6 +197,8 @@ namespace Bookstore.Pages
             {
                 customerInfo = new CustomerInfo();
             }
+
+            customerInfo.OrderCart = cart;
 
             customerInfo.FullName = FullNameTextBox.Text;
             customerInfo.Email = EmailTextBox.Text;
