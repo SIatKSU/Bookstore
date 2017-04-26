@@ -224,12 +224,13 @@ namespace Bookstore.Pages
             }
             else if (paymentMethod == "Visa"){
                 customerInfo.CardNumber = CardNumberTextBox.Text;
-                
+                customerInfo.ExpirationMonth = ExpMonthDropDown.Text;
 
             }
             else if (paymentMethod == "paypal")
             {
                 customerInfo.PayPalEmail = PayPalEmailTextBox.Text;
+                customerInfo.ExpirationYear = ExpYearDropDown.Text;
             }
             else
             {
