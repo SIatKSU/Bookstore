@@ -265,15 +265,6 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.Label PaymentMethodLabel1;
         
         /// <summary>
-        /// ItemsPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel ItemsPanel;
-        
-        /// <summary>
         /// Panel9 control.
         /// </summary>
         /// <remarks>
@@ -292,15 +283,6 @@ namespace Bookstore.Pages {
         protected global::System.Web.UI.WebControls.GridView GridView1;
         
         /// <summary>
-        /// TotalsPanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel TotalsPanel;
-        
-        /// <summary>
         /// Panel10 control.
         /// </summary>
         /// <remarks>
@@ -308,6 +290,15 @@ namespace Bookstore.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel10;
+        
+        /// <summary>
+        /// TotalsPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel TotalsPanel;
         
         /// <summary>
         /// SubTotalLabel1 control.
