@@ -201,6 +201,7 @@ namespace Bookstore.Pages
                     //could put an error: out of stock message here.  
                     //Or just let the page refresh and they can try again.
                 }
+                else
                 {
                     // redirect to cart page
                     Response.Redirect("Cart.aspx");

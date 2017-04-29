@@ -193,10 +193,7 @@ namespace Bookstore.Pages
 
         public void LoadSessionData()
         {
-            if (customerInfo == null)
-            {
-                customerInfo = new CustomerInfo();
-            }
+            customerInfo = new CustomerInfo();
 
             customerInfo.OrderCart = cart;
 
@@ -220,8 +217,6 @@ namespace Bookstore.Pages
             if ((paymentMethod == "MasterCard") || (paymentMethod == "Visa"))
             {
                 customerInfo.CardNumber = CardNumberTextBox.Text;
-                customerInfo.ExpirationMonth = ExpMonthDropDown.Text;
-                customerInfo.ExpirationYear = ExpYearDropDown.Text;
             }
             else if (paymentMethod == "paypal")
             {

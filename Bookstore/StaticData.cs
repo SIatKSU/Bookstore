@@ -30,9 +30,8 @@ public static class StaticData
     public const int DESCRIPTION = 17;
 
 
-    private static string appPath = HttpRuntime.AppDomainAppPath;
+    public static string appPath = HttpRuntime.AppDomainAppPath;
     private static string fileName = appPath + "/books.csv";
-
 
     //private static string testFileName = appPath + "/testBooks.csv";
     //private static string fileName = testFileName;

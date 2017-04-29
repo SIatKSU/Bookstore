@@ -85,21 +85,21 @@
         <asp:Panel ID="Panel10" Width="100%" Style="display: inline-block;" runat="server"> 
  <asp:Panel ID="TotalsPanel" runat="server" Style="border-width: 2px 0px 0px 0px; padding-bottom: 20px" Width="100%" Height="100%" BorderStyle="Solid" BorderColor="Black">
         
-            <asp:Label ID="SubTotalLabel1" runat="server" Style="display: inline-block; text-align: right;" Text="Subtotal: $" Width="90%" ></asp:Label>
+            <asp:Label ID="SubTotalLabel1" runat="server" Style="display: inline-block; text-align: right;" Text="Subtotal: " Width="89%" ></asp:Label>
             <asp:Label ID="ActualSubtotalLabel" runat="server" float="right" Text="0.00" ></asp:Label>
 
             
 
-            <asp:Label ID="taxLabel2" runat="server" Style="display: inline-block; text-align:right;" Text="7% tax: $" Width="90%"></asp:Label>  
+            <asp:Label ID="taxLabel2" runat="server" Style="display: inline-block; text-align:right;" Text="7% tax: " Width="89%"></asp:Label>  
             <asp:Label ID="ActualTaxLabel" runat="server" float="right" Text="0.00"></asp:Label>
               
-            <asp:Label ID="ShippingLabel" runat="server" Style="display: inline-block; text-align:right;" Text="Shipping: $" Width="90%"></asp:Label>
+            <asp:Label ID="ShippingLabel" runat="server" Style="display: inline-block; text-align:right;" Text="Shipping: " Width="89%"></asp:Label>
             <asp:Label ID="ActualShippingLabel" runat="server" float="right" Text="0.00"></asp:Label>
           
         </asp:Panel>
          
             <asp:Panel ID="Panel12" runat="server" BorderStyle="Solid" Height="25px" Style="border-width: 2px 0px 0px 0px" Width="100%">
-<asp:Label ID="totalLabel4" runat="server" Style="display: inline-block; text-align:right; " Text="Total: $" Width="90%"></asp:Label>
+<asp:Label ID="totalLabel4" runat="server" Style="display: inline-block; text-align:right; " Text="Total: " Width="89%"></asp:Label>
                 <asp:Label ID="ActualTotalLabel" runat="server" float="right" Text="0.00"></asp:Label>
                 
             </asp:Panel>

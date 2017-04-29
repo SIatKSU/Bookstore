@@ -7,6 +7,7 @@ namespace Bookstore
 {
     public class CustomerInfo
     {
+        public Boolean ReceiptSaved = false;
         public Cart OrderCart;      //the contents of the order is stored here.    
 
         public string FullName;
@@ -27,8 +28,6 @@ namespace Bookstore
 
         //credit card
         public string CardNumber;
-        public string ExpirationMonth;
-        public string ExpirationYear;
 
         //paypal
         public string PayPalEmail;
