@@ -144,7 +144,7 @@ namespace Bookstore.Pages
             if (AddressCheckBox.Checked)
             {
                 ShippingStreetTextBox.Text = BillingStreetTextBox.Text;
-                ShippingCityTextBox.Text = BillingStreetTextBox.Text;
+                ShippingCityTextBox.Text = BillingCityTextBox.Text;
                 ShippingStateDropDown.SelectedIndex = BillingStateDropDown.SelectedIndex;
                 ShippingZipTextBox.Text = BillingZipTextBox.Text;
             }

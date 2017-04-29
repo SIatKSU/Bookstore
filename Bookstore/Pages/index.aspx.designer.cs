@@ -12,6 +12,15 @@
 public partial class Pages_index {
     
     /// <summary>
+    /// Panel2 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel Panel2;
+    
+    /// <summary>
     /// IntroMessageLabel control.
     /// </summary>
     /// <remarks>
@@ -19,6 +28,15 @@ public partial class Pages_index {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Label IntroMessageLabel;
+    
+    /// <summary>
+    /// WholePanel control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel WholePanel;
     
     /// <summary>
     /// DDList1 control.
@@ -57,15 +75,6 @@ public partial class Pages_index {
     protected global::System.Web.UI.WebControls.Button SearchButton;
     
     /// <summary>
-    /// ProfsError control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.Label ProfsError;
-    
-    /// <summary>
     /// CoursesError control.
     /// </summary>
     /// <remarks>
@@ -75,6 +84,15 @@ public partial class Pages_index {
     protected global::System.Web.UI.WebControls.Label CoursesError;
     
     /// <summary>
+    /// ProfsError control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Label ProfsError;
+    
+    /// <summary>
     /// SearchBoxError control.
     /// </summary>
     /// <remarks>
@@ -82,4 +100,13 @@ public partial class Pages_index {
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.Label SearchBoxError;
+    
+    /// <summary>
+    /// Panel1 control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.WebControls.Panel Panel1;
 }

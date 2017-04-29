@@ -2,40 +2,42 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
     <link href="../MyStyles.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .auto-style5 {
+            height: 94px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+        <asp:Panel ID="Panel2" runat="server" HorizontalAlign="Center" >
+
     <asp:Label ID="IntroMessageLabel" runat="server" Text="Welcome to the Kennesaw State Bookstore. Start seaching by selecting the options below." Font-Bold="True" Font-Size="Larger">
     </asp:Label>
-    <p></p>
+    </asp:Panel>
+    
+    <asp:Panel ID="WholePanel" runat="server" Height="106px" Style="border-style: solid; border-width: 1px 1px 1px 1px; padding-bottom:0px; padding-left:350px; padding-right:0px; padding-top:0px" >
     <table>
         <tr style="width:1100px">
-                <td colspan="4" class="auto-style4">
-
-                    <asp:DropDownList ID="DDList1" runat="server" AutoPostBack="true" style="padding:5px" OnSelectedIndexChanged="DDList1SelectedIndexChanged" />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                    <asp:DropDownList ID="DDList2" runat="server" AutoPostBack="true" style="padding:5px" Visible="false" OnSelectedIndexChanged="DDList2SelectedIndexChanged" />
-
-                    <asp:TextBox ID="SearchBox" runat="server" Visible="True" style="padding:5px" />
-
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:Button ID="SearchButton" runat="server" CssClass="btn" Style="font-size: small;padding:5px" Text="Search" Visible="True" OnClick="searchClicked"/>
-
-                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:Label ID="ProfsError" runat="server" style="display:inline-block;padding-bottom:10px" Text="Please select a professor" Visible="False" Font-Bold="True" 
-                        Font-Size="Medium" Font-Underline="False" ForeColor="Red" />
- 
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                    <asp:Label ID="CoursesError" runat="server" style="display:inline-block;padding-bottom:10px" Text="Please select a course" Visible="False" Font-Bold="True" 
-                        Font-Size="Medium" Font-Underline="False" ForeColor="Red" />
-
-                    <asp:Label ID="SearchBoxError" runat="server" style="display:inline-block;padding-bottom:10px" Text="Please enter a search value" Visible="False" Font-Bold="True"
-                        Font-Size="Medium" Font-Underline="False" ForeColor="Red" />
+                <td class="auto-style5">
+               
+                    <asp:DropDownList ID="DDList1" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DDList1SelectedIndexChanged" style="padding:5px"/>
+                    <asp:DropDownList ID="DDList2" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DDList2SelectedIndexChanged" style="padding:5px" Visible="false"/>
+                    <asp:TextBox ID="SearchBox" runat="server" style="padding:5px" Visible="True"/>
+                    <asp:Button ID="SearchButton" runat="server" CssClass="btn" OnClick="searchClicked" Style="font-size: small;padding:5px" Text="Search" Visible="True"/>
+                 
+                    <asp:Label ID="CoursesError" runat="server" Font-Bold="True" Font-Size="Medium" Font-Underline="False" ForeColor="Red" Height="23px" style="display:inline-block;" Text="Please select a course" Visible="False" Width="184px" />
+                    <asp:Label ID="ProfsError" runat="server" Font-Bold="True" Font-Size="Medium" Font-Underline="False" ForeColor="Red" style="display:inline-block;" Text="Please select a professor" Visible="False" />
+                    <asp:Label ID="SearchBoxError" runat="server" Font-Bold="True" Font-Size="Medium" Font-Underline="False" ForeColor="Red" style="display:inline-block;" Text="Please enter a search value" Visible="False" Width="235px" />
                 </td>
             </tr>
     </table>
-
-<p>
-    More welcoming things here. A picture of the bookstore perhaps. </p>
-</asp:Content>
+        
+</asp:Panel>
+    
+    <p></p>
+    <asp:Panel ID="Panel1" runat="server" Height="125px" HorizontalAlign="Center">
+        <asp:Image runat="server" ImageURL="~/Images/book store 2.gif" Height="125px" Width="253px" ></asp:Image>
+        </asp:Panel>
+    
+    </asp:Content>
 
