@@ -217,20 +217,15 @@ namespace Bookstore.Pages
             customerInfo.PaymentMethod = PaymentMethodDropDown.Text;
 
             string paymentMethod = PaymentMethodDropDown.SelectedValue;
-            if (paymentMethod == "MasterCard")
+            if ((paymentMethod == "MasterCard") || (paymentMethod == "Visa"))
             {
                 customerInfo.CardNumber = CardNumberTextBox.Text;
-                
-            }
-            else if (paymentMethod == "Visa"){
-                customerInfo.CardNumber = CardNumberTextBox.Text;
                 customerInfo.ExpirationMonth = ExpMonthDropDown.Text;
-
+                customerInfo.ExpirationYear = ExpYearDropDown.Text;
             }
             else if (paymentMethod == "paypal")
             {
                 customerInfo.PayPalEmail = PayPalEmailTextBox.Text;
-                customerInfo.ExpirationYear = ExpYearDropDown.Text;
             }
             else
             {

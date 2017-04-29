@@ -165,7 +165,7 @@ namespace Bookstore
                 i++;
             }
 
-            tax = TAXRATE * subTotal / 100;
+            tax = Math.Round(TAXRATE * subTotal / 100, 2);
             total = subTotal + tax;
             if (hasShipping)
             {

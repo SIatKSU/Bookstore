@@ -19,7 +19,7 @@
         <table style="width:1100px; margin: 0 auto">
             <tr style="width:1100px;">
                 <td style="width:300px"">
-                    <asp:ImageButton ID="header_image" runat="server" ImageUrl ="~/images/KSU_Logo.png" Width="300px" PostBackUrl="~/Pages/index.aspx"/>
+                    <asp:ImageButton ID="header_image" runat="server" ImageUrl ="~/images/KSU_Logo.png" Width="300px" PostBackUrl="http://www.kennesaw.edu"/>
                 </td>
                 <td style="width:650px">
                     <asp:Label ID="Title" runat="server" Text="Kennesaw State Bookstore" Font-Bold="True" Font-Size="55px"></asp:Label>

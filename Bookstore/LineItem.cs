@@ -32,9 +32,6 @@ namespace Bookstore
             int formatNum;
             switch (formatStr)
             {
-                case "New":
-                    formatNum = NEW;
-                    break;
                 case "Used":
                     formatNum = USED;
                     break;
@@ -44,11 +41,32 @@ namespace Bookstore
                 case "eBook":
                     formatNum = EBOOK;
                     break;
-                default:
-                    formatNum = -1;
+                default:    //case "New":
+                    formatNum = NEW;
                     break;
             }
             return formatNum;
+        }
+
+        public static string FormatIntToString(int format)
+        {
+            string formatStr;
+            switch (format)
+            {
+                case USED:
+                    formatStr = "Used";
+                    break;
+                case RENTAL: 
+                    formatStr = "Rental";
+                    break;
+                case EBOOK:
+                    formatStr = "eBook";
+                    break;
+                default:        //case NEW:
+                    formatStr = "New";
+                    break;
+            }
+            return formatStr;
         }
 
     }

@@ -99,25 +99,8 @@ public partial class Pages_Cart : System.Web.UI.Page
             dr["TitleURL"] = @"/Pages/Details.aspx?isbn=" + isbn;
 
             dr["Author"] = StaticData.getMatrixValue(cart.cartList[i].rowNumber, StaticData.AUTHOR);
-            
-            switch (cart.cartList[i].format)
-            {
-                case LineItem.NEW:
-                    dr["Format"] = "New";
-                    break;
-                case LineItem.USED:
-                    dr["Format"] = "Used";
-                    break;
-                case LineItem.RENTAL:
-                    dr["Format"] = "Rental";
-                    break;
-                case LineItem.EBOOK:
-                    dr["Format"] = "eBook";
-                    break;
-                default:
-                    dr["Format"] = "invalid";
-                    break;
-            }
+
+            dr["Format"] = LineItem.FormatIntToString(cart.cartList[i].format);
 
             dr["Price"] = String.Format("{0:C}", cart.cartList[i].price);
             dr["Quantity"] = cart.cartList[i].quantity;

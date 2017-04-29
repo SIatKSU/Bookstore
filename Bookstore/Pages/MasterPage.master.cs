@@ -17,11 +17,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
     {
 
         // SCAN BOOKS DATA FILE AND ADD ELEMENTS INTO a (static) MULTI-DIM. ARRAY
-
-        //string csvText = @"C:\Users\SWE Group 4\Documents\Visual Studio 2017\WebSites\Bookstore\books.csv";
-
-
-        StaticData.readFile(); //this will be moved to a more appropriate place later
+        StaticData.readFile(); 
 
         RefreshCartIcon();
     }
