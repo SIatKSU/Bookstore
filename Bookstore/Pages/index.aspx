@@ -11,7 +11,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
         <asp:Panel ID="Panel2" runat="server" HorizontalAlign="Center" >
 
-    <asp:Label ID="IntroMessageLabel" runat="server" Text="Welcome to the Kennesaw State Bookstore. Start seaching by selecting the options below." Font-Bold="True" Font-Size="Larger">
+    <asp:Label ID="IntroMessageLabel" runat="server" Text="Welcome to the Kennesaw State Bookstore. Start seaching by selecting from the options below." Font-Bold="True" Font-Size="Larger">
     </asp:Label>
     </asp:Panel>
     
